@@ -1,0 +1,169 @@
+<div class="bg-img" style="background-image: url('f.webp');">
+    <div class="overlay"></div>
+<div class="register-container">
+    <h2>Register New User</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Username Field -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" formControlName="username" />
+        <div *ngIf="formControls['username'].touched && formControls['username'].invalid" class="error">
+          <div *ngIf="formControls['username'].errors?.['required']">Username is required.</div>
+          <div *ngIf="formControls['username'].errors?.['minlength']">Minimum length is {{ formControls['username'].errors?.['minlength'].requiredLength }}.</div>
+        </div>
+      </div>
+  
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+        <div *ngIf="formControls['email'].touched && formControls['email'].invalid" class="error">
+          <div *ngIf="formControls['email'].errors?.['required']">Email is required.</div>
+          <div *ngIf="formControls['email'].errors?.['email']">Invalid email format.</div>
+        </div>
+      </div>
+  
+      <!-- Phone Number Field -->
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input id="phoneNumber" type="text" formControlName="phoneNumber" />
+        <div *ngIf="formControls['phoneNumber'].touched && formControls['phoneNumber'].invalid" class="error">
+          <div *ngIf="formControls['phoneNumber'].errors?.['required']">Phone Number is required.</div>
+        </div>
+      </div>
+  
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" />
+        <div *ngIf="formControls['password'].touched && formControls['password'].invalid" class="error">
+          <div *ngIf="formControls['password'].errors?.['required']">Password is required.</div>
+          <div *ngIf="formControls['password'].errors?.['minlength']">Minimum length is {{ formControls['password'].errors?.['minlength'].requiredLength }}.</div>
+        </div>
+      </div>
+  
+      <!-- First Name Field -->
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input id="firstName" type="text" formControlName="firstName" />
+        <div *ngIf="formControls['firstName'].touched && formControls['firstName'].invalid" class="error">
+          <div *ngIf="formControls['firstName'].errors?.['required']">First Name is required.</div>
+        </div>
+      </div>
+  
+      <!-- Last Name Field -->
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" type="text" formControlName="lastName" />
+        <div *ngIf="formControls['lastName'].touched && formControls['lastName'].invalid" class="error">
+          <div *ngIf="formControls['lastName'].errors?.['required']">Last Name is required.</div>
+        </div>
+      </div>
+  
+      <!-- Date of Birth Field -->
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+        <div *ngIf="formControls['dateOfBirth'].touched && formControls['dateOfBirth'].invalid" class="error">
+          <div *ngIf="formControls['dateOfBirth'].errors?.['required']">Date of Birth is required.</div>
+        </div>
+      </div>
+  
+      <!-- Gender Field -->
+      <div class="form-group">
+        <label for="genderId">Gender</label>
+        <select id="genderId" formControlName="genderId">
+          <option [value]="null" disabled>Select Gender</option>
+          <option *ngFor="let gender of genders" [value]="gender.id">{{ gender.name_En }}</option>
+        </select>
+        <div *ngIf="formControls['genderId'].touched && formControls['genderId'].invalid" class="error">
+          <div *ngIf="formControls['genderId'].errors?.['required']">Gender is required.</div>
+        </div>
+      </div>
+  
+      <!-- Country Field -->
+      <div class="form-group">
+        <label for="countryId">Country</label>
+        <select id="countryId" formControlName="countryId" (change)="updateGovernorates(CountrySelector.value)" #CountrySelector>
+          <option [value]="null" disabled>Select Country</option>
+          <option *ngFor="let c of countries" [value]="c.id">{{ c.name_En }}</option>
+        </select>
+        <div *ngIf="formControls['countryId'].touched && formControls['countryId'].invalid" class="error">
+          <div *ngIf="formControls['countryId'].errors?.['required']">Country is required.</div>
+        </div>
+      </div>
+  
+      <!-- Governorate Field -->
+      <div class="form-group">
+        <label for="governorateId">Governorate</label>
+        <select id="governorateId" formControlName="governorateId" (change)="updateDistricts(GovSelector.value)" #GovSelector>
+          <option [value]="null" disabled>Select Governorate</option>
+          <option *ngFor="let g of governorates" [value]="g.id">{{ g.name_En }}</option>
+        </select>
+        <div *ngIf="formControls['governorateId'].touched && formControls['governorateId'].invalid" class="error">
+          <div *ngIf="formControls['governorateId'].errors?.['required']">Governorate is required.</div>
+        </div>
+      </div>
+  
+      <!-- District Field -->
+      <div class="form-group">
+        <label for="districtId">District</label>
+        <select id="districtId" formControlName="districtId">
+          <option [value]="null" disabled>Select District</option>
+          <option *ngFor="let d of districts" [value]="d.id">{{ d.name_En }}</option>
+        </select>
+        <div *ngIf="formControls['districtId'].touched && formControls['districtId'].invalid" class="error">
+          <div *ngIf="formControls['districtId'].errors?.['required']">District is required.</div>
+        </div>
+      </div>
+  
+      <!-- Profile Picture Field -->
+      <div class="form-group">
+        <label for="profilePicture">Profile Picture</label>
+        <input
+          id="profilePicture"
+          class="form-control"
+          type="file"
+          (change)="onFileChange($event)"
+          #picSelector
+        />
+        <div *ngIf="!selectedPicture" class="error">Please select a profile picture.</div>
+      </div>
+  
+      <!-- Emergency Contact Name Field -->
+      <div class="form-group">
+        <label for="emergencyContactName">Emergency Contact Name</label>
+        <input id="emergencyContactName" type="text" formControlName="emergencyContactName" />
+        <div *ngIf="formControls['emergencyContactName'].touched && formControls['emergencyContactName'].invalid" class="error">
+          <div *ngIf="formControls['emergencyContactName'].errors?.['required']">Emergency Contact Name is required.</div>
+        </div>
+      </div>
+  
+      <!-- Emergency Contact Phone Field -->
+      <div class="form-group">
+        <label for="emergencyContactPhone">Emergency Contact Phone</label>
+        <input id="emergencyContactPhone" type="text" formControlName="emergencyContactPhone" />
+        <div *ngIf="formControls['emergencyContactPhone'].touched && formControls['emergencyContactPhone'].invalid" class="error">
+          <div *ngIf="formControls['emergencyContactPhone'].errors?.['required']">Emergency Contact Phone is required.</div>
+        </div>
+      </div>
+  
+      <!-- Blood Type Field -->
+      <div class="form-group">
+        <label for="bloodType">Blood Type</label>
+        <input id="bloodType" type="text" formControlName="bloodType" />
+      </div>
+  
+      <!-- Insurance Provider Field -->
+      <!-- <div class="form-group">
+        <label for="userInsuranceProviderId">Insurance Provider</label>
+        <input id="userInsuranceProviderId" type="text" formControlName="userInsuranceProviderId" />
+      </div> -->
+  
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="!registerForm.valid || !selectedPicture">Register</button>
+    </form>
+  
+    <a routerLink="/login">GO TO LOGIN!</a>
+  </div>
+</div>

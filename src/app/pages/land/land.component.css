@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden; 
+}
+
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+}
+
+
+.left-button, .right-button {
+    font-size: 16px;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.right-button button {
+    margin-left: 15px;
+}
+
+.cover-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; 
+    overflow: hidden; 
+}
+
+.full-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    filter: brightness(50%);
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; 
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+    padding: 0 20px;
+    animation: fadeIn 1s forwards 0.5s;
+}
+
+.hero-text h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    font-weight: bold;
+    line-height: 1.2;
+    color: white;
+}
+
+.hero-text p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #d3d3d3;
+    max-width: 600px;
+    line-height: 1.5;
+    margin: 0 auto;
+}
+
+.hero-text button {
+    background-color: #2D9CDB;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.hero-text button:hover {
+    background-color: #1d3557;
+    transform: scale(1.1);
+}
+
+.app-name {
+    display: flex;
+    align-items: center; 
+    font-size: 1.7em;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s; 
+}
+
+.app-name:hover {
+    color: #2D9CDB; 
+    transform: scale(1.05); 
+}
+
+.logo-image {
+    height: 40px; 
+    margin-right: 10px; 
+}
+
+.navbar {
+    top: 0;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    font-size: 1rem;
+}
+
+.navbar .left-button, .navbar .right-button {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+    font-size: 1em;
+}
+
+.navbar button:hover {
+    color: #2D9CDB;
+    transform: scale(1.05);
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-text h1 {
+        font-size: 2.5em;
+    }
+
+    .hero-text p {
+        font-size: 1.3em;
+    }
+
+    .hero-text button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+}
