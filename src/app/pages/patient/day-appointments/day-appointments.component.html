@@ -1,0 +1,30 @@
+<app-p-header></app-p-header>
+
+<div class="navbar-spacer"></div>
+
+<app-side-navbar></app-side-navbar>
+
+<div class="content">
+  <div class="appointments-container">
+    <h2 class="date-title">{{ selectedDate | date: 'EEEE, dd MMMM yyyy' }}</h2>
+    
+    <!-- Show if there are available time slots -->
+    <div *ngIf="timeSlots.length > 0; else noSlots" class="slots-grid">
+      <div *ngFor="let slot of timeSlots" class="slot-card" [ngClass]="{ 'booked-slot': slot.isBooked }">
+        <span class="time-range">{{ slot.startTime }} - {{ slot.endTime }}</span>
+        
+        <span *ngIf="slot.isBooked" class="status booked">Reserved</span>
+        
+        <button *ngIf="!slot.isBooked" (click)="bookAppointment(slot)" class="reserve-btn">Reserve</button>
+      </div>
+    </div>
+
+    <!-- If no time slots available -->
+    <ng-template #noSlots>
+      <div class="no-appointments">
+        <img src="assets/no-slots.svg" alt="No Slots Available">
+        <p>No available time slots today.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

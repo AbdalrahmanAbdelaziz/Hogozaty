@@ -1,0 +1,172 @@
+/* General Page Styling */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    overflow-x: hidden;
+    display: flex;
+}
+
+
+
+/* Content Layout */
+.content {
+    flex: 1;
+    margin-left: 270px;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Filter Form Styling */
+.filter-form {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    margin-top: 150px;
+    margin-right: 170px;
+}
+
+.filter-form:hover {
+    transform: translateY(-3px);
+}
+
+h2 {
+    text-align: center;
+    color: #2C3E50;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select:focus {
+    border-color: #1ABC9C;
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.5);
+    outline: none;
+}
+
+/* Error Messages */
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Search Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #1ABC9C;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 35px;
+}
+
+button:hover {
+    background: #16A085;
+    transform: scale(1.05);
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .side-navbar {
+        width: 220px;
+    }
+    .content {
+        margin-left: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .side-navbar {
+        position: fixed;
+        left: -250px;
+        width: 250px;
+        transition: transform 0.3s;
+    }
+
+    .side-navbar.open {
+        transform: translateX(250px);
+    }
+
+    .toggle-btn {
+        top: 15px;
+        left: 15px;
+        right: auto;
+    }
+
+    .content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .filter-form {
+        max-width: 100%;
+    }
+}

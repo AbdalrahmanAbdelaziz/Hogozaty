@@ -1,6 +1,6 @@
 import { UserRegister } from "./UserRegister";
 
-export interface PatientRegister extends UserRegister {
+export interface Patient extends UserRegister {
   emergencyContactName: string;
   emergencyContactPhone: string;
   bloodType?: string;

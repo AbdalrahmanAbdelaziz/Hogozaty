@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserLogin } from '../shared/models/login-request.dto';
-import { LOGIN_URL, PATIENT_REGISTER_URL } from '../shared/constants/urls';
+import { LOGIN_URL} from '../shared/constants/urls';
 import { LoginResponse } from '../shared/models/login-response';
 
 const USER_KEY = 'User';
@@ -13,7 +13,7 @@ const USER_KEY = 'User';
 })
 export class UserService {
   private userSubject = new BehaviorSubject<LoginResponse | null>(this.getUserFromLocalStorage());
-  private userObservable = this.userSubject.asObservable();
+  public userObservable = this.userSubject.asObservable();
 
   constructor(private http: HttpClient, private toaster: ToastrService) {}
 
@@ -32,21 +32,21 @@ export class UserService {
     );
   }
 
+
+  updateEmail(userId: number, newEmail: string) {
+    return this.http.put(`api/users/${userId}/email`, { email: newEmail });
+  }
+
+  updateProfilePicture(userId: string, imageUrl: string) {
+    return this.http.put(`YOUR_BACKEND_URL/api/users/${userId}/profile-picture`, { imageUrl });
+  }
+  
+  
+  
+
   logout() {
     this.userSubject.next(null);
     localStorage.removeItem(USER_KEY);
-  }
-
-  registerPatient(formData: FormData): Observable<any> {
-    return this.http.post<any>(PATIENT_REGISTER_URL, formData).pipe(
-      tap({
-        next: () => this.toaster.success('Registration Successful'),
-        error: (err) => {
-          this.toaster.error('Registration Failed');
-          console.error('Registration Error:', err);
-        }
-      })
-    );
   }
 
   getUserRole(): string | null {
@@ -62,4 +62,7 @@ export class UserService {
     const userJson = localStorage.getItem(USER_KEY);
     return userJson ? JSON.parse(userJson) : null;
   }
+
+
+  
 }

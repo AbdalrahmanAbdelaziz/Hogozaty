@@ -1,0 +1,33 @@
+<app-p-header></app-p-header>
+
+<div class="navbar-spacer"></div>
+
+<app-side-navbar></app-side-navbar>
+
+<div class="content">
+    <div class="doctors-list">
+        <h2>Available Doctors</h2>
+        <div *ngIf="doctors.length === 0" class="no-doctors">No doctors found.</div>
+
+        <div class="doctor-cards" >
+            <div class="doctor-card" 
+            *ngFor="let doctor of doctors"
+            (click)="goToDoctorProfile(doctor)">
+                <img 
+                    [src]="'http://89.58.39.164:5000/' + doctor.profilePicture || 'default-avatar.jpg'" 
+                    alt="Doctor Image" 
+                    class="doctor-image"
+                >
+                <div class="doctor-details">
+                    <h3>{{ doctor.firstName }} {{ doctor.lastName }}</h3>
+                    <p class="clinic">Clinic: {{ (clinics[doctor.clinicId]?.name) || 'Loading...' }}</p>
+                    <p class="location">
+                        {{ doctor.district_En }}, {{ doctor.governorate_En }}, {{ doctor.country_En }}
+                    </p>
+                    <p class="price">Price: ${{ doctor.checkPrice }}</p>
+                    <p class="rating">⭐ {{ doctor.avgFeedbackRating }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,252 @@
+/* General Content Layout */
+.content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding-top: 100px; /* Ensures content starts below the navbar */
+  background: linear-gradient(135deg, #1B5E20, #66BB6A);
+  min-height: 100vh;
+}
+
+/* Side Navbar */
+.side-navbar {
+  width: 240px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  height: calc(100vh - 100px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 240px;
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* Search Bar */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #2E7D32;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 25rem;
+  max-width: 100%;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  outline: none;
+  background-color: #f3f3f3;
+}
+
+.search-box button {
+  background-color: #1B5E20;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  color: white;
+  font-size: 1rem;
+}
+
+.search-box button:hover {
+  background-color: #157a50;
+}
+
+/* Appointment Section */
+.appointments-section {
+  text-align: center;
+  margin-top: 120px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 20px;
+}
+
+/* Appointment Container */
+.appointment-container {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 30px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 80%;
+  max-width: 700px;
+  margin: auto;
+}
+
+/* Appointment Title */
+.appointment-container h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+}
+
+/* No Appointments Message */
+.no-appointments {
+  font-size: 1.2rem;
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px;
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Appointment Slider */
+.appointment-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Navigation Buttons */
+button {
+  background: #1A9A63;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button:hover:not(:disabled) {
+  background: #157a50;
+  transform: scale(1.05);
+}
+
+/* Appointment Card Styling */
+.appointment-card {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.appointment-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Profile Picture - Full Cover */
+.doctor-info img {
+  width: 100%;
+  height: 180px; /* Adjust height as needed */
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Doctor Info */
+.doctor-info {
+  padding: 15px;
+}
+
+.doctor-info h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  margin: 5px 0;
+}
+
+.doctor-info p {
+  font-size: 1rem;
+  color: white;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+/* Appointment Details */
+.appointment-details {
+  padding: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Status Badge */
+.status {
+  font-size: 0.95rem;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.status.done {
+  background: #24CC81;
+  color: white;
+}
+
+.status.upcoming {
+  background: #FFA500;
+  color: white;
+}
+
+.status.in-progress {
+  background: #1E90FF;
+  color: white;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background: #D32F2F;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.cancel-btn:hover {
+  background: #B71C1C;
+}

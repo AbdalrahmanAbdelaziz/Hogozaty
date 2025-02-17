@@ -1,0 +1,94 @@
+/* General Styling */
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #2E7D32, #A5D6A7);
+  padding: 20px;
+}
+
+/* Wrapper for Days */
+.days-wrapper {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 600px;
+}
+
+/* Title Styling */
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid Layout for Dates */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+}
+
+/* Date Card */
+.day-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2E7D32;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+/* Hover Effect */
+.day-card:hover {
+  background: #1B5E20;
+  color: white;
+  transform: translateY(-5px);
+}
+
+/* Date Styling */
+.date {
+  font-size: 1.4rem;
+}
+
+/* Day Name Styling */
+.day-name {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* Hover Effect for Day Name */
+.day-card:hover .day-name {
+  color: #FFF;
+}
+
+/* No Appointments Message */
+.no-appointments {
+  text-align: center;
+  padding: 2rem;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+/* No Appointments Image */
+.no-appointments img {
+  width: 150px;
+  margin-bottom: 15px;
+  opacity: 0.8;
+}

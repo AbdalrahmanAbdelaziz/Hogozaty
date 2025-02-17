@@ -1,12 +1,12 @@
-<div class="bg-img" style="background-image: url('f.webp');">
+<div class="bg-img" style="background-image: url('www.jpg');">
     <div class="overlay"></div>
 <div class="register-container">
-    <h2>Register New User</h2>
+  <img src="vv.png" alt="Logo" class="logo" routerLink="/"/>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <!-- Username Field -->
       <div class="form-group">
         <label for="username">Username</label>
-        <input id="username" type="text" formControlName="username" />
+        <input id="username" type="text" formControlName="username" placeholder="Enter your username" />
         <div *ngIf="formControls['username'].touched && formControls['username'].invalid" class="error">
           <div *ngIf="formControls['username'].errors?.['required']">Username is required.</div>
           <div *ngIf="formControls['username'].errors?.['minlength']">Minimum length is {{ formControls['username'].errors?.['minlength'].requiredLength }}.</div>
@@ -16,7 +16,7 @@
       <!-- Email Field -->
       <div class="form-group">
         <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
+        <input id="email" type="email" formControlName="email" placeholder="Enter your email"  />
         <div *ngIf="formControls['email'].touched && formControls['email'].invalid" class="error">
           <div *ngIf="formControls['email'].errors?.['required']">Email is required.</div>
           <div *ngIf="formControls['email'].errors?.['email']">Invalid email format.</div>
@@ -26,7 +26,7 @@
       <!-- Phone Number Field -->
       <div class="form-group">
         <label for="phoneNumber">Phone Number</label>
-        <input id="phoneNumber" type="text" formControlName="phoneNumber" />
+        <input id="phoneNumber" type="text" formControlName="phoneNumber" placeholder="Enter your phone number" />
         <div *ngIf="formControls['phoneNumber'].touched && formControls['phoneNumber'].invalid" class="error">
           <div *ngIf="formControls['phoneNumber'].errors?.['required']">Phone Number is required.</div>
         </div>
@@ -35,7 +35,7 @@
       <!-- Password Field -->
       <div class="form-group">
         <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" />
+        <input id="password" type="password" formControlName="password" placeholder="Enter your password" />
         <div *ngIf="formControls['password'].touched && formControls['password'].invalid" class="error">
           <div *ngIf="formControls['password'].errors?.['required']">Password is required.</div>
           <div *ngIf="formControls['password'].errors?.['minlength']">Minimum length is {{ formControls['password'].errors?.['minlength'].requiredLength }}.</div>
@@ -45,7 +45,7 @@
       <!-- First Name Field -->
       <div class="form-group">
         <label for="firstName">First Name</label>
-        <input id="firstName" type="text" formControlName="firstName" />
+        <input id="firstName" type="text" formControlName="firstName" placeholder="Enter your firstName" />
         <div *ngIf="formControls['firstName'].touched && formControls['firstName'].invalid" class="error">
           <div *ngIf="formControls['firstName'].errors?.['required']">First Name is required.</div>
         </div>
@@ -54,7 +54,7 @@
       <!-- Last Name Field -->
       <div class="form-group">
         <label for="lastName">Last Name</label>
-        <input id="lastName" type="text" formControlName="lastName" />
+        <input id="lastName" type="text" formControlName="lastName" placeholder="Enter your lastName" />
         <div *ngIf="formControls['lastName'].touched && formControls['lastName'].invalid" class="error">
           <div *ngIf="formControls['lastName'].errors?.['required']">Last Name is required.</div>
         </div>
@@ -63,7 +63,7 @@
       <!-- Date of Birth Field -->
       <div class="form-group">
         <label for="dateOfBirth">Date of Birth</label>
-        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" placeholder="Enter your date of birth" />
         <div *ngIf="formControls['dateOfBirth'].touched && formControls['dateOfBirth'].invalid" class="error">
           <div *ngIf="formControls['dateOfBirth'].errors?.['required']">Date of Birth is required.</div>
         </div>
@@ -72,7 +72,7 @@
       <!-- Gender Field -->
       <div class="form-group">
         <label for="genderId">Gender</label>
-        <select id="genderId" formControlName="genderId">
+        <select id="genderId" formControlName="genderId" >
           <option [value]="null" disabled>Select Gender</option>
           <option *ngFor="let gender of genders" [value]="gender.id">{{ gender.name_En }}</option>
         </select>
@@ -133,7 +133,7 @@
       <!-- Emergency Contact Name Field -->
       <div class="form-group">
         <label for="emergencyContactName">Emergency Contact Name</label>
-        <input id="emergencyContactName" type="text" formControlName="emergencyContactName" />
+        <input id="emergencyContactName" type="text" formControlName="emergencyContactName" placeholder="Enter your emergencyContactName"/>
         <div *ngIf="formControls['emergencyContactName'].touched && formControls['emergencyContactName'].invalid" class="error">
           <div *ngIf="formControls['emergencyContactName'].errors?.['required']">Emergency Contact Name is required.</div>
         </div>
@@ -142,7 +142,7 @@
       <!-- Emergency Contact Phone Field -->
       <div class="form-group">
         <label for="emergencyContactPhone">Emergency Contact Phone</label>
-        <input id="emergencyContactPhone" type="text" formControlName="emergencyContactPhone" />
+        <input id="emergencyContactPhone" type="text" formControlName="emergencyContactPhone"  placeholder="Enter your emergencyContactPhone" />
         <div *ngIf="formControls['emergencyContactPhone'].touched && formControls['emergencyContactPhone'].invalid" class="error">
           <div *ngIf="formControls['emergencyContactPhone'].errors?.['required']">Emergency Contact Phone is required.</div>
         </div>
@@ -151,14 +151,9 @@
       <!-- Blood Type Field -->
       <div class="form-group">
         <label for="bloodType">Blood Type</label>
-        <input id="bloodType" type="text" formControlName="bloodType" />
+        <input id="bloodType" type="text" formControlName="bloodType" placeholder="Enter your blood type" />
       </div>
   
-      <!-- Insurance Provider Field -->
-      <!-- <div class="form-group">
-        <label for="userInsuranceProviderId">Insurance Provider</label>
-        <input id="userInsuranceProviderId" type="text" formControlName="userInsuranceProviderId" />
-      </div> -->
   
       <!-- Submit Button -->
       <button type="submit" [disabled]="!registerForm.valid || !selectedPicture">Register</button>

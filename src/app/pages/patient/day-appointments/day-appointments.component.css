@@ -1,0 +1,117 @@
+/* General Content Styling */
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 120px 20px 40px; /* Ensure space below the navbar */
+  background: linear-gradient(135deg, #1B5E20, #66BB6A);
+}
+
+/* Appointments Container */
+.appointments-container {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  -webkit-backdrop-filter: blur(10px); /* Safari Support */
+  backdrop-filter: blur(10px);
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  margin-top: 20px; /* Prevent sticking to navbar */
+}
+
+/* Date Title */
+.date-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Slots Grid Layout */
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+/* Time Slot Card */
+.slot-card {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2E7D32;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+}
+
+/* Hover Effect */
+.slot-card:hover {
+  background: #1B5E20;
+  color: white;
+  transform: translateY(-5px);
+}
+
+/* Time Range Styling */
+.time-range {
+  display: block;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Reserved Status */
+.status.booked {
+  background: #D32F2F;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* Booked Slot Styling */
+.booked-slot {
+  background: #D32F2F;
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Reserve Button */
+.reserve-btn {
+  background: #2E7D32;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s ease;
+}
+
+.reserve-btn:hover {
+  background: #1B5E20;
+  transform: scale(1.05);
+}
+
+/* No Appointments Available */
+.no-appointments {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+  font-size: 1.3rem;
+}
+
+/* No Slots Image */
+.no-appointments img {
+  width: 150px;
+  margin-bottom: 15px;
+  opacity: 0.8;
+}

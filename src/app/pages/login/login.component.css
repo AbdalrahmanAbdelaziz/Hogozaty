@@ -1,167 +1,166 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Adjust main content to prevent overlap with navbar */
+.content {
+  margin-top: 80px;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.98); /* Increased opacity for better contrast */
+  padding: 45px;
+  border-radius: 15px;  
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Darker shadow for better depth */
+  text-align: center;
+  z-index: 2;
+  animation: fadeIn 0.8s ease-out;
+  border: 2px solid rgba(0, 0, 0, 0.1); /* Subtle border for more definition */
+}
+
+.bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+
+
+.logo {
+  width: 140px; /* Slightly larger for better visibility */
+  height: auto;
+  margin-bottom: 25px;
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3)); 
+  cursor: pointer;
   
-  body, html {
-    height: 100%;
-    width: 100%;
-    font-family: 'Roboto', Arial, sans-serif;
-    overflow: hidden;
-    background-color: #f5f5f5; 
-  }
-  
-  .bg-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-position: center;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   /* filter: brightness(50%);   */
-  }
-  
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4); 
-    z-index: 1;
-  }
-  
+}
+
+.field {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.field span {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #444; /* Darker icon color */
+  transition: color 0.3s ease;
+}
+
+.field input {
+  width: 100%;
+  padding: 16px 14px 16px 50px;
+  font-size: 16px;
+  border: 2px solid #bbb; /* Darker border */
+  border-radius: 10px;
+  outline: none;
+  background-color: #fff;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.field input:focus {
+  border-color: #e63946;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(230, 57, 70, 0.3); /* Glowing effect */
+}
+
+.field input[type="submit"] {
+  background-color: #24CC81;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  font-weight: bold;
+}
+
+.field input[type="submit"]:hover {
+  background-color: #1A9A63;
+  transform: scale(1.05); /* Slight pop-out effect */
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: left;
+  display: block;
+}
+
+.signup, .forgot-password {
+  font-size: 14px;
+  color: #333; /* Darker text for better readability */
+  margin-top: 20px;
+}
+
+.signup a, .forgot-password a {
+  color: #0087BB;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.signup a:hover, .forgot-password a:hover {
+  color: #24CC81;
+  text-decoration: underline;
+}
+
+.forgot-password {
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
   .content {
-    position: relative;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px 40px 50px 40px;
-    border-radius: 15px; 
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    text-align: center;
-    z-index: 2;
-    animation: fadeIn 0.8s ease-out; 
+    padding: 30px;
+    max-width: 370px;
   }
-  
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+
+  .logo {
+    width: 110px;
   }
-  
-  h1 {
-    font-size: 30px;
-    color: #2D9CDB;
-    margin-bottom: 30px;
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
-  
-  .field {
-    position: relative;
-    margin-bottom: 25px;
-  }
-  
-  .field span {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: #666;
-    transition: color 0.3s ease;
-  }
-  
+
   .field input {
-    width: 100%;
-    padding: 16px 14px 16px 45px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    outline: none;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
-  }
-  
-  .field input:focus {
-    border-color: #e63946; 
-    background-color: #fff; 
-  }
-  
-  .field input:focus + .error {
-    color: #e63946;
-  }
-  
-  .field input[type="submit"] {
-    background-color: #2D9CDB;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 16px;
-    font-size: 16px;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-    width: 100%;
-  }
-  
-  .field input[type="submit"]:hover {
-    background-color: #1d3557;
-  }
-  
-  .error {
-    color: red;
-    font-size: 13px;
-    margin-top: 5px;
-    text-align: left;
-    display: block;
-  }
-  
-  .signup, .forgot-password {
     font-size: 14px;
-    color: #555;
-    margin-top: 20px;
   }
-  
-  .signup a, .forgot-password a {
-    color: #27AE60;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .signup a:hover, .forgot-password a:hover {
-    color: #1d3557;
-    text-decoration: underline;
-  }
-  
-  .forgot-password {
-    margin-top: 15px;
-  }
-  
-  /* Add responsive design for smaller screens */
-  @media (max-width: 768px) {
-    .content {
-      padding: 30px;
-      max-width: 350px;
-    }
-  
-    h1 {
-      font-size: 28px;
-    }
-  
-    .field input {
-      font-size: 14px;
-    }
-  }
-  
-  /* Button Hover Effects */
-  .cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  
-  }
-  
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

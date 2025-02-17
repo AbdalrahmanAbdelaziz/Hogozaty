@@ -1,0 +1,113 @@
+/* Full-width Navbar */
+.navbar {
+    background-color: #F5FFFA;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 40px;
+    width: 100vw; /* Full width */
+    position: fixed; /* Sticks to the top */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Keeps it above other content */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    padding-top: 70px; /* Adjust based on navbar height */
+}
+
+/* Logo Styling */
+.logo-container {
+    padding: 0;
+    border-radius: 0;
+    box-shadow: 0;
+    cursor: pointer; 
+}
+
+.logo-image {
+    height: 50px;
+    width: 120px;
+    transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+    transform: scale(1.05);
+}
+
+/* Center Navigation Links */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Centers the links */
+}
+
+/* Navbar Links */
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: bolder;
+    color: black;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: color 0.3s ease;
+    cursor: pointer; /* Makes menu items clickable */
+}
+
+.nav-links a:hover {
+    color: #1A9A63;
+}
+
+
+/* Dropdown Menu */
+.menu-container {
+    position: relative;
+}
+.nav-links a i {
+    color: #24CC81; /* Default color */
+    transition: color 0.3s ease;
+}
+
+/* Change icon color on hover */
+/* .nav-links a:hover i {
+    color: #24CC81;
+} */
+.menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: 40px;
+    left: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.menu a {
+    display: block;
+    padding: 12px 25px;
+    color: black;
+    transition: background 0.3s;
+    cursor: pointer; /* Makes dropdown items clickable */
+    min-width: 80px; /* Ensures links are wider */
+    text-align: left; /* Keeps text alignment proper */
+}
+
+.menu a:hover {
+    background-color: #f4f4f4;
+}
+
+.menu-container:hover .menu {
+    display: block;
+}

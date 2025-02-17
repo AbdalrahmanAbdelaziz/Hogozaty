@@ -1,0 +1,35 @@
+<app-p-header></app-p-header>
+
+<div class="navbar-spacer"></div>
+
+<app-side-navbar></app-side-navbar>
+
+
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-picture">
+      <img [src]="patient.data.profilePicture || 'assets/default-avatar.png'" alt="Profile Picture" />
+      <button mat-button class="edit-btn" (click)="openProfilePictureDialog()">Edit</button>
+    </div>
+
+    <div class="profile-details">
+      <h2>{{ patient.data.firstName }} {{ patient.data.lastName }}</h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="updateEmail()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Enter your email" title="Email address" />
+        </mat-form-field>
+        <button mat-flat-button color="primary" type="submit" [disabled]="profileForm.invalid">
+          Update Email
+        </button>
+      </form>
+
+      <div class="info">
+        <p><strong>Country:</strong> {{ patient.data.country_En }}</p>
+        <p><strong>Governorate:</strong> {{ patient.data.governorate_En }}</p>
+        <p><strong>District:</strong> {{ patient.data.district_En }}</p>
+      </div>
+    </div>
+  </div>
+</div>

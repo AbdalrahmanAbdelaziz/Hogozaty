@@ -6,8 +6,25 @@ html, body {
     scroll-behavior: smooth;
 }
 
+.logo-container {
+    padding: 0;
+    border-radius: 0;
+    box-shadow: 0;
+    cursor: pointer; 
+}
+
+.logo-image {
+    height: 50px;
+    width: 120px;
+    transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+    transform: scale(1.05);
+}
+
 .navbar {
-    background-color: #2D9CDB; 
+    background-color:#F5FFFA;
     color: #fff;
     display: flex;
     justify-content: space-between;
@@ -38,7 +55,7 @@ html, body {
 }
 
 button {
-    background-color: #FFFFFF; 
+    background-color: #24CC81; 
     color: black;
     font-size: 1em;
     padding: 12px 25px;
@@ -52,7 +69,7 @@ button {
 }
 
 button:hover {
-    background-color: #1d3557;  
+    background-color: #1A9A63;  
     color: #fff;  
     transform: scale(1.05); 
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
@@ -133,19 +150,19 @@ button:hover {
 }
 
 .text-section h3 {
-    color: #27AE60;
+    color: #333;
     font-size: 1.1em;
     margin-bottom: 10px;
 }
 
 .text-section p {
     font-size: 1.2em; 
-    color: #27AE60;
+    color: white;
     margin-bottom: 30px;
 }
 
 .help-button {
-    background: #2D9CDB;
+    background: #24CC81;
     color: #fff;
     padding: 15px 35px; 
     border: none;
@@ -207,7 +224,7 @@ button:hover {
 
 .mission-content p {
     font-size: 1.2em;
-    color: #27AE60;
+    color: white;
     margin-bottom: 30px;
 }
 

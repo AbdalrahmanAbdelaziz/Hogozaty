@@ -1,1 +1,73 @@
-<p>p-home works!</p>
+<app-p-header></app-p-header>
+
+<div class="navbar-spacer"></div>
+
+<app-side-navbar></app-side-navbar>
+
+<div class="content">
+ 
+  
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <div class="search-box">
+     
+      </div>
+    </div>
+
+   
+    <div class="appointment-container">
+      <h2>Your Appointments</h2>
+    
+      <div *ngIf="appointments.length === 0" class="no-appointments">
+        <p>No appointments yet. <a routerLink="/choose-appointment">Book an appointment</a></p>
+      </div>
+    
+      <div class="appointment-slider" *ngIf="appointments.length > 0">
+        <button (click)="prevCard()" [disabled]="currentIndex === 0">‹</button>
+    
+        <div class="appointments">
+          <div *ngFor="let appointment of appointments.slice(currentIndex, currentIndex + 3)" class="appointment-card">
+            <div class="doctor-info">
+              <img [src]="appointment.doctorProfilePicture || 'default-avatar.jpg'" alt="Doctor Image" />
+              <div>
+                <h3>{{ appointment.doctorName }}</h3>
+                <p>{{ appointment.doctorSpecialization_En || 'General Practitioner' }}</p>
+               {{ appointment.clinicName || 'Unknown' }}
+              </div>
+            </div>
+    
+            <div class="appointment-details">
+              <p><strong>Date:</strong> {{ appointment.timeSlot.date }}</p>
+              <p><strong>Time:</strong> {{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</p>
+              <p class="status" [ngClass]="{
+                'done': appointment.appointmentStatus_En === 'Done',
+                'upcoming': appointment.appointmentStatus_En === 'Upcoming',
+                'in-progress': appointment.appointmentStatus_En === 'In Progress'
+              }">
+                {{ appointment.appointmentStatus_En }}
+              </p>
+            </div>
+    
+            <button class="cancel-btn" (click)="cancelAppointment(appointment.id)">Cancel Reservation</button>
+          </div>
+        </div>
+    
+        <button (click)="nextCard()" [disabled]="currentIndex >= appointments.length - 3">›</button>
+      </div>
+    </div>
+
+
+    <app-most-chosen-doctors></app-most-chosen-doctors>
+    
+</div>
+
+
+
+
+
+
+
+  

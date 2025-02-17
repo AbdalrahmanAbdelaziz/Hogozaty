@@ -1,0 +1,118 @@
+/* Main Container Layout */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 3rem;
+  background: rgba(255, 255, 255, 0.2); /* Transparent glass effect */
+  border-radius: 12px;
+  padding: 2rem;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Adjust layout to start under navbar */
+.main-content {
+  margin-top: 100px; /* Starts below navbar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Doctor Image */
+img {
+  border-radius: 12px;
+  flex: 1 0;
+  object-fit: cover;
+  height: 35rem;
+  margin: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Doctor Details Section */
+.details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0;
+  padding: 2rem;
+  color: white;
+  margin-left: 1rem;
+}
+
+/* Header (Doctor Name & Rating) */
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff; /* White text for better contrast */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Specialization & Location */
+.origins {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.origins span {
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  margin: 0.5rem 0.5rem 0.5rem 0;
+  border-radius: 2rem;
+  background-color: #2E7D32;
+  color: white;
+}
+
+/* Consultation Price */
+.cook-time {
+  margin-top: 1rem;
+}
+
+.cook-time span {
+  padding: 0.6rem 2rem 0.6rem 0;
+  border-radius: 10rem;
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #66BB6A;
+}
+
+/* Brief / Bio */
+.price {
+  font-size: 1.8rem;
+  margin: 2rem 2rem 2rem 0;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.price::before {
+  content: "Bio: ";
+  color: #FFA500;
+}
+
+/* Appointment Button */
+button {
+  background: #1B5E20;
+  color: white;
+  border: none;
+  font-size: 1.2rem;
+  padding: 1rem;
+  border-radius: 10rem;
+  outline: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: #157a50;
+  transform: scale(1.05);
+  cursor: pointer;
+}

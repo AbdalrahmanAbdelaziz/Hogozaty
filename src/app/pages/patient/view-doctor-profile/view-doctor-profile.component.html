@@ -1,0 +1,35 @@
+<app-p-header></app-p-header>
+
+<div class="navbar-spacer"></div>
+
+<app-side-navbar></app-side-navbar>
+
+<div class="container" *ngIf="doctor">
+  <!-- Doctor Image -->
+  <img 
+    [src]="'http://89.58.39.164:5000/' + doctor.profilePicture || 'default-avatar.jpg'" 
+    alt="Doctor Image" 
+    class="doctor-image"
+  >
+
+  <!-- Doctor Details -->
+  <div class="details">
+    <div class="header">
+      <h2 class="name">{{ doctor.firstName }} {{ doctor.lastName }}</h2>
+      <p class="rating">⭐ {{ doctor.avgFeedbackRating }}</p>
+    </div>
+
+    <div class="origins">
+      <span>Specialization: {{ doctor.specializationId }}</span>
+      <span>{{ doctor.country_En }}, {{ doctor.governorate_En }}, {{ doctor.district_En }}</span>
+    </div>
+
+    <p class="cook-time">
+      <span>Consultation Price: {{ doctor.checkPrice }} EGP</span>
+    </p>
+
+    <p class="price">{{ doctor.brief }}</p>
+
+    <button (click)="goToAppointments()">See Available Time Slots</button>
+  </div>
+</div>
