@@ -25,6 +25,7 @@ export interface LoginResponse {
     applicationRole_En: string;
     applicationRole_Ar: string;
     applicationRole_ID: number;
+    doctorId: number | null;
   };
   statusCode: number;
   succeeded: boolean;

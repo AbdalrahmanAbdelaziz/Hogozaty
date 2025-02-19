@@ -1,1 +1,30 @@
-<p>s-home works!</p>
+<div class="s-home-container">
+    <app-s-header></app-s-header>
+  
+    <div class="main-content">
+      <app-side-navbar></app-side-navbar>
+  
+      <div class="chart-container">
+        <h2 class="chart-title">Appointment Status</h2>
+        
+        <!-- Pie Chart Section -->
+        <ngx-charts-pie-chart 
+          [view]="view" 
+          [results]="pieChartData" 
+          [legend]="showLegend"
+          [labels]="showLabels"
+          [doughnut]="isDoughnut"
+          (select)="onSelect($event)">
+        </ngx-charts-pie-chart>
+        
+        <!-- Navigation Buttons Section -->
+        <div class="button-container">
+          <button class="nav-button" routerLink="/phone-reserve">Phone Reserve</button>
+          <button class="nav-button" routerLink="/walkin-reserve">Walk-in Reserve</button>
+          <button class="nav-button" routerLink="/service-settings">Service Settings</button>
+          <button class="nav-button" routerLink="/timeslot-management">Timeslot Management</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

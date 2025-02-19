@@ -1,0 +1,33 @@
+<div class="navbar">
+    <div class="logo-container">
+      <img src="vv.png" alt="HOGOZATY Logo" class="logo-image">
+    </div>
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/secretary-home">
+          <i class="fas fa-home"></i> Home
+        </a>
+      </li>
+      <li>
+
+        <a routerLink="/my-appointment">
+          <i class="fas fa-calendar-check"></i> Appointments
+        </a>
+      </li>
+      <li>
+
+        <li>
+            <a routerLink="/revenue">
+              <i class="fas fa-dollar-sign"></i> Today's revenue
+            </a>
+        </li>
+          
+
+      <li class="menu-container">
+        <a routerLink="/p-profile">
+          <i class="fas fa-user"></i> {{ patient.data.firstName | titlecase }}
+        </a>
+      </li>
+    </ul>
+  </div>
+  

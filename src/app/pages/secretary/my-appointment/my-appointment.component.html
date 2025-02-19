@@ -1,0 +1,36 @@
+<app-s-header></app-s-header>
+<app-side-navbar></app-side-navbar>
+
+<!-- Calendar -->
+<div class="calendar-container">
+    <ngb-datepicker [(ngModel)]="selectedDate" (dateSelect)="onDateSelect($event)" [minDate]="today" [maxDate]="maxDate"></ngb-datepicker>
+</div>
+
+<!-- No Appointments Message -->
+<p *ngIf="message" class="alert alert-warning">{{ message }}</p>
+
+<!-- Table -->
+<table class="table" *ngIf="appointments.length > 0">
+  <thead>
+    <tr>
+      <th>Count</th>
+      <th>Name</th>
+      <th>Timeslot</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let appointment of appointments">
+      <td>{{ appointment.count }}</td>
+      <td>{{ appointment.patientName }}</td>
+      <td>{{ appointment.timeslotFrom | date:'shortTime' }} - {{ appointment.timeslotTo | date:'shortTime' }}</td>
+      <td>
+        <button class="btn btn-danger" (click)="onCancelAppointment(appointment.id)">Cancel</button>
+        <button class="btn btn-warning" (click)="onRescheduleAppointment(appointment.id)">Reschedule</button>
+        <button class="btn btn-success" [class.arrived]="appointment.arrived" (click)="onArrived(appointment.id)">Arrived</button>
+        <button class="btn btn-info" [class.checked-in]="appointment.checkedIn" (click)="onCheckIn(appointment.id)">Check In</button>
+        <button class="btn btn-secondary" [class.done]="appointment.done" (click)="onMarkAsDone(appointment.id)">Done</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

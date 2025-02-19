@@ -1,0 +1,150 @@
+/* Calendar Styling */
+.calendar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    margin-top: 100px;
+}
+
+/* Table Styling */
+.table {
+    width: 90%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Table Header */
+.table thead {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+/* Table Rows & Cells */
+.table th, .table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transition: 0.3s ease-in-out;
+}
+
+/* No Appointments Message */
+.alert-warning {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px;
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 8px;
+}
+
+/* Action Buttons */
+button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    margin: 3px;
+}
+
+/* Button Colors */
+.btn-danger {
+    background: #D32F2F;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #B71C1C;
+}
+
+.btn-warning {
+    background: #FFA500;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #E69500;
+}
+
+.btn-success {
+    background: #24CC81;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #1DA362;
+}
+
+.btn-info {
+    background: #1E90FF;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #1570CC;
+}
+
+.btn-secondary {
+    background: #757575;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5C5C5C;
+}
+
+/* Button Status Styles */
+.arrived {
+    background: #FFD700 !important;
+    color: black;
+}
+
+.checked-in {
+    background: #32CD32 !important;
+}
+
+.done {
+    background: #4CAF50 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .table {
+        width: 100%;
+    }
+
+    .table th, .table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    button {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+}

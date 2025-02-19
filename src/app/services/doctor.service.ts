@@ -28,8 +28,24 @@ export class DoctorService {
     return this.http.post<Doctor[]>(`${this.apiUrl}/getDoctorsByOptionalParams`, params);
   }
 
+  createTimeSlot(timeSlotData: any) {
+    return this.http.post(this.apiUrl, timeSlotData);
+  }
 
 
+  getDoctorServices(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getDoctorServices`);
+  }
+
+  // Get all available services to add
+  getAvailableServices(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getAvailableServices`);
+  }
+
+  // Add new services for the doctor
+  addDoctorServices(services: any[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/addDoctorServices`, services);
+  }
 
 
  

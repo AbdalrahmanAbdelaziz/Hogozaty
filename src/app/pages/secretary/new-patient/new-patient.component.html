@@ -1,0 +1,28 @@
+<app-s-header></app-s-header>
+<app-side-navbar></app-side-navbar>
+
+<div class="container">
+  <h2>Check Patient Registration</h2>
+
+  <!-- Input field for phone number -->
+  <div class="input-container">
+    <input type="text" [(ngModel)]="phoneNumber" placeholder="Enter phone number" />
+  </div>
+  
+  
+
+  <!-- Button to check registration -->
+  <button (click)="checkRegistration()">Check</button>
+
+  <!-- If the patient is not registered, show a register button -->
+  <div *ngIf="isRegistered === false">
+    <p>Patient not registered.</p>
+    <button (click)="goToRegister()">Add New Patient</button>
+  </div>
+
+  <!-- If the patient is registered, show the button to navigate -->
+  <div *ngIf="isRegistered === true">
+    <p>Patient is registered! ID: {{ patientId }}</p>
+    <button (click)="goToAppointments('1', '2')">Go to Doctor Appointments</button>
+  </div>
+</div>

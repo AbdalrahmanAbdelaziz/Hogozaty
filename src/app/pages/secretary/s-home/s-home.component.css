@@ -1,0 +1,117 @@
+/* General Content Layout */
+.s-home-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding-top: 100px; /* Ensures content starts below the navbar */
+    background: linear-gradient(135deg, #1B5E20, #66BB6A);
+    min-height: 100vh;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 240px;
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  /* Chart Container */
+  .chart-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  /* Chart Title */
+  .chart-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+  }
+  
+  /* Pie Chart */
+  ngx-charts-pie-chart {
+    max-width: 100%;
+    margin: auto;
+  }
+  
+  /* Pie Chart Container */
+  .chart-container ngx-charts-pie-chart {
+    height: 400px;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 30px;
+  }
+  
+  /* Responsive Layout for Pie Chart */
+  @media (max-width: 768px) {
+    .chart-container {
+      padding: 20px;
+    }
+  
+    ngx-charts-pie-chart {
+      height: 300px;
+    }
+  }
+  
+  /* Navigation Buttons Section */
+  .button-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  /* Individual Button Styles */
+  .nav-button {
+    background: linear-gradient(145deg, #1a9a63, #157a50);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    width: 200px;
+  }
+  
+  .nav-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    background: linear-gradient(145deg, #157a50, #1a9a63);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-button:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(26, 154, 99, 0.6);
+  }
+  
+  .nav-button:disabled {
+    background: gray;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  /* Responsive Layout for Buttons */
+  @media (max-width: 768px) {
+    .button-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .nav-button {
+      width: 100%;
+    }
+  }
+  

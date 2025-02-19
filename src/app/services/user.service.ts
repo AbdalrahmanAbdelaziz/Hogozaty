@@ -3,16 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserLogin } from '../shared/models/login-request.dto';
-import { LOGIN_URL} from '../shared/constants/urls';
+import { LOGIN_URL } from '../shared/constants/urls';
 import { LoginResponse } from '../shared/models/login-response';
 
 const USER_KEY = 'User';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  private userSubject = new BehaviorSubject<LoginResponse | null>(this.getUserFromLocalStorage());
+  private userSubject = new BehaviorSubject<LoginResponse | null>(
+    this.getUserFromLocalStorage()
+  );
   public userObservable = this.userSubject.asObservable();
 
   constructor(private http: HttpClient, private toaster: ToastrService) {}
@@ -27,11 +29,10 @@ export class UserService {
         },
         error: () => {
           this.toaster.error('Login Failed');
-        }
+        },
       })
     );
   }
-
 
   updateEmail(userId: number, newEmail: string) {
     return this.http.put(`api/users/${userId}/email`, { email: newEmail });
@@ -40,13 +41,11 @@ export class UserService {
   updateProfilePicture(userId: string, imageUrl: string) {
     return this.http.put(`YOUR_BACKEND_URL/api/users/${userId}/profile-picture`, { imageUrl });
   }
-  
-  
-  
 
   logout() {
     this.userSubject.next(null);
     localStorage.removeItem(USER_KEY);
+    localStorage.removeItem('doctorId');
   }
 
   getUserRole(): string | null {
@@ -56,13 +55,18 @@ export class UserService {
   private setUserToLocalStorage(user: LoginResponse) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
     localStorage.setItem('userRole', user.data.applicationRole_En);
+
+    if (user.data.applicationRole_En === 'Secretary' && user.data.doctorId) {
+      localStorage.setItem('doctorId', user.data.doctorId.toString());
+    }
   }
 
-  private getUserFromLocalStorage(): LoginResponse | null {
+  getUserFromLocalStorage(): LoginResponse | null {
     const userJson = localStorage.getItem(USER_KEY);
     return userJson ? JSON.parse(userJson) : null;
   }
 
-
-  
+  getUser(): LoginResponse | null {
+    return this.getUserFromLocalStorage();
+  }
 }

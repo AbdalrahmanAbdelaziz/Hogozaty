@@ -40,8 +40,54 @@ export class AppointmentService {
   }
 
   cancelAppointment(appointmentId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/api/Appointment/cancelAppointment/${appointmentId}`);
+    return this.http.put(`${this.baseUrl}/api/Appointment/cancelAppointment/${appointmentId}`, {});
   }
+  
+
+
+////////////////////////////////////////////////////////////
+
+
+getAppointmentStats(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/api/Appointment/getAppointmentStats`);
+}
+
+reserveAppointment(appointmentData: any): Observable<any> {
+  return this.http.post(`${this.baseUrl}/appointments/book`, appointmentData);
+}
+
+
+rescheduleAppointment(appointmentId: number, newDate: string): Observable<void> {
+  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/reschedule`, { newDate });
+}
+
+
+getAppointmentsByDate(date: string): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}?date=${date}`);
+}
+
+markArrived(appointmentId: number): Observable<void> {
+  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/arrived`, {});
+}
+
+markCheckIn(appointmentId: number): Observable<void> {
+  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/checkin`, {});
+}
+
+markDone(appointmentId: number): Observable<void> {
+  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/done`, {});
+}
+
+
+getDoctorDayAppointmentsCount(docId: number, date: string): Observable<any> {
+  const requestBody = { docId, date };
+  return this.http.post(`${this.baseUrl}/api/Doctor/getDoctorDayAppointmentsCount`, requestBody);
+}
+
+
+
+
+
 
 
 }

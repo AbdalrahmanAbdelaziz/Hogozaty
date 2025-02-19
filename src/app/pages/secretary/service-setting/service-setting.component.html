@@ -1,0 +1,57 @@
+<app-s-header></app-s-header>
+<app-side-navbar></app-side-navbar>
+
+<div class="container">
+  <h2>Manage Services</h2>
+
+  <!-- Services Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Service Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of doctorServices">
+        <td>{{ service.name }}</td>
+        <td>{{ service.price }} EGP</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add New Service Button -->
+  <button class="add-btn" (click)="openServiceModal()">+ Add Service</button>
+
+  <!-- Service Modal -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <h3>Select Services to Add</h3>
+      <ul>
+        <li *ngFor="let service of availableServices">
+          <label>
+            <input 
+              type="checkbox" 
+              [value]="service" 
+              (change)="toggleServiceSelection(service)"
+            /> 
+            {{ service.name }}
+          </label>
+          <label *ngIf="selectedServices.includes(service)" for="price-{{ service.id }}">
+            Enter Price:
+            <input 
+              id="price-{{ service.id }}" 
+              type="number" 
+              placeholder="Enter price in USD" 
+              [(ngModel)]="service.price" 
+              min="0" 
+              title="Enter price for the selected service"
+            />
+          </label>
+        </li>
+      </ul>
+      <button class="save-btn" (click)="saveSelectedServices()">Save</button>
+      <button class="cancel-btn" (click)="closeServiceModal()">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<app-s-header></app-s-header>
+<app-side-navbar></app-side-navbar>
+
+<div class="container">
+  <h2>Book an Appointment</h2>
+  
+  <form (ngSubmit)="submitAppointment()">
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" [(ngModel)]="name" name="name" required>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" [(ngModel)]="phoneNumber" name="phoneNumber" required>
+
+    <label for="day">Choose a Day:</label>
+    <select id="day" [(ngModel)]="selectedDay" name="selectedDay" (change)="onDaySelected()" required>
+      <option *ngFor="let day of availableDays" [value]="day">{{ day }}</option>
+    </select>
+
+    <label for="timeSlot">Choose a Time Slot:</label>
+    <select id="timeSlot" [(ngModel)]="selectedTimeSlot" name="selectedTimeSlot" required>
+      <option *ngFor="let slot of timeSlots" [value]="slot.id">{{ slot.time }}</option>
+    </select>
+
+    <button type="submit">Book Appointment</button>
+  </form>
+</div>
