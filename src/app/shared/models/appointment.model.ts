@@ -10,7 +10,8 @@ export interface TimeSlot {
 export interface Appointment {
   id?: number; // Made optional since it's usually auto-generated when creating an appointment
   notes: string;
-  timeSlot: TimeSlot; // ✅ Keep the entire timeSlot object instead of separate fields
+  timeSlotId: number;
+  timeSlot?: TimeSlot; // ✅ Keep the entire timeSlot object instead of separate fields
   appointmentStatusId?: number; // Made optional for creation
   appointmentStatus_Ar?: string;
   appointmentStatus_En?: string;

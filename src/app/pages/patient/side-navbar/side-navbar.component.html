@@ -7,7 +7,7 @@
       
     
       <div class="user-info" *ngIf="!isCollapsed">
-        <img [src]="patient.data.profilePicture ? 'http://89.58.39.164:5000/' + patient.data.profilePicture : 'default-avatar.jpg'" 
+        <img [src]="patient.data.profilePicture ? BASE_URL + '/' + patient.data.profilePicture : 'default-avatar.jpg'" 
              alt="User profile picture" class="user-img" />
         
         <div class="user-details">

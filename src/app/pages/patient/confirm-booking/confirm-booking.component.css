@@ -4,7 +4,6 @@
   flex-direction: column;
   align-items: center;
   padding-top: 120px; /* Ensures content starts below the navbar */
-  background: linear-gradient(135deg, #1B5E20, #66BB6A);
   min-height: 100vh;
   padding-bottom: 50px;
 }
@@ -20,7 +19,7 @@
   width: 90%;
   max-width: 600px;
   text-align: center;
-  color: white;
+  color: black;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -56,7 +55,7 @@
   height: 90px;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid white;
+  border: 3px solid black;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
 }
@@ -104,26 +103,6 @@
   transform: scale(1.07);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .booking-container {
-    width: 95%;
-    padding: 20px;
-  }
-
-  .doctor-card,
-  .patient-details,
-  .appointment-details,
-  .confirm-button {
-    max-width: 100%;
-  }
-
-  .confirm-button {
-    font-size: 1.1rem;
-    padding: 12px;
-  }
-}
-
 /* Notes Field */
 .notes-container {
   background: rgba(255, 255, 255, 0.15);
@@ -165,4 +144,70 @@
   outline: none;
   background: white;
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+  .booking-container {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .doctor-card,
+  .patient-details,
+  .appointment-details,
+  .confirm-button,
+  .notes-container textarea {
+    max-width: 100%;
+  }
+
+  .confirm-button {
+    font-size: 1.1rem;
+    padding: 12px;
+  }
+}
+
+/* Responsive Design for Mobile Phones */
+@media (max-width: 480px) {
+  .content {
+    padding-top: 100px;
+  }
+
+  .booking-container {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .doctor-card img {
+    width: 70px;
+    height: 70px;
+    border: 2px solid black;
+  }
+
+  .doctor-card h3,
+  .patient-details h3,
+  .appointment-details h3,
+  .notes-container h3 {
+    font-size: 1.2rem;
+  }
+
+  .patient-details,
+  .appointment-details,
+  .notes-container {
+    padding: 12px;
+    box-shadow: none;
+  }
+
+  .confirm-button {
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .notes-container textarea {
+    max-width: 100%;
+    height: 80px;
+    font-size: 0.9rem;
+  }
 }

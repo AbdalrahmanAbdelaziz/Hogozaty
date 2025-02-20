@@ -1,28 +1,24 @@
-/* Full-width Navbar */
 .navbar {
     background-color: #F5FFFA;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px 40px;
-    width: 100vw; /* Full width */
-    position: fixed; /* Sticks to the top */
+    width: 100vw;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000; /* Keeps it above other content */
+    z-index: 1000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 body {
-    padding-top: 70px; /* Adjust based on navbar height */
+    padding-top: 70px;
 }
 
 /* Logo Styling */
 .logo-container {
-    padding: 0;
-    border-radius: 0;
-    box-shadow: 0;
-    cursor: pointer; 
+    cursor: pointer;
 }
 
 .logo-image {
@@ -44,10 +40,9 @@ body {
     margin: 0;
     position: absolute;
     left: 50%;
-    transform: translateX(-50%); /* Centers the links */
+    transform: translateX(-50%);
 }
 
-/* Navbar Links */
 .nav-links li {
     position: relative;
 }
@@ -62,52 +57,109 @@ body {
     text-decoration: none;
     padding: 10px 15px;
     transition: color 0.3s ease;
-    cursor: pointer; /* Makes menu items clickable */
+    cursor: pointer;
 }
 
 .nav-links a:hover {
     color: #1A9A63;
 }
 
-
 /* Dropdown Menu */
 .menu-container {
     position: relative;
 }
+
 .nav-links a i {
-    color: #24CC81; /* Default color */
+    color: #24CC81;
     transition: color 0.3s ease;
 }
 
-/* Change icon color on hover */
-/* .nav-links a:hover i {
-    color: #24CC81;
-} */
+/* Improved Hamburger Icon for Better Visibility */
+.menu-toggle {
+    display: none;
+    font-size: 34px; /* Bigger size */
+    cursor: pointer;
+    color: black;
+    position: fixed;
+    right: 20px; /* Always positioned at the right */
+    top: 15px; /* Higher position */
+    z-index: 1100;
+    background: white;
+    border-radius: 50%;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: #f0f0f0;
+}
+
+/* Better Dropdown Menu */
 .menu {
     display: none;
     position: absolute;
     background-color: white;
-    top: 40px;
+    top: 50px;
     left: 0;
+    width: 200px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 }
 
+.menu-container:hover .menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Menu Item Enhancements */
 .menu a {
     display: block;
-    padding: 12px 25px;
+    padding: 12px 20px;
     color: black;
     transition: background 0.3s;
-    cursor: pointer; /* Makes dropdown items clickable */
-    min-width: 80px; /* Ensures links are wider */
-    text-align: left; /* Keeps text alignment proper */
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
 }
 
 .menu a:hover {
     background-color: #f4f4f4;
 }
 
-.menu-container:hover .menu {
-    display: block;
+/* Mobile view improvements */
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Show on smaller screens */
+        position: fixed;
+        right: 15px; /* Adjust spacing */
+        top: 20px;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%; /* Ensure it appears below the navbar */
+        right: 0;
+        width: 250px;
+        background-color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        padding: 10px 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .nav-links.active {
+        display: flex;
+        transform: translateX(0);
+    }
 }

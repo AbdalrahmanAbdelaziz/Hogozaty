@@ -11,8 +11,10 @@ import { UserService } from '../../../services/user.service';
 import { SpecializationService } from '../../../services/specialization.service';
 import { ClinicService } from '../../../services/clinic.service';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
-import { forkJoin, map } from 'rxjs';
+import { catchError, forkJoin, map, of } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
+import { BASE_URL } from '../../../shared/constants/urls';
+import { APIResponse } from '../../../shared/models/api-response.dto';
 
 @Component({
   selector: 'app-filtered-doctors',
@@ -29,7 +31,14 @@ export class FilteredDoctorsComponent implements OnInit {
   specializationNames: { [key: number]: string } = {}; // Store specialization names
   clinics: { [id: number]: Clinic } = {}; // Store clinics by ID
   specializationId!: number;
-
+  BASE_URL = BASE_URL;
+    selectedDoctor?: Doctor;
+    clinic?: Clinic;
+    specializations: { id: number; name: string }[] = [];
+    selectedSpecialization: string = '';
+    appointments: any[] = [];
+    doctor!: Doctor; // Add this in the class
+    notes: string = ''; // Stores user input for notes
 
   constructor(
     private userService: UserService,
@@ -49,19 +58,18 @@ export class FilteredDoctorsComponent implements OnInit {
       }
     });
 
-    this.activatedRoute.params.subscribe(params => {
-      if (params['specialization']) {
-        const specializationId = Number(params['specialization']); // Convert string to number
-        if (!isNaN(specializationId)) {
-          this.getSpecializationName(specializationId);
-          this.fetchDoctors(specializationId);
-        } else {
-          console.error("Invalid specialization ID:", params['specialization']);
-        }
-      } else {
-        console.error("Specialization ID is missing from route parameters.");
+    this.activatedRoute.queryParams.subscribe(params => {
+      const doctorId = Number(params['doctorId']);
+  
+      if (doctorId) {
+        console.log("Query Params:", this.activatedRoute.snapshot.queryParams);
+
+        this.getDoctorDetails(doctorId);
       }
+    
     });
+
+
 
    
     this.loadSpecializationNames();
@@ -73,42 +81,40 @@ export class FilteredDoctorsComponent implements OnInit {
   }
 
 
-  fetchDoctors(specializationId: number): void {
-    if (!isNaN(specializationId)) {
-      this.doctorService.getDoctorsBySpecialization(specializationId).subscribe(response => {
-        this.doctors = response;
-        this.filteredDoctors = [...this.doctors];
-  
-        console.log("Doctors fetched:", this.doctors);
-  
-        const uniqueClinicIds = Array.from(new Set(this.doctors.map(d => d.clinicId).filter(id => id !== undefined)));
-  
-        if (uniqueClinicIds.length > 0) {
-          console.log("Fetching clinics for IDs:", uniqueClinicIds);
-  
-          forkJoin(
-            uniqueClinicIds.map(clinicId =>
-              this.clinicService.getClinicById(clinicId).pipe(
-                map(clinic => ({ id: clinic.id, name: clinic.name_En })) // Adjust based on API response
-              )
-            )
-          ).subscribe(clinics => {
-            // ✅ Store clinics in an object for easy lookup
-            this.clinics = {};
-            clinics.forEach(clinic => {
-              this.clinics[clinic.id] = clinic.name;
-            });
-  
-            console.log("Clinics mapped:", this.clinics);
-  
-            this.filteredDoctors = [...this.doctors]; // Ensure UI updates
-          }, error => {
-            console.error("Error fetching clinics:", error);
-          });
+    getClinicDetails(clinicId: number) {
+      this.clinicService.getClinicById(clinicId).subscribe(
+        (response: APIResponse<Clinic>) =>{
+          this.clinic = response.data;
         }
-      });
+      )
     }
-  }
+
+
+
+    getDoctorDetails(doctorId: number): void {          
+      this.doctorService.getDoctorsByOptionalParams({ id: doctorId }).subscribe(
+        (response: APIResponse<Doctor[]>) => {
+          var doctors = response.data;
+          if (doctors.length > 0) {
+            
+            this.selectedDoctor = doctors[0];  // Set doctor data
+            this.specializationService.getSpecializationById(this.selectedDoctor.specializationId).subscribe((name) => {
+              this.specialization = name;
+              // this.specializations.push({ id, name });
+            });       
+            this.getClinicDetails(this.selectedDoctor.clinicId);
+  
+          } else {
+            console.warn("No doctor found for ID:", doctorId);
+          }
+        },
+        (error) => {
+          console.error("Error loading doctor details:", error);
+        }
+      );
+    }
+  
+  
   
 
 
@@ -130,13 +136,26 @@ export class FilteredDoctorsComponent implements OnInit {
 
   getFilteredDoctors(filters: any): void {
     this.doctorService.getDoctorsByOptionalParams(filters).subscribe(
-      (res) => {
-        const response = res as { data?: Doctor[] };
-        this.doctors = response.data || [];
-      },
-      (error) => console.error("Error fetching doctors", error)
+        (res) => {
+            const response = res as { data?: Doctor[] };
+            this.doctors = response.data || [];
+
+            // Fetch clinic details for each doctor
+            this.doctors.forEach((doctor) => {
+                if (doctor.clinicId && !this.clinics[doctor.clinicId]) {
+                    this.clinicService.getClinicById(doctor.clinicId).subscribe(
+                        (response: APIResponse<Clinic>) => {
+                            this.clinics[doctor.clinicId] = response.data; // Store clinic by ID
+                        },
+                        (error) => console.error("Error loading clinic details:", error)
+                    );
+                }
+            });
+        },
+        (error) => console.error("Error fetching doctors", error)
     );
-  }
+}
+
 
   logout() {
     this.userService.logout();

@@ -1,39 +1,50 @@
-/* General Layout */
-.bg-img {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body, html {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Overlay */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  /* backdrop-filter: blur(10px); */
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 }
 
+/* Registration Container */
 .register-container {
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
-  width: 400px;
-  margin: auto;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.98);
+  padding: 40px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
   text-align: center;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.8s ease-out;
+  border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Logo */
 .logo {
-  width: 80px;
+  width: 140px;
+  height: auto;
   margin-bottom: 20px;
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
   cursor: pointer;
 }
 
@@ -41,75 +52,135 @@
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
 }
 
+/* Form Groups */
 .form-group {
+  position: relative;
+  margin-bottom: 20px;
   text-align: left;
 }
 
-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 5px;
+/* Labels */
+.form-group label {
   display: block;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
   color: #333;
 }
 
-input:focus,
-select:focus {
+/* Inputs & Select */
+.form-group input, 
+.form-group select {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border: 2px solid #bbb;
+  border-radius: 8px;
   outline: none;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+  background-color: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 8px rgba(230, 57, 70, 0.3);
 }
 
 /* Error Messages */
 .error {
-  font-size: 12px;
-  color: #ff4d4d;
+  color: #e63946;
+  font-size: 14px;
   margin-top: 5px;
 }
 
 /* Submit Button */
-button {
-  background: linear-gradient(135deg, #1B5E20, #66BB6A);
+button[type="submit"] {
+  background-color: #24CC81;
   color: white;
   border: none;
-  padding: 12px;
+  cursor: pointer;
+  padding: 14px;
   font-size: 16px;
   border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: bold;
 }
 
-button:disabled {
-  background: gray;
+button[type="submit"]:hover {
+  background-color: #1fa26c;
+  transform: scale(1.02);
+}
+
+button[type="submit"]:disabled {
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
-button:hover:not(:disabled) {
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-}
-
-/* Navigation Link */
-a {
-  display: inline-block;
+/* Login Link */
+a[routerLink="/login"] {
+  display: block;
   margin-top: 15px;
-  color: #ffffff;
   text-decoration: none;
-  font-size: 14px;
+  color: #0087BB;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-a:hover {
-  text-decoration: underline;
+a[routerLink="/login"]:hover {
+  color: #24CC81;
+}
+
+/* File Input Styling */
+input[type="file"] {
+  border: none;
+  padding: 10px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .register-container {
+    width: 90%;
+    padding: 30px;
+  }
+  
+  .form-group input, 
+  .form-group select {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .register-container {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .logo {
+    width: 100px;
+  }
+
+  .form-group input, 
+  .form-group select {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+    padding: 10px;
+  }
 }

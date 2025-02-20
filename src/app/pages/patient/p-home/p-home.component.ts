@@ -105,7 +105,8 @@ export class PHomeComponent {
               forkJoin(
                 uniqueClinicIds.map(clinicId =>
                   this.clinicService.getClinicById(clinicId).pipe(
-                    map(clinic => {
+                    map(response => {
+                      var clinic = response.data;
                       this.clinics[clinic.id] = clinic;
                       console.log(`Clinic ${clinic.id} fetched:`, clinic);
                     })
@@ -146,10 +147,14 @@ export class PHomeComponent {
             if (clinicIds.length > 0) {
               forkJoin(
                 clinicIds.map(id => this.clinicService.getClinicById(id))
-              ).subscribe(clinicData => {
-                // Create a mapping of clinic ID to name
-                clinicData.forEach(clinic => {
-                  this.clinics[clinic.id] = clinic;
+              ).subscribe(clinicResponses => {
+                // Create a mapping of clinic ID to clinic data
+                clinicResponses.forEach(response => {
+                  if (response.Succeeded && response.data) {
+                    this.clinics[response.data.id] = response.data; // Store clinic data
+                  } else {
+                    console.error("Error fetching clinic data:", response);
+                  }
                 });
       
                 // Map clinic ID to clinic name in appointments
@@ -158,7 +163,7 @@ export class PHomeComponent {
                   clinicName: this.clinics[appt.clinicId]?.name || 'Unknown'
                 }));
       
-                // Sort appointments by date
+                // Sort appointments by date (newest first)
                 this.appointments.sort(
                   (a, b) => new Date(b.timeSlot.date).getTime() - new Date(a.timeSlot.date).getTime()
                 );
@@ -171,6 +176,7 @@ export class PHomeComponent {
           }
         });
       }
+      
       
     
     

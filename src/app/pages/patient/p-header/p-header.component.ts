@@ -10,29 +10,26 @@ import { CommonModule } from '@angular/common';
   templateUrl: './p-header.component.html',
   styleUrl: './p-header.component.css'
 })
-export class PHeaderComponent implements OnInit{
-  patient!: LoginResponse
+export class PHeaderComponent implements OnInit {
+  patient!: LoginResponse;
+  menuOpen = false;
 
-  constructor(private userService: UserService, private router: Router){
+  constructor(private userService: UserService, private router: Router) {
     this.userService.userObservable.subscribe((newUser) => {
-      if(newUser) {
+      if (newUser) {
         this.patient = newUser;
       }
     });
   }
 
-  
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-      
-  }
-
-  logout(){
+  logout() {
     this.userService.logout();
     this.router.navigate(['/login']);
   }
 
-
-
-
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
 }

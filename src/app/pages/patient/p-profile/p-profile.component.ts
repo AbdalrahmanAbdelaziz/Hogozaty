@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProfilePictureDialogComponent } from '../profile-picture-dialog/profile-picture-dialog.component';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BASE_URL } from '../../../shared/constants/urls';
 
 @Component({
   selector: 'app-p-profile',
@@ -35,7 +36,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class PProfileComponent implements OnInit {
   patient!: LoginResponse;
   profileForm!: FormGroup;
-
+  BASE_URL = BASE_URL;
   constructor(private userService: UserService, private fb: FormBuilder, private dialog: MatDialog, private http: HttpClient, 
     private snackBar: MatSnackBar) {}
 

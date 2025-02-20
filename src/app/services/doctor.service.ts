@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Doctor } from '../shared/models/doctor.model';
 import { TimeSlot } from '../shared/models/appointment.model';
+import { BASE_URL } from '../shared/constants/urls';
+import { APIResponse } from '../shared/models/api-response.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DoctorService {
-    private apiUrl = 'http://89.58.39.164:5000/api/Doctor'; 
+    private apiUrl = BASE_URL + '/api/Doctor'; 
 
 
   constructor(private http: HttpClient) {}
@@ -24,8 +26,8 @@ export class DoctorService {
   }
 
 
-  getDoctorsByOptionalParams(params: any): Observable<Doctor[]> {
-    return this.http.post<Doctor[]>(`${this.apiUrl}/getDoctorsByOptionalParams`, params);
+  getDoctorsByOptionalParams(params: any): Observable<APIResponse<Doctor[]>> {
+    return this.http.post<APIResponse<Doctor[]>>(`${this.apiUrl}/getDoctorsByOptionalParams`, params);
   }
 
   createTimeSlot(timeSlotData: any) {

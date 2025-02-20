@@ -5,7 +5,7 @@
 <div class="content">
     <div class="side-navbar">
         <div class="user-info">
-            <img [src]="patient.data.profilePicture ? 'http://89.58.39.164:5000/' + patient.data.profilePicture : 'default-avatar.jpg'" 
+            <img [src]="patient.data.profilePicture ? BASE_URL + '/' + patient.data.profilePicture : 'default-avatar.jpg'" 
                 alt="User profile picture" 
                 class="user-img" />
 

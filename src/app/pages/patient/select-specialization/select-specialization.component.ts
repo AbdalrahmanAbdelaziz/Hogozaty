@@ -10,6 +10,7 @@ import { DoctorService } from '../../../services/doctor.service';
 import { ClinicService } from '../../../services/clinic.service';
 import { Clinic } from '../../../shared/models/clinic.model';
 import { forkJoin, map } from 'rxjs';
+import { BASE_URL } from '../../../shared/constants/urls';
 
 @Component({
   selector: 'app-select-specialization',
@@ -26,7 +27,7 @@ export class SelectSpecializationComponent implements OnInit {
   specializationNames: { [key: number]: string } = {}; // Store specialization names
   clinics: { [id: number]: Clinic } = {}; // Store clinics by ID
   specializationId!: number;
-
+  BASE_URL = BASE_URL;
   constructor(
     private userService: UserService,
     private router: Router,
@@ -80,7 +81,8 @@ export class SelectSpecializationComponent implements OnInit {
           forkJoin(
             uniqueClinicIds.map(clinicId =>
               this.clinicService.getClinicById(clinicId).pipe(
-                map(clinic => {
+                map(response => {
+                  var clinic = response.data;
                   this.clinics[clinic.id] = clinic;
                   console.log(`Clinic ${clinic.id} fetched:`, clinic);
                 })

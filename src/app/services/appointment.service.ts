@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Appointment } from '../shared/models/appointment.model';
+import { Appointment, TimeSlot } from '../shared/models/appointment.model';
+import { BASE_URL } from '../shared/constants/urls';
+import { APIResponse } from '../shared/models/api-response.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,7 @@ export class AppointmentService {
 
   private appointmentData: any = {};
 
-  private baseUrl = 'http://89.58.39.164:5000';
+  private baseUrl = BASE_URL;
 
   constructor(private http: HttpClient) {}
 
@@ -24,8 +26,8 @@ export class AppointmentService {
     return this.http.post(`${this.baseUrl}/api/TimeSlot/GetDoctorSlots`, body);
   }
   
-     getTimeSlotById(timeSlotId: number): Observable<any> {
-      return this.http.get(`${this.baseUrl}/api/TimeSlot/GetTimeSlotById/${timeSlotId}`);
+     getTimeSlotById(timeSlotId: number): Observable<APIResponse<TimeSlot>> {
+      return this.http.get<APIResponse<TimeSlot>>(`${this.baseUrl}/api/TimeSlot/GetByIdAsync/${timeSlotId}`);
      }
     
 
@@ -35,9 +37,24 @@ export class AppointmentService {
     
   
 
-  getAppointments(patientId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/Appointment/getAppointment/${patientId}`);
-  }
+    getAppointments(patientId: number): Observable<any> {
+      const requestBody = {
+        appointmentId: 0,
+        doctorId: 0,
+        doctortFirstName: "",
+        doctorLastName: "",
+        clinicId: 0,
+        specializationId: 0,
+        status: "",
+        patientId: patientId // Pass the patient ID here
+      };
+    
+      return this.http.post(`${this.baseUrl}/api/Appointment/SearchForAppointmentsByOptionalParams`, requestBody);
+    }
+    
+    
+
+
 
   cancelAppointment(appointmentId: number): Observable<any> {
     return this.http.put(`${this.baseUrl}/api/Appointment/cancelAppointment/${appointmentId}`, {});

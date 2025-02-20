@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { BASE_URL } from '../shared/constants/urls';
 
-const BASE_URL = 'http://89.58.39.164:5000';
 
 export interface Specialization {
   id: number;

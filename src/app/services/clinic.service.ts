@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Clinic } from '../shared/models/clinic.model';
+import { BASE_URL } from '../shared/constants/urls';
+import { APIResponse } from '../shared/models/api-response.dto';
 
 export interface ClinicApiResponse {
   data: Clinic;
@@ -16,7 +18,7 @@ export interface ClinicApiResponse {
   providedIn: 'root'
 })
 export class ClinicService {
-  private baseUrl = 'http://89.58.39.164:5000/api/Clinic';
+  private baseUrl = BASE_URL + '/api/Clinic';
 
   constructor(private http: HttpClient) {}
 
@@ -29,10 +31,8 @@ export class ClinicService {
   //   );
   // }
 
-  getClinicById(clinicId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/getClinic/${clinicId}`).pipe(
-      map(response => response.data) // Assuming response is { "data": { "id": 1, "name_En": "Clinic Name" } }
-    );
+  getClinicById(clinicId: number): Observable<APIResponse<Clinic>> {
+    return this.http.get<APIResponse<Clinic>>(`${this.baseUrl}/getClinic/${clinicId}`)
   }
   
   

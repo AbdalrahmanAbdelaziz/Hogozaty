@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin: 3rem;
+  margin: 8rem;
   background: rgba(255, 255, 255, 0.2); /* Transparent glass effect */
   border-radius: 12px;
   padding: 2rem;
@@ -29,7 +29,7 @@ img {
   object-fit: cover;
   height: 35rem;
   margin: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(73, 69, 69, 0.2);
 }
 
 /* Doctor Details Section */
@@ -39,7 +39,7 @@ img {
   flex-direction: column;
   flex: 1 0;
   padding: 2rem;
-  color: white;
+  color: #333;
   margin-left: 1rem;
 }
 
@@ -49,10 +49,11 @@ img {
   justify-content: space-between;
 }
 
+/* Doctor Name */
 .name {
   font-size: 2rem;
   font-weight: bold;
-  color: #ffffff; /* White text for better contrast */
+  color: black; 
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -68,7 +69,7 @@ img {
   font-size: 1.2rem;
   margin: 0.5rem 0.5rem 0.5rem 0;
   border-radius: 2rem;
-  background-color: #2E7D32;
+  background-color: #24CC81;
   color: white;
 }
 
@@ -82,25 +83,25 @@ img {
   border-radius: 10rem;
   font-size: 1.3rem;
   background: rgba(255, 255, 255, 0.2);
-  color: #66BB6A;
+  color: black;
 }
 
 /* Brief / Bio */
 .price {
   font-size: 1.8rem;
   margin: 2rem 2rem 2rem 0;
-  color: white;
+  color: #1B5E20;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .price::before {
   content: "Bio: ";
-  color: #FFA500;
+  color: black;
 }
 
 /* Appointment Button */
 button {
-  background: #1B5E20;
+  background: #24CC81;
   color: white;
   border: none;
   font-size: 1.2rem;
@@ -115,4 +116,36 @@ button:hover {
   background: #157a50;
   transform: scale(1.05);
   cursor: pointer;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 2rem; /* Reduce margin for small screens */
+    padding: 1.5rem;
+    margin-top: 100px;
+  }
+
+  .details {
+    margin-left: 0; /* Remove margin to center content */
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .origins {
+    justify-content: center;
+  }
+
+  img {
+    height: 20rem; /* Reduce image size for better fit */
+    width: 100%;
+    max-width: 300px;
+  }
 }

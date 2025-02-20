@@ -1,22 +1,33 @@
 <div class="most-chosen-doctors">
     <h2>Most Chosen Doctors</h2>
 
-    <!-- Specialization Tags -->
     <div class="specialization-tags">
+      <!-- Default 'General' tag -->
       <span 
-        *ngFor="let spec of specializations" 
-        (click)="filterDoctors(spec.name)" 
-        [class.active]="spec.name === selectedSpecialization">
-        {{ spec.name }}
+        (click)="filterDoctors('General')" 
+        [class.active]="'General' === selectedSpecialization">
+        General
       </span>
+    
+      <ng-container *ngFor="let spec of specializations">
+        <span 
+          *ngIf="spec.name !== 'General'"
+          (click)="filterDoctors(spec.name)" 
+          [class.active]="spec.name === selectedSpecialization">
+          {{ spec.name }}
+        </span>
+      </ng-container>
     </div>
+    
+    
+    
 
     <!-- Doctor Cards -->
     <div class="doctor-list">
       <div *ngFor="let doctor of filteredDoctors" 
       (click)="goToDoctorProfile(doctor)"
       class="doctor-card">
-        <img [src]="doctor.profilePicture || 'default-avatar.jpg'" alt="Doctor" class="doctor-img" />
+        <img [src]=" BASE_URL + '/' +  doctor.profilePicture || 'default-avatar.jpg'" alt="Doctor" class="doctor-img" />
         <div class="doctor-info">
           <h3>{{ doctor.firstName }} {{ doctor.lastName }}</h3>
           

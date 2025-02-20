@@ -5,7 +5,6 @@
   align-items: flex-start;
   min-height: 100vh;
   padding: 120px 20px 40px; /* Ensure space below the navbar */
-  background: linear-gradient(135deg, #1B5E20, #66BB6A);
 }
 
 /* Appointments Container */
@@ -22,11 +21,12 @@
   margin-top: 20px; /* Prevent sticking to navbar */
 }
 
+
 /* Date Title */
 .date-title {
   font-size: 2rem;
   font-weight: bold;
-  color: white;
+  color: black;
   margin-bottom: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }

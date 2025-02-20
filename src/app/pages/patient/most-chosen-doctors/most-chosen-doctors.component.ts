@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppointmentService } from '../../../services/appointment.service';
 import { ClinicService } from '../../../services/clinic.service';
 import { forkJoin, map } from 'rxjs';
+import { BASE_URL } from '../../../shared/constants/urls';
 
 @Component({
   selector: 'app-most-chosen-doctors',
@@ -28,8 +29,8 @@ export class MostChosenDoctorsComponent implements OnInit {
   specializationId!: number;
   specializationNames: { [key: number]: string } = {};
   specialization: string = '';
-  
-  
+  BASE_URL = BASE_URL;
+    
 
   constructor(private doctorService: DoctorService, 
                private userService: UserService, 
@@ -42,6 +43,8 @@ export class MostChosenDoctorsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedSpecialization = 'General';
+
     this.loadDoctors();
 
     this.userService.userObservable.subscribe((newUser) => {
@@ -108,7 +111,8 @@ export class MostChosenDoctorsComponent implements OnInit {
           forkJoin(
             uniqueClinicIds.map(clinicId =>
               this.clinicService.getClinicById(clinicId).pipe(
-                map(clinic => {
+                map(response => {
+                  var clinic = response.data;
                   console.log(`🏥 Fetched clinic ID ${clinicId}:`, clinic);
                   return { id: clinicId, name: clinic?.name || 'Unknown Clinic' };
                 })
@@ -140,12 +144,18 @@ export class MostChosenDoctorsComponent implements OnInit {
   
         
 
-  filterDoctors(specialization: string): void {
-    this.selectedSpecialization = specialization;
+filterDoctors(specialization: string): void {
+  this.selectedSpecialization = specialization;
+
+  if (specialization === 'General') {
+    this.filteredDoctors = this.doctors; // Show all doctors
+  } else {
     this.filteredDoctors = this.doctors.filter((doctor) =>
       this.getSpecializationName(doctor.specializationId) === specialization
     );
   }
+}
+
 
 
   getSpecializationName(id: number): string {

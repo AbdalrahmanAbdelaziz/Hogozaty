@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { UserService } from '../../../services/user.service';
+import { BASE_URL } from '../../../shared/constants/urls';
 
 @Component({
   selector: 'app-side-navbar',
@@ -13,7 +14,7 @@ import { UserService } from '../../../services/user.service';
 export class SideNavbarComponent implements OnInit {
   isCollapsed: boolean = true; // Default state: Closed
   patient!: LoginResponse;
-
+  BASE_URL = BASE_URL;
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {

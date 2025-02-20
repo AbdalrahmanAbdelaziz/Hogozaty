@@ -7,7 +7,7 @@
 <div class="container" *ngIf="doctor">
   <!-- Doctor Image -->
   <img 
-    [src]="'http://89.58.39.164:5000/' + doctor.profilePicture || 'default-avatar.jpg'" 
+    [src]="BASE_URL + '/' + doctor.profilePicture || 'default-avatar.jpg'" 
     alt="Doctor Image" 
     class="doctor-image"
   >
@@ -20,7 +20,7 @@
     </div>
 
     <div class="origins">
-      <span>Specialization: {{ doctor.specializationId }}</span>
+      <span>Specialization: {{ specializationName }}</span>
       <span>{{ doctor.country_En }}, {{ doctor.governorate_En }}, {{ doctor.district_En }}</span>
     </div>
 

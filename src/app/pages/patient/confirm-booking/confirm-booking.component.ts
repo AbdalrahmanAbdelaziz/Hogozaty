@@ -14,6 +14,9 @@ import { forkJoin, map } from 'rxjs';
 import { PHeaderComponent } from '../p-header/p-header.component';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
 import { FormsModule } from '@angular/forms';
+import { APIResponse } from '../../../shared/models/api-response.dto';
+import { BASE_URL } from '../../../shared/constants/urls';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-confirm-booking',
@@ -37,7 +40,7 @@ export class ConfirmBookingComponent implements OnInit {
   specializationNames: { [key: number]: string } = {};
   doctor!: Doctor; // Add this in the class
   notes: string = ''; // Stores user input for notes
-
+  BASE_URL = BASE_URL;
 
 
   constructor(
@@ -47,13 +50,14 @@ export class ConfirmBookingComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private appointmentService: AppointmentService,
-    private clinicService: ClinicService
+    private clinicService: ClinicService,
+    private toastr: ToastrService // ✅ Inject ToastrService
+
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       const doctorId = Number(params['doctorId']);
-      const clinicId = Number(params['clinicId']);
       const timeSlotId = Number(params['slotId']);
   
       if (doctorId) {
@@ -61,14 +65,9 @@ export class ConfirmBookingComponent implements OnInit {
 
         this.getDoctorDetails(doctorId);
       }
-  
-      // if (clinicId) {
-      //   this.getClinicDetails(clinicId);
-      // }
-  
-      // if (timeSlotId) {
-      //   this.getTimeSlotDetails(timeSlotId);
-      // }
+      if (timeSlotId) {
+        this.getTimeSlotDetails(timeSlotId);
+      }
     });
   
     this.userService.userObservable.subscribe((newUser) => {
@@ -78,13 +77,36 @@ export class ConfirmBookingComponent implements OnInit {
     });
   }
   
+  getClinicDetails(clinicId: number) {
+    this.clinicService.getClinicById(clinicId).subscribe(
+      (response: APIResponse<Clinic>) =>{
+        this.clinic = response.data;
+      }
+    )
+  }
 
-  getDoctorDetails(doctorId: number): void {
+  getTimeSlotDetails(timeSlotId: number) {
+    this.appointmentService.getTimeSlotById(timeSlotId).subscribe(
+      (response: APIResponse<TimeSlot>) =>{
+        this.selectedTimeSlot = response.data;
+      }
+    )
+  }
+
+
+  getDoctorDetails(doctorId: number): void {          
     this.doctorService.getDoctorsByOptionalParams({ id: doctorId }).subscribe(
-      (doctors) => {
+      (response: APIResponse<Doctor[]>) => {
+        var doctors = response.data;
         if (doctors.length > 0) {
-          this.selectedDoctor = doctors[0];  // ✅ Set doctor data
-          console.log("Doctor loaded:", this.selectedDoctor);
+          
+          this.selectedDoctor = doctors[0];  // Set doctor data
+          this.specializationService.getSpecializationById(this.selectedDoctor.specializationId).subscribe((name) => {
+            this.specialization = name;
+            // this.specializations.push({ id, name });
+          });       
+          this.getClinicDetails(this.selectedDoctor.clinicId);
+
         } else {
           console.warn("No doctor found for ID:", doctorId);
         }
@@ -114,47 +136,7 @@ export class ConfirmBookingComponent implements OnInit {
     });
   }
 
-  fetchDoctors(specializationId: number): void {
-    if (!isNaN(specializationId)) {
-      this.doctorService.getDoctorsBySpecialization(specializationId).subscribe(doctors => {
-        this.doctors = doctors;
-        this.filteredDoctors = doctors;
-  
-        console.log("✅ Fetched doctors:", doctors);
-  
-        // If the route contains a doctor ID, find the doctor
-        this.activatedRoute.queryParams.subscribe(params => {
-          const doctorId = Number(params['doctorId']);
-          if (doctorId) {
-            this.doctor = this.doctors.find(d => d.id === doctorId) || doctors[0];
-            console.log("🩺 Selected Doctor:", this.doctor);
-          }
-        });
-  
-        // Fetch clinics dynamically
-        const uniqueClinicIds = Array.from(new Set(doctors.map(d => d.clinicId).filter(id => id !== null)));
-  
-        if (uniqueClinicIds.length > 0) {
-          forkJoin(
-            uniqueClinicIds.map(clinicId =>
-              this.clinicService.getClinicById(clinicId).pipe(
-                map(clinic => {
-                  return { id: clinicId, name: clinic?.name || 'Unknown Clinic' };
-                })
-              )
-            )
-          ).subscribe(clinicData => {
-            clinicData.forEach(clinic => {
-              this.clinics[clinic.id] = clinic.name;
-            });
-  
-            this.filteredDoctors = [...this.doctors]; // Force UI update
-          });
-        }
-      });
-    }
-  }
-  
+
 
   getSpecializationName(id: number): string {
     const spec = this.specializations.find((s) => s.id === id);
@@ -181,14 +163,13 @@ export class ConfirmBookingComponent implements OnInit {
 
   confirmBooking(): void {
     if (!this.selectedDoctor || !this.selectedTimeSlot || !this.clinic || !this.patient) {
-      console.error("Missing required booking information.");
+      this.toastr.error("Missing required booking information.", "Booking Failed");
       return;
     }
   
-    // ✅ Ensure `timeSlot` is an object, not just an ID
     const bookingData: Appointment = {
-      notes: this.notes, // Include notes entered by the user
-      timeSlot: this.selectedTimeSlot,
+      notes: this.notes,
+      timeSlotId: this.selectedTimeSlot.id,
       clinicId: this.clinic.id,
       doctorId: this.selectedDoctor.id,
       patientID: this.patient.data.id
@@ -196,13 +177,14 @@ export class ConfirmBookingComponent implements OnInit {
   
     this.appointmentService.createAppointment(bookingData).subscribe(
       response => {
-        console.log("Booking confirmed:", response);
-        this.router.navigate(['/appointments']);
+        this.toastr.success("Your appointment has been booked successfully!");
+        // this.router.navigate(['/appointments']);
       },
       error => {
-        console.error("Error confirming booking:", error);
+        this.toastr.error("An error occurred while booking. Please try again.");
       }
     );
   }
+  
   
 }
