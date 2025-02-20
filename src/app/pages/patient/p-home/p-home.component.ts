@@ -14,6 +14,7 @@ import { ClinicService } from '../../../services/clinic.service';
 import { DoctorService } from '../../../services/doctor.service';
 import { SpecializationService } from '../../../services/specialization.service';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
+import { BASE_URL } from '../../../shared/constants/urls';
 
 @Component({
   selector: 'app-p-home',
@@ -32,6 +33,7 @@ export class PHomeComponent {
   specializationId!: number;
   specializationNames: { [key: number]: string } = {};
   specialization: string = '';
+  BASE_URL = BASE_URL;
 
 
   
@@ -80,6 +82,8 @@ export class PHomeComponent {
       });
       
     }
+
+  
 
     getSpecializationName(id: number): void {
     this.specializationService.getSpecializationById(id).subscribe(name => {
@@ -187,13 +191,12 @@ export class PHomeComponent {
         });
       }
     
-      // Scroll functions
       nextCard(): void {
         if (this.currentIndex < this.appointments.length - 3) {
           this.currentIndex++;
         }
       }
-    
+      
       prevCard(): void {
         if (this.currentIndex > 0) {
           this.currentIndex--;

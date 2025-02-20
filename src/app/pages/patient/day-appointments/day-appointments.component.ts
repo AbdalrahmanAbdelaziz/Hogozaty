@@ -21,6 +21,7 @@ export class DayAppointmentsComponent implements OnInit {
   doctorId: number = 0;
   clinicId: number = 0;    
   specializationId: number = 0;
+  
 
   constructor(
     private route: ActivatedRoute,

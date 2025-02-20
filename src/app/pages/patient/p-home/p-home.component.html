@@ -4,69 +4,60 @@
 
 <app-side-navbar></app-side-navbar>
 
-<div class="content">
- 
-  
 
+
+<div class="content">
   <!-- Main Content -->
   <div class="main-content">
     <!-- Search Bar -->
     <div class="search-container">
       <div class="search-box">
-     
+        <!-- Search Input (If Needed) -->
       </div>
     </div>
 
-   
-    <div class="appointment-container">
-      <h2>Your Appointments</h2>
-    
-      <div *ngIf="appointments.length === 0" class="no-appointments">
-        <p>No appointments yet. 
-          <a routerLink="/choose-appointment" class="book-appointment-link">Book an appointment</a>
-        </p>
-      </div>
-    
-      <div class="appointment-grid" *ngIf="appointments.length > 0">
-        <div *ngFor="let appointment of appointments" class="appointment-card">
-          <div class="card-header">
-            <img [src]="appointment.doctorProfilePicture || 'default-avatar.jpg'" alt="Doctor Image" />
-            <div class="doctor-info">
-              <h3>{{ appointment.doctorName }}</h3>
-              <p>{{ appointment.doctorSpecialization_En || 'General Practitioner' }}</p>
-              <span class="clinic">{{ appointment.clinicName || 'Unknown' }}</span>
-            </div>
-          </div>
-    
-          <div class="card-body">
-            <p><strong>Date:</strong> {{ appointment.timeSlot.date }}</p>
-            <p><strong>Time:</strong> {{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</p>
-            <p class="status" [ngClass]="{
+    <!-- Slider Section -->
+    <div class="slider-container">
+      <!-- <button class="nav-button prev" (click)="prevCard()">&#10094;</button> -->
+
+      <div class="slider">
+        <div 
+          class="card" 
+          *ngFor="let appointment of appointments.slice(currentIndex, currentIndex + 3)">
+
+          <!-- Card Image -->
+          <img 
+          [src]="BASE_URL + '/' + appointment.doctorProfilePicture" 
+          alt="Doctor Image" 
+          onError="this.src='assets/default-avatar.jpg'" />
+        
+
+          <!-- Card Details -->
+          <h2>{{ appointment.doctorName }}</h2>
+          <p>{{ appointment.doctorSpecialization_En || 'General Practitioner' }}</p>
+          <!-- <span class="clinic">{{ appointment.clinicName || 'Unknown' }}</span> -->
+
+          <!-- Appointment Details -->
+          <p><strong>Date:</strong> {{ appointment.timeSlot.date }}</p>
+          <p><strong>Time:</strong> {{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</p>
+
+          <!-- Status -->
+          <p class="status" [ngClass]="{
               'done': appointment.appointmentStatus_En === 'Done',
               'upcoming': appointment.appointmentStatus_En === 'Upcoming',
               'in-progress': appointment.appointmentStatus_En === 'In Progress'
-            }">
-              {{ appointment.appointmentStatus_En }}
-            </p>
-          </div>
-    
-          <div class="card-footer">
-            <button class="cancel-btn" (click)="cancelAppointment(appointment.id)">Cancel Reservation</button>
-          </div>
+          }">
+            {{ appointment.appointmentStatus_En }}
+          </p>
+
+          <!-- Cancel Button -->
+          <a class="btn" (click)="cancelAppointment(appointment.id)">Cancel Reservation</a>
         </div>
       </div>
-    </div>
-    
 
+      <!-- <button class="nav-button next" (click)="nextCard()">&#10095;</button> -->
+    </div>
 
     <app-most-chosen-doctors></app-most-chosen-doctors>
-    
+  </div>
 </div>
-
-
-
-
-
-
-
-  
