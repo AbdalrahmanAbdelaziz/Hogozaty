@@ -4,115 +4,271 @@
   flex-direction: row;
   gap: 20px;
   padding-top: 100px; /* Ensures content starts below the navbar */
-  /* background: linear-gradient(135deg, #1B5E20, #66BB6A); */
   min-height: 100vh;
 }
 
-/* Side Navbar */
-.side-navbar {
-  width: 240px;
-  background: rgba(255, 255, 255, 0.2);
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Darker overlay for better focus */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* History Modal */
+.history-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 25px;
+  animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.modal-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #165B40; 
+  margin: 0;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #D32F2F; /* Red on hover */
+}
+
+/* History Cards */
+.history-card {
+  background: #ffffff;
   border-radius: 12px;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  height: calc(100vh - 100px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.history-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.history-card .card-header img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #165B40; 
+}
+
+.history-card .doctor-info h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #165B40; /* Dark green for the doctor's name */
+  margin: 0;
+}
+
+.history-card .doctor-info p {
+  font-size: 1rem;
+  color: #555; /* Gray for the doctor's specialization */
+  margin: 3px 0;
+}
+
+.history-card .clinic {
+  font-size: 0.9rem;
+  color: #165B40; /* Green for the clinic name */
+  font-weight: 600;
+}
+
+.history-card .card-body {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.history-card .status.done {
+  background: #165B40;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* Cancel Confirmation Modal */
+.confirmation-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  padding: 25px;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+}
+
+.confirmation-modal .modal-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #165B40;
+  margin-bottom: 15px;
+}
+
+.confirmation-modal .modal-body p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.confirmation-modal .modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirmation-modal .confirm-btn {
+  background: #24CC81; 
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.confirmation-modal .confirm-btn:hover {
+  background: #165B40;
+}
+
+.confirmation-modal .cancel-btn {
+  background: #D32F2F; /* Dark green for cancel */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.confirmation-modal .cancel-btn:hover {
+  background:#B71C1C;  /* Green on hover */
 }
 
 /* Main Content */
 .main-content {
-  margin-left: 240px;
+  margin-left: 10px;
   flex-grow: 1;
   padding: 20px;
+  background: #ffffff; /* White background for main content */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Search Bar */
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 5rem;
-  margin-bottom: 3rem;
-}
-
-.search-box {
-  display: flex;
-  align-items: center;
-  background-color: #2E7D32;
-  border-radius: 25px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  width: 25rem;
-  max-width: 100%;
-}
-
-.search-box input {
-  flex: 1;
-  border: none;
-  padding: 1rem;
-  font-size: 1rem;
-  outline: none;
-  background-color: #f3f3f3;
-}
-
-.search-box button {
-  background-color: #157a50;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  color: white;
-  font-size: 1rem;
-}
-
-.search-box button:hover {
-  background-color: #157a50;
-}
-
-/* Appointment Section */
-.appointments-section {
-  text-align: center;
-  margin-top: 120px;
-}
-
-/* Section Title */
-.section-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 20px;
-}
-
-/* Appointment Container */
+/* Appointments Container */
 .appointment-container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
   text-align: center;
+  background: #24CC81; 
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px; /* Add space between containers */
 }
 
+.appointment-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white; /* Dark green for the heading */
+  margin-bottom: 2rem;
+}
+
+/* No Appointments Message */
+.no-appointments {
+  font-size: 1.2rem;
+  color: white;
+  margin-top: 2rem;
+}
+
+.no-appointments a {
+  color: black; /* Green for the link */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.no-appointments a:hover {
+  text-decoration: underline;
+}
+
+/* Appointment Grid */
 .appointment-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  gap: 25px;
   margin-top: 20px;
 }
 
 /* Appointment Card */
 .appointment-card {
-  background: rgba(255, 255, 255, 0.15);
+  background: #ffffff; /* White background for the cards */
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 20px;
 }
 
 .appointment-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* Card Header */
@@ -120,41 +276,46 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .card-header img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #24CC81;
+  border: 3px solid #165B40 ; /* Green border for the doctor image */
 }
 
 .doctor-info h3 {
   font-size: 1.4rem;
-  font-weight: bold;
-  color: white;
+  font-weight: 700;
+  color: #165B40; /* Dark green for the doctor's name */
   margin: 0;
 }
 
 .doctor-info p {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #555; /* Gray for the doctor's specialization */
   margin: 3px 0;
 }
 
 .clinic {
   font-size: 0.9rem;
-  color: #FFA500;
+  color: #165B40; 
+  font-weight: 600;
 }
 
 /* Card Body */
 .card-body {
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 1rem;
-  color: white;
+  color: #555; /* Gray for the card body text */
+}
+
+.card-body p {
+  margin: 8px 0;
 }
 
 .status {
@@ -167,25 +328,30 @@
 }
 
 .status.done {
-  background: #24CC81;
+  background: #24CC81; /* Green for "Done" status */
+  color: white;
 }
 
 .status.upcoming {
-  background: #FFA500;
+  background: #FFA500; /* Orange for "Upcoming" status */
+  color: white;
 }
 
 .status.in-progress {
-  background: #1E90FF;
+  background: #1E90FF; /* Blue for "In Progress" status */
+  color: white;
 }
 
 /* Card Footer */
 .card-footer {
-  margin-top: 10px;
+  margin-top: 15px;
   text-align: center;
+  display: flex;
+  gap: 10px; /* Add space between buttons */
 }
 
 .cancel-btn {
-  background: #D32F2F;
+  background: #D32F2F; /* Red for the cancel button */
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
@@ -193,43 +359,156 @@
   transition: background 0.3s ease;
   font-size: 1rem;
   font-weight: bold;
+  border: none;
+  margin-right: 10px;
 }
 
 .cancel-btn:hover {
-  background: #B71C1C;
+  background: #B71C1C; /* Darker red on hover */
+}
+
+.reschedule-btn {
+  background: #FFA500; /* Dark green for the reschedule button */
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+}
+
+.reschedule-btn:hover {
+  background: #FF7F50; /* Green on hover */
+}
+
+/* History Button */
+.history-btn {
+  background: #165B40; /* Dark green for the button */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.history-btn:hover {
+  background: #24CC3D; /* Green on hover */
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* History Modal */
+.history-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #165B40;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.close-btn:hover {
+  color: #D32F2F; /* Red on hover */
+}
+
+/* History Cards */
+.history-card {
+  background: #f9f9f9; /* Light gray background for history cards */
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.history-card .card-header img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #24CC81;
+}
+
+.history-card .doctor-info h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #165B40;
+  margin: 0;
+}
+
+.history-card .doctor-info p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 3px 0;
+}
+
+.history-card .clinic {
+  font-size: 0.8rem;
+  color: #24CC81;
+  font-weight: 600;
+}
+
+.history-card .card-body {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.history-card .status.done {
+  background: #24CC81;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 10px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .appointment-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .card-header img {
-    width: 50px;
-    height: 50px;
-  }
-
-  .doctor-info h3 {
-    font-size: 1.2rem;
-  }
-}
-
-
-/* Responsive Design for Mobile Screens */
-@media (max-width: 768px) {
   .content {
     flex-direction: column;
-    padding-top: 80px; /* Adjusted padding for mobile */
+    padding-top: 80px;
     gap: 10px;
-  }
-
-  .side-navbar {
-    width: 100%;
-    height: auto;
-    padding: 15px;
-    text-align: center;
-    border-radius: 0;
   }
 
   .main-content {
@@ -237,53 +516,25 @@
     padding: 15px;
   }
 
-  .search-container {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+  .appointment-grid {
+    grid-template-columns: 1fr;
   }
 
-  .search-box {
-    width: 90%;
-  }
-
-  .appointment-container {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .appointment-card {
-    width: 100%;
-  }
-
-  .appointment-slider {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  button {
-    font-size: 1.2rem;
-    padding: 10px 14px;
-  }
-
-  .doctor-info img {
-    height: 150px;
+  .card-header img {
+    width: 60px;
+    height: 60px;
   }
 
   .doctor-info h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
-  .doctor-info p {
-    font-size: 0.9rem;
-  }
-
-  .appointment-details {
-    padding: 10px;
+  .card-footer {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 15px; /* Increase space between buttons */
   }
 
   .cancel-btn {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+    margin-right: 0; /* Remove right margin on mobile */
   }
 }
-

@@ -1,0 +1,65 @@
+<app-d-header></app-d-header>
+<app-d-sidenavbar></app-d-sidenavbar>
+
+<div class="main-content">
+  <div class="container">
+    <h2>Revenue</h2>
+
+    <!-- Dropdown for date selection -->
+    <div class="dropdown-container">
+      <label for="dateDropdown">Select Date:</label>
+      <select
+        id="dateDropdown"
+        [(ngModel)]="selectedDate"
+        (change)="onDateSelect($event)"
+      >
+        <option *ngFor="let day of availableDays" [value]="day.date">
+          {{ day.date }} ({{ day.dayOfWeek }})
+        </option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <table class="revenue-table">
+        <thead>
+          <tr>
+            <th rowspan="2">#</th>
+            <th rowspan="2">Patient Name</th>
+            <th rowspan="2">Total</th>
+            <th colspan="4">Paid</th>
+            <th rowspan="2">Remaining</th>
+          </tr>
+          <tr>
+            <th>Cash</th>
+            <th>Wallet</th>
+            <th>Insta</th>
+            <th>Visa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Display message if no data is available -->
+          <tr *ngIf="appointments.length === 0">
+            <td colspan="9" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-calendar-times"></i>
+                <p>No revenue data found for the selected date.</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Display data if available -->
+          <tr *ngFor="let appointment of appointments; let rowIndex = index">
+            <td>{{ rowIndex + 1 }}</td>
+            <td>{{ appointment.patientName }}</td>
+            <td>{{ appointment.total || 0}}</td>
+            <td>{{ appointment.cash || 0 }}</td>
+            <td>{{ appointment.wallet || 0 }}</td>
+            <td>{{ appointment.instapay || 0 }}</td>
+            <td>{{ appointment.visa || 0 }}</td>
+            <td>{{ appointment.remaining || 0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

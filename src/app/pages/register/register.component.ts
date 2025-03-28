@@ -3,28 +3,28 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from '../../services/authentication.service';
 import { APIResponse } from '../../shared/models/api-response.dto';
-import { LoginResponse } from '../../shared/models/login-response';
 import { RoutesService } from '../../services/routes.service';
-import { authenticationRoutingObject } from '../../authentication-routing';
-import { RouterModule } from '@angular/router';
-import { ToastrService } from '../../services/toastr.service';
+import { Router, RouterModule } from '@angular/router';
 import { Lookup } from '../../shared/models/lookup.model';
 import { LookupsService } from '../../services/lookups.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
-  standalone: true, 
+  standalone: true,
   imports: [RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
   registerForm!: FormGroup;
   private fb = inject(FormBuilder);
   private authService = inject(AuthenticationService);
   private routesService = inject(RoutesService);
-  private toastrService = inject(ToastrService);
   private lookupService = inject(LookupsService);
+  private _router = inject(Router);
+  private toastr = inject(ToastrService);
 
   public selectedPicture: File | null = null;
   genders: Lookup[] = [];
@@ -39,32 +39,32 @@ export class RegisterComponent implements OnInit {
 
   private initForm(): void {
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(4)]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      dateOfBirth: ['', [Validators.required]],
-      profilePicture: [null], 
-      genderId: [null, [Validators.required]],
-      countryId: [null, [Validators.required]],
-      governorateId: [null, [Validators.required]],
-      districtId: [null, [Validators.required]],
-      emergencyContactName: ['', [Validators.required]],
-      emergencyContactPhone: ['', [Validators.required]],
-      bloodType: [''],
+      username: ['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      phoneNumber: ['', [Validators.required]],
+      email: [''], // Optional
+      dateOfBirth: [''], // Optional
+      genderId: [null], // Optional
+      countryId: [null], // Optional
+      governorateId: [null], // Optional
+      districtId: [null], // Optional
+      profilePicture: [null], // Optional
+      emergencyContactName: [''], // Optional
+      emergencyContactPhone: [''], // Optional
+      bloodType: [''], // Optional
     });
   }
 
   private loadLookups(): void {
     this.lookupService.loadGenders().subscribe(
       (res: APIResponse<Lookup[]>) => this.genders = res.data,
-      () => this.toastrService.showError("Failed to load genders")
+      () => this.toastr.error("Failed to load genders")
     );
     this.lookupService.loadCountries().subscribe(
       (res: APIResponse<Lookup[]>) => this.countries = res.data,
-      () => this.toastrService.showError("Failed to load countries")
+      () => this.toastr.error("Failed to load countries")
     );
   }
 
@@ -92,35 +92,41 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.selectedPicture) {
-      this.toastrService.showError("Please select a profile picture!");
+    if (this.registerForm.invalid) {
+      this.toastr.warning("Please complete all required fields.", "Incomplete Data");
+      this.registerForm.markAllAsTouched();
       return;
     }
 
-    if (this.registerForm.valid) {
-      const formData = new FormData();
-      Object.entries(this.registerForm.value).forEach(([key, value]) => {
-        if (key !== 'profilePicture') {
-          formData.append(key, value as string);
-        }
-      });
-      if (this.selectedPicture) {
-        formData.append('profilePicture', this.selectedPicture);
+    const formValue = { ...this.registerForm.value };
+    const filteredFormValue = Object.keys(formValue).reduce((acc, key) => {
+      const value = formValue[key];
+      if (value !== null && value !== undefined && value !== '') {
+        acc[key] = value;
       }
+      return acc;
+    }, {} as { [key: string]: any });
 
-      this.authService.addNewPatient(formData).subscribe({
-        next: () => {
-          this.toastrService.showSuccess("Registration successful!");
-          this.routesService.navigateToRoute(authenticationRoutingObject.routes.login);
-        },
-        error: (err) => {
-          this.toastrService.showError("Registration failed");
-          console.error("Registration error:", err);
-        }
-      });
-    } else {
-      this.registerForm.markAllAsTouched();
+    const formData = new FormData();
+    Object.entries(filteredFormValue).forEach(([key, value]) => {
+      if (key !== 'profilePicture') {
+        formData.append(key, value as string);
+      }
+    });
+
+    if (this.selectedPicture) {
+      formData.append('profilePicture', this.selectedPicture);
     }
+
+    this.authService.addNewPatient(formData).subscribe({
+      next: () => {
+        this.toastr.success("Registration successful! Please login.");
+        this._router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.toastr.error("Failed to register. Please try again.");
+      },
+    });
   }
 
   get formControls() {

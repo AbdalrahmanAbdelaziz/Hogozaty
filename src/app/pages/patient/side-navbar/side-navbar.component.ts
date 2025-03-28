@@ -11,6 +11,7 @@ import { BASE_URL } from '../../../shared/constants/urls';
   templateUrl: './side-navbar.component.html',
   styleUrl: './side-navbar.component.css'
 })
+
 export class SideNavbarComponent implements OnInit {
   isCollapsed: boolean = true; // Default state: Closed
   patient!: LoginResponse;

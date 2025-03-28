@@ -1,0 +1,47 @@
+<!-- Conditional Header -->
+<ng-container *ngIf="patient?.data?.applicationRole_En === 'Patient'; else secretaryHeader">
+  <app-p-header></app-p-header>
+</ng-container>
+<ng-template #secretaryHeader>
+  <app-s-header></app-s-header>
+</ng-template>
+
+<div class="navbar-spacer"></div>
+
+<!-- Conditional Sidebar -->
+<ng-container *ngIf="patient?.data?.applicationRole_En === 'Patient'; else secretarySidebar">
+  <app-side-navbar></app-side-navbar>
+</ng-container>
+<ng-template #secretarySidebar>
+  <app-s-sidenavbar></app-s-sidenavbar>
+</ng-template>
+
+<div class="content">
+  <div class="appointments-container">
+    <!-- Display the selected date in a user-friendly format -->
+    <h2 class="date-title">{{ selectedDate | date: 'EEEE, dd MMMM yyyy' }}</h2>
+    
+    <!-- Show if there are available time slots -->
+    <div *ngIf="timeSlots.length > 0; else noSlots" class="slots-grid">
+      <!-- Loop through each time slot -->
+      <div *ngFor="let slot of timeSlots" class="slot-card" [ngClass]="{ 'booked-slot': slot.timeSlotStatusId != 30 }">
+        <!-- Display the time range for the slot -->
+        <span class="time-range">{{ slot.startTime }} - {{ slot.endTime }}</span>
+        
+        <!-- Show "Reserved" status if the slot is not available -->
+        <span *ngIf="slot.timeSlotStatusId != 30" class="status booked">Reserved</span>
+        
+        <!-- Show the "Reserve" button only if the slot is available (status ID 30) -->
+        <button *ngIf="slot.timeSlotStatusId == 30" (click)="bookTimeslot(slot)" class="reserve-btn">Reserve</button>
+      </div>
+    </div>
+
+    <!-- If no time slots are available, show this message -->
+    <ng-template #noSlots>
+      <div class="no-appointments">
+        <img src="assets/no-slots.svg" alt="No Slots Available">
+        <p>No available time slots today.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

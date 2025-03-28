@@ -1,84 +1,81 @@
 import { Component, OnInit } from '@angular/core';
-import { AppointmentService } from '../../../services/appointment.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SHeaderComponent } from '../s-header/s-header.component';
-import { SideNavbarComponent } from '../../patient/side-navbar/side-navbar.component';
+import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-new-patient-add-phone',
   standalone: true,
-  imports: [CommonModule, FormsModule, SHeaderComponent, SideNavbarComponent],
+  imports: [CommonModule, FormsModule, SHeaderComponent, SSidenavbarComponent],
   templateUrl: './new-patient-add-phone.component.html',
   styleUrl: './new-patient-add-phone.component.css'
 })
 export class NewPatientAddPhoneComponent implements OnInit {
-  name: string = '';
-  phoneNumber: string = '';
-  availableDays: string[] = [];
-  selectedDay: string = '';
-  timeSlots: any[] = [];
-  selectedTimeSlot: string = '';
+  firstName: string = '';
+  lastName: string = '';
+  phoneNumber: string = ''; // Phone number field
   docId!: number;
 
-  constructor(private appointmentService: AppointmentService, private router: Router, private toastr: ToastrService) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router,
+    private toastr: ToastrService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    if (this.docId) {
-      this.loadAvailableDays();
-    }
-  };
+    this.route.queryParams.subscribe(params => {
+      this.docId = +params['docId']; // Retrieve only docId
+      this.phoneNumber = params['phoneNumber'] || ''; // Retrieve the phone number
 
-  loadAvailableDays(): void {
-    const numberOfRequiredDays = 14;
-
-    this.appointmentService.getAvailableDays(this.docId, numberOfRequiredDays).subscribe(
-      (response) => {
-        this.availableDays = response.data.workingDays || [];
-      },
-      (error) => {
-        console.error('Error loading available days:', error);
-        this.toastr.error('Failed to load available days.', 'Error');
+      if (!this.docId) {
+        console.error('No doctor ID found in query parameters.');
       }
-    );
+    });
   }
 
-  onDaySelected(): void {
-    if (this.selectedDay) {
-      this.appointmentService.getTimeSlotsByDate(this.selectedDay, this.docId).subscribe(
-        (response) => {
-          this.timeSlots = response.data || [];
-        },
-        (error) => {
-          console.error('Error loading time slots:', error);
-          this.toastr.error('Failed to load time slots.', 'Error');
-        }
-      );
-    }
-  }
+  
 
   submitAppointment(): void {
-    if (!this.name || !this.phoneNumber || !this.selectedDay || !this.selectedTimeSlot) {
+    if (!this.firstName || !this.lastName || !this.phoneNumber) {
       this.toastr.warning('Please fill all fields.');
       return;
     }
-
-    const appointmentData = {
-      name: this.name,
-      phoneNumber: this.phoneNumber,
-      date: this.selectedDay,
-      timeSlotId: this.selectedTimeSlot
-    };
-
-    this.appointmentService.reserveAppointment(appointmentData).subscribe(
-      (response) => {
-        this.toastr.success('Appointment booked successfully!');
-        
+  
+    const formData = new FormData();
+    formData.append('firstName', this.firstName);
+    formData.append('lastName', this.lastName);
+    formData.append('phoneNumber', this.phoneNumber);
+  
+    this.authService.addNewPatient(formData).subscribe(
+      (response: any) => {
+        console.log('Backend Response:', response); // Log the full response for debugging
+  
+        // Check if the response contains the patient ID
+        if (response && response.data) {
+          const patientId = response.data; 
+          // this.toastr.success('Patient registered successfully!');
+  
+          this.firstName = '';
+          this.lastName = '';
+          this.phoneNumber = '';
+  
+          // Navigate with docId and patientId
+          this.router.navigate([
+            `/sec-doctor-appointments/${this.docId}/${patientId}`
+          ]);
+        } else {
+          this.toastr.error('Failed to retrieve patient ID from the response.');
+          console.error('Response does not contain patient ID:', response);
+        }
       },
       (error) => {
-        this.toastr.error('Failed to book appointment. Try again.');
+        this.toastr.error('Failed to register patient. Try again.');
+        console.error('Error during patient registration:', error);
       }
     );
   }

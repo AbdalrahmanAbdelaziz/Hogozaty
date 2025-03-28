@@ -6,29 +6,30 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-s-header',
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './s-header.component.html',
   styleUrl: './s-header.component.css'
 })
 export class SHeaderComponent implements OnInit {
   patient!: LoginResponse;
+  menuOpen = false;
 
-  constructor(private userService: UserService, private router: Router){
-     this.userService.userObservable.subscribe((newUser) => {
-       if(newUser) {
-         this.patient = newUser;
-       }
-     });
-   }
-
-  ngOnInit(): void {
-      
+  constructor(private userService: UserService, private router: Router) {
+    this.userService.userObservable.subscribe((newUser) => {
+      if (newUser) {
+        this.patient = newUser;
+      }
+    });
   }
 
+  ngOnInit(): void {}
 
-  logout(){
+  logout() {
     this.userService.logout();
     this.router.navigate(['/login']);
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
 }

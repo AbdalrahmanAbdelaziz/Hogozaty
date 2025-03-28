@@ -1,0 +1,57 @@
+<app-s-header></app-s-header>
+<app-s-sidenavbar></app-s-sidenavbar>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <h2>Patients</h2>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="filterPatients()"
+        placeholder="Search by name or phone number"
+      />
+    </div>
+
+    <!-- Patients Table -->
+    <table class="patients-table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Phone Number</th>
+          <th>Last Appointment</th>
+          <!-- <th>Uploaded Documents</th>
+          <th>Upload Document</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of filteredPatients">
+          <td>{{ patient.firstName }}</td>
+          <td>{{ patient.lastName }}</td>
+          <td>{{ patient.phoneNumber }}</td>
+          <td>{{ patient.lastAppointmentDate | date: 'mediumDate' }}</td>
+          <!-- <td>
+            <ul>
+              <li *ngFor="let doc of patient.documents">
+                {{ doc.name }} ({{ doc.uploadDate | date: 'mediumDate' }})
+              </li>
+            </ul>
+          </td>
+          <td>
+            <input
+              type="file"
+              (change)="onFileUpload($event, patient.id)"
+              style="display: none;"
+              #fileInput
+            />
+            <button class="upload-button" (click)="fileInput.click()">Upload</button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

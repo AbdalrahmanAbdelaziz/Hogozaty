@@ -2,17 +2,13 @@ import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SHeaderComponent } from '../s-header/s-header.component';
-import { SideNavbarComponent } from '../../patient/side-navbar/side-navbar.component';
+import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppointmentService } from '../../../services/appointment.service';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { UserService } from '../../../services/user.service';
 import { Observable, take } from 'rxjs';
-
-// Define the Appointment interface
-interface Appointment {
-  appointmentStatusId: number;
-}
+import { AppointmentStats } from '../../../shared/models/appointment-stats.model';
 
 @Component({
   selector: 'app-s-home',
@@ -21,7 +17,7 @@ interface Appointment {
     CommonModule,
     RouterModule,
     SHeaderComponent,
-    SideNavbarComponent,
+    SSidenavbarComponent,
     NgxChartsModule,
   ],
   templateUrl: './s-home.component.html',
@@ -30,7 +26,7 @@ interface Appointment {
 export class SHomeComponent implements OnInit {
   view: [number, number] = [700, 400];
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C'],
+    domain: ['#FF5733', '#33FF57', '#3357FF'], 
   };
   pieChartData: any[] = [];
   showLegend = true;
@@ -38,6 +34,7 @@ export class SHomeComponent implements OnInit {
   isDoughnut = false;
   doctorId: number | null = null;
   todayDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
+  hasAppointmentData: boolean = false;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -50,14 +47,12 @@ export class SHomeComponent implements OnInit {
 
   loadUserDetails(): void {
     const user: LoginResponse | null = this.userService.getUser();
-  
-    console.log('Retrieved user data:', user); // Debugging log
-  
+
     if (!user) {
       console.warn('No user data found.');
       return;
     }
-  
+
     if (user.data.applicationRole_En === 'Secretary') {
       if (user.data.doctorId) {
         this.doctorId = user.data.doctorId;
@@ -67,8 +62,7 @@ export class SHomeComponent implements OnInit {
     } else if (user.data.applicationRole_En === 'Doctor') {
       this.doctorId = user.data.id;
     }
-  
-    // Fallback: Load from local storage if doctorId is missing
+
     if (!this.doctorId) {
       const storedDoctorId = localStorage.getItem('doctorId');
       if (storedDoctorId) {
@@ -76,9 +70,9 @@ export class SHomeComponent implements OnInit {
         console.log('Loaded doctor ID from storage:', this.doctorId);
       }
     }
-  
+
     if (this.doctorId) {
-      console.log('Doctor ID:', this.doctorId); // Confirm doctorId retrieval
+      console.log('Doctor ID:', this.doctorId);
       this.loadAppointmentData();
     } else {
       console.warn('No doctor ID found.');
@@ -89,30 +83,37 @@ export class SHomeComponent implements OnInit {
     if (!this.doctorId) return;
 
     this.appointmentService
-  .getDoctorDayAppointmentsCount(this.doctorId, this.todayDate)
-  .pipe(take(1))
-  .subscribe({
-    next: (response) => {
-      console.log('API Response:', response);
+      .getDoctorDayAppointmentsCount(this.doctorId, this.todayDate)
+      .pipe(take(1))
+      .subscribe({
+        next: (response: any) => {
+          console.log('API Response:', response);
 
-      // Ensure we are accessing the correct property
-      const appointments: Appointment[] = Array.isArray(response) ? response : response.appointments || [];
+          // Check if there are any appointments
+          const hasData = response.data.upcominAppointmentsCount > 0 || 
+                         response.data.cancelledAppointmentsCount > 0 || 
+                         response.data.completedAppointmentsCount > 0;
+          
+          this.hasAppointmentData = hasData;
 
-      const arrived = appointments.filter(a => a.appointmentStatusId === 2).length;
-      const pending = appointments.filter(a => a.appointmentStatusId === 1).length;
-      const canceled = appointments.filter(a => a.appointmentStatusId === 3).length;
+          if (hasData) {
+            this.pieChartData = [
+              { name: 'Upcoming', value: response.data.upcominAppointmentsCount },
+              { name: 'Cancelled', value: response.data.cancelledAppointmentsCount },
+              { name: 'Processed', value: response.data.completedAppointmentsCount },
+            ];
+          } else {
+            this.pieChartData = [];
+          }
 
-      this.pieChartData = [
-        { name: 'Arrived Appointments', value: arrived },
-        { name: 'Pending Appointments', value: pending },
-        { name: 'Canceled Appointments', value: canceled },
-      ];
-    },
-    error: (err) => {
-      console.error('Error fetching appointment data:', err);
-    },
-  });
-
+          console.log('Transformed Chart Data:', this.pieChartData);
+        },
+        error: (err) => {
+          console.error('Error fetching appointment data:', err);
+          this.hasAppointmentData = false;
+          this.pieChartData = [];
+        },
+      });
   }
 
   onSelect(data: any): void {

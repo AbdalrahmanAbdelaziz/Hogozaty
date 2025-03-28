@@ -1,172 +1,271 @@
-/* General Styling */
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
 .container {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    color: white;
-    margin-top: 100px;
+  max-width: 1100px;
+  margin: 100px auto 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 26px;
+  color: #165B40;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table thead {
+  background-color: #165B40;
+  color: #fff;
+}
+
+table th, table td {
+  padding: 12px;
+  text-align: left;
+}
+
+table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Buttons */
+.add-btn {
+  background-color: #1A9A63;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #24CC81;
+}
+
+.add-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 95%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: modalFadeIn 0.3s ease;
+  position: relative; /* For close button positioning */
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  /* Title */
-  .container h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-    margin-bottom: 20px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Table Styling */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  th, td {
+}
+
+/* Close Button (X) */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: 0.3s ease;
+}
+
+.close-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.close-icon {
+  font-size: 24px;
+  color: #555;
+  transition: 0.3s ease;
+}
+
+.close-btn:hover .close-icon {
+  color: #e74c3c;
+}
+
+.modal-content h3 {
+  font-size: 24px;
+  color: #165B40;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.modal-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-content li {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fafafa;
+  transition: 0.3s ease;
+}
+
+.modal-content li:hover {
+  border-color: #1A9A63;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Service Name */
+.service-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #165B40;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.modal-content label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 500;
+}
+
+.modal-content input[type="number"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 5px;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.modal-content input[type="number"]:focus {
+  border-color: #1A9A63;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 154, 99, 0.1);
+}
+
+.modal-content .add-btn {
+  background-color: #1A9A63;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.modal-content .add-btn:hover {
+  background-color: #24CC81;
+}
+
+.modal-content .cancel-btn {
+  background-color: #e74c3c;
+  padding: 10px;
+  width: 100%;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 15px;
+}
+
+.modal-content .cancel-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
     padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    text-align: left;
+    width: 95%;
   }
-  
-  th {
-    background: rgba(255, 255, 255, 0.2);
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  td {
-    font-size: 1rem;
-  }
-  
-  tr:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  
-  /* Add Service Button */
-  .add-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    background: #1A9A63;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .add-btn:hover {
-    background: #157a50;
-    transform: scale(1.05);
-  }
-  
-  /* Modal Styling */
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 30px;
-    border-radius: 12px;
-    width: 450px;
-    text-align: center;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-  }
-  
-  .modal-content h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Service List */
-  ul {
-    list-style: none;
-    padding: 0;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.1);
+
+  table th, table td {
     padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    font-size: 1rem;
+    font-size: 14px;
   }
-  
-  /* Checkboxes */
-  input[type="checkbox"] {
-    transform: scale(1.2);
-    margin-right: 10px;
+
+  .modal-content {
+    width: 90%;
+    padding: 20px;
   }
-  
-  /* Price Input */
-  input[type="number"] {
-    width: 100px;
+
+  .modal-content h3 {
+    font-size: 22px;
+  }
+
+  .modal-content input[type="number"] {
     padding: 8px;
-    border: none;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.3);
-    color: white;
   }
-  
-  /* Save & Cancel Buttons */
-  .save-btn, .cancel-btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 15px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  .add-btn, .cancel-btn {
+    padding: 10px;
+    font-size: 14px;
   }
-  
-  .save-btn {
-    background: #24CC81;
-    color: white;
-  }
-  
-  .cancel-btn {
-    background: #D32F2F;
-    color: white;
-  }
-  
-  .save-btn:hover {
-    background: #1a9a63;
-  }
-  
-  .cancel-btn:hover {
-    background: #B71C1C;
-  }
-  
+}

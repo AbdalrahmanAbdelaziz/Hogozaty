@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #F5FFFA;
+    background-color: #165B40;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,7 +53,7 @@ body {
     gap: 8px;
     font-size: 1.1rem;
     font-weight: bolder;
-    color: black;
+    color: white;
     text-decoration: none;
     padding: 10px 15px;
     transition: color 0.3s ease;
@@ -135,6 +135,7 @@ body {
 }
 
 /* Mobile view improvements */
+/* Mobile view improvements */
 @media screen and (max-width: 768px) {
     .menu-toggle {
         display: block; /* Show on smaller screens */
@@ -162,4 +163,19 @@ body {
         display: flex;
         transform: translateX(0);
     }
+
+    /* Make links black when menu is active (open) */
+    .nav-links.active a {
+        color: black !important; /* Force black color for links */
+    }
+
+    .nav-links.active a:hover {
+        color: #1A9A63 !important; /* Hover color for links */
+    }
+
+    /* Ensure icons are black when menu is active */
+    .nav-links.active a i {
+        color: #24CC81 !important; /* Force black color for icons */
+    }
 }
+

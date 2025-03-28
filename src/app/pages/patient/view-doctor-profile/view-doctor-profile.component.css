@@ -1,151 +1,173 @@
-/* Main Container Layout */
+/* Background Color Matching Navbar Theme */
+body {
+  background-color: #f4f9f4; /* Light neutral color */
+}
+
+/* Centered Full Profile Layout */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  margin: 8rem;
-  background: rgba(255, 255, 255, 0.2); /* Transparent glass effect */
-  border-radius: 12px;
-  padding: 2rem;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  min-height: 100vh;
+  padding: 3rem;
 }
 
-/* Adjust layout to start under navbar */
-.main-content {
-  margin-top: 100px; /* Starts below navbar */
+/* Profile Card */
+.profile-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
+  max-width: 1100px;
+  background: #165B40; /* Dark Green with Transparency */
+  border-radius: 15px;
+  padding: 3rem;
+  text-align: left;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+}
+
+/* Doctor Image Section */
+.image-container {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 }
 
-/* Doctor Image */
-img {
-  border-radius: 12px;
-  flex: 1 0;
+.doctor-image {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
   object-fit: cover;
-  height: 35rem;
-  margin: 1rem;
-  box-shadow: 0 4px 10px rgba(73, 69, 69, 0.2);
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+  border: 5px solid #24CC81; /* Light Green Border */
 }
 
 /* Doctor Details Section */
 .details {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 0;
-  padding: 2rem;
-  color: #333;
-  margin-left: 1rem;
-}
-
-/* Header (Doctor Name & Rating) */
-.header {
-  display: flex;
-  justify-content: space-between;
+  flex: 2;
+  padding-left: 3rem;
 }
 
 /* Doctor Name */
 .name {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
-  color: black; 
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  color: white; /* White Text for Contrast */
+  margin-bottom: 0.5rem;
 }
 
-/* Specialization & Location */
-.origins {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 1rem 0;
+/* Rating */
+.rating {
+  font-size: 1.5rem;
+  color: #FFD700; /* Gold Star Color */
+  margin-bottom: 1.5rem;
 }
 
-.origins span {
-  padding: 0.5rem;
-  font-size: 1.2rem;
-  margin: 0.5rem 0.5rem 0.5rem 0;
-  border-radius: 2rem;
-  background-color: #24CC81;
-  color: white;
-}
-
-/* Consultation Price */
-.cook-time {
-  margin-top: 1rem;
-}
-
-.cook-time span {
-  padding: 0.6rem 2rem 0.6rem 0;
-  border-radius: 10rem;
+/* Info Group */
+.info-group {
   font-size: 1.3rem;
-  background: rgba(255, 255, 255, 0.2);
-  color: black;
+  color: white; /* Light Gray for Readability */
+  margin-bottom: 1.5rem;
 }
 
-/* Brief / Bio */
-.price {
-  font-size: 1.8rem;
-  margin: 2rem 2rem 2rem 0;
-  color: #1B5E20;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+.info-group p {
+  margin: 0.5rem 0;
 }
 
-.price::before {
-  content: "Bio: ";
-  color: black;
+.info-group span {
+  color: #24CC81;
+  font-weight: bold;
+}
+
+/* Bio Section */
+.bio {
+  font-size: 1.3rem;
+  color: #E0E0E0;
+  margin-top: 1.5rem;
+  font-style: italic;
 }
 
 /* Appointment Button */
 button {
-  background: #24CC81;
-  color: white;
+  background: #24CC81; /* Gold Button */
+  color: white; /* Dark Green Text */
   border: none;
-  font-size: 1.2rem;
-  padding: 1rem;
-  border-radius: 10rem;
-  outline: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  margin-top: 2rem;
+  font-weight: bold;
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background: #157a50;
-  transform: scale(1.05);
+  background: #24CC3D;
+  transform: scale(1.07);
   cursor: pointer;
 }
 
-/* Responsive Design for Mobile */
-@media (max-width: 768px) {
-  .container {
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .profile-card {
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    margin: 2rem; /* Reduce margin for small screens */
-    padding: 1.5rem;
-    margin-top: 100px;
+    width: 90%;
+    padding: 2rem;
+  }
+
+  .image-container {
+    margin-bottom: 2rem;
   }
 
   .details {
-    margin-left: 0; /* Remove margin to center content */
-    padding: 1rem;
+    padding-left: 0;
+    text-align: center;
   }
 
-  .header {
-    flex-direction: column;
-    align-items: center;
+  .bio {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .doctor-image {
+    width: 250px;
+    height: 250px;
   }
 
-  .origins {
-    justify-content: center;
+  .name {
+    font-size: 2rem;
   }
 
-  img {
-    height: 20rem; /* Reduce image size for better fit */
-    width: 100%;
-    max-width: 300px;
+  .rating, .info-group, .bio {
+    font-size: 1.1rem;
+  }
+
+  button {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .doctor-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  .name {
+    font-size: 1.8rem;
+  }
+
+  .rating, .info-group, .bio {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
   }
 }

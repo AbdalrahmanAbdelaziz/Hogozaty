@@ -8,22 +8,29 @@ export interface TimeSlot {
 }
 
 export interface Appointment {
-  id?: number; // Made optional since it's usually auto-generated when creating an appointment
+  id?: number; 
   notes: string;
   timeSlotId: number;
-  timeSlot?: TimeSlot; // ✅ Keep the entire timeSlot object instead of separate fields
-  appointmentStatusId?: number; // Made optional for creation
+  timeSlot?: TimeSlot; 
+  appointmentStatusId?: number; 
   appointmentStatus_Ar?: string;
   appointmentStatus_En?: string;
   clinicId: number;
   doctorId: number;
-  doctorName?: string; // Made optional if not required at creation time
+  doctorName?: string; 
   doctorSpecialization_En?: string | null;
   doctorSpecialization_Ar?: string | null;
   patientID: number;
-  patientName?: string; // Made optional if not required at creation time
-  appointmentServicesPivots?: any[]; // Made optional for flexibility
-  medicalRecordEntryId?: number; // Made optional if it's assigned later
+  patientName?: string; 
+  appointmentServicesPivots?: any[]; 
+  medicalRecordEntryId?: number;
   medicalRecordEntry?: any;
   feedbacks?: any[];
+  cash?: number;
+  visa?: number;
+  instapay?: number;
+  wallet?: number;
+  remaining?: number;
+  paid?: number;
+  total?: number;
 }

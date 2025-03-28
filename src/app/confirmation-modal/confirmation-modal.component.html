@@ -1,0 +1,9 @@
+<div class="modal-overlay" *ngIf="isVisible">
+    <div class="modal-content">
+      <h3>Are you sure?</h3>
+      <div class="modal-actions">
+        <button class="btn btn-danger" (click)="onConfirm()">Yes</button>
+        <button class="btn btn-secondary" (click)="onCancel()">No</button>
+      </div>
+    </div>
+  </div>

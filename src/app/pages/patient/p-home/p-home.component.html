@@ -5,39 +5,34 @@
 <app-side-navbar></app-side-navbar>
 
 <div class="content">
- 
-  
-
   <!-- Main Content -->
   <div class="main-content">
-    <!-- Search Bar -->
-    <div class="search-container">
-      <div class="search-box">
-     
-      </div>
-    </div>
-
-   
+    <!-- Appointments Section -->
     <div class="appointment-container">
       <h2>Your Appointments</h2>
-    
-      <div *ngIf="appointments.length === 0" class="no-appointments">
-        <p>No appointments yet. 
+
+      <!-- History Button -->
+      <button class="history-btn" (click)="openHistoryModal()">View History</button>
+
+      <!-- No Appointments Message -->
+      <div *ngIf="filteredAppointments.length === 0" class="no-appointments">
+        <p>No upcoming or in-progress appointments. 
           <a routerLink="/choose-appointment" class="book-appointment-link">Book an appointment</a>
         </p>
       </div>
-    
-      <div class="appointment-grid" *ngIf="appointments.length > 0">
-        <div *ngFor="let appointment of appointments" class="appointment-card">
+
+      <!-- Appointments Grid -->
+      <div class="appointment-grid" *ngIf="filteredAppointments.length > 0">
+        <div *ngFor="let appointment of filteredAppointments" class="appointment-card">
           <div class="card-header">
-            <img [src]="appointment.doctorProfilePicture || 'default-avatar.jpg'" alt="Doctor Image" />
+            <img [src]="BASE_URL + '/' + appointment.doctorProfilePicture || 'default-avatar.jpg'" alt="Doctor Image" />
             <div class="doctor-info">
               <h3>{{ appointment.doctorName }}</h3>
               <p>{{ appointment.doctorSpecialization_En || 'General Practitioner' }}</p>
               <span class="clinic">{{ appointment.clinicName || 'Unknown' }}</span>
             </div>
           </div>
-    
+
           <div class="card-body">
             <p><strong>Date:</strong> {{ appointment.timeSlot.date }}</p>
             <p><strong>Time:</strong> {{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</p>
@@ -49,24 +44,61 @@
               {{ appointment.appointmentStatus_En }}
             </p>
           </div>
-    
+
           <div class="card-footer">
-            <button class="cancel-btn" (click)="cancelAppointment(appointment.id)">Cancel Reservation</button>
+            <button *ngIf="appointment.appointmentStatus_En === 'UpComing'" class="cancel-btn" (click)="openCancelModal(appointment.id)">Cancel Reservation</button>
+            <button *ngIf="appointment.appointmentStatus_En === 'UpComing'" class="reschedule-btn" (click)="reschedule(appointment.id, appointment.doctorId)">Reschedule</button>
           </div>
         </div>
       </div>
     </div>
-    
 
-
+    <!-- Most Chosen Doctors Section -->
     <app-most-chosen-doctors></app-most-chosen-doctors>
-    
+  </div>
 </div>
 
+<!-- History Modal -->
+<div class="modal-overlay" *ngIf="isHistoryModalOpen">
+  <div class="history-modal">
+    <div class="modal-header">
+      <h2>Appointment History</h2>
+      <button class="close-btn" (click)="closeHistoryModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let appointment of historyAppointments" class="history-card">
+        <div class="card-header">
+          <img [src]="BASE_URL + '/' + appointment.doctorProfilePicture || 'default-avatar.jpg'" alt="Doctor Image" />
+          <div class="doctor-info">
+            <h3>{{ appointment.doctorName }}</h3>
+            <p>{{ appointment.doctorSpecialization_En || 'General Practitioner' }}</p>
+            <span class="clinic">{{ appointment.clinicName || 'Unknown' }}</span>
+          </div>
+        </div>
 
+        <div class="card-body">
+          <p><strong>Date:</strong> {{ appointment.timeSlot.date }}</p>
+          <p><strong>Time:</strong> {{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</p>
+          <p class="status done">Done</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-
-
-
-  
+<!-- Cancel Confirmation Modal -->
+<div class="modal-overlay" *ngIf="isCancelModalOpen">
+  <div class="confirmation-modal">
+    <div class="modal-header">
+      <h2>Cancel Appointment</h2>
+      <button class="close-btn" (click)="closeCancelModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to cancel this appointment?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="confirm-btn" (click)="confirmCancel()">Yes</button>
+      <button class="cancel-btn" (click)="closeCancelModal()">No</button>
+    </div>
+  </div>
+</div>

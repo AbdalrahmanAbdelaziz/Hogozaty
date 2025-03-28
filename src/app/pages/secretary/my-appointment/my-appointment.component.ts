@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SHeaderComponent } from '../s-header/s-header.component';
-import { SideNavbarComponent } from '../../patient/side-navbar/side-navbar.component';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { AppointmentService } from '../../../services/appointment.service';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../../services/user.service';
+import { ConfirmationModalComponent } from '../../../confirmation-modal/confirmation-modal.component';
+import { CheckoutModalComponent } from '../checkout-modal/checkout-modal.component';
+import { Observable, interval, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-appointment',
@@ -17,87 +20,223 @@ import { AppointmentService } from '../../../services/appointment.service';
     RouterModule,
     FormsModule,
     SHeaderComponent,
-    SideNavbarComponent,
-    NgbDatepickerModule
+    SSidenavbarComponent,
+    ConfirmationModalComponent,
+    CheckoutModalComponent,
   ],
   templateUrl: './my-appointment.component.html',
-  styleUrls: ['./my-appointment.component.css']
+  styleUrls: ['./my-appointment.component.css'],
 })
-export class MyAppointmentComponent implements OnInit {
-
+export class MyAppointmentComponent implements OnInit, OnDestroy {
+  availableDays: { date: string; dayOfWeek: string }[] = [];
+  selectedDate: string = '';
   appointments: any[] = [];
-  selectedDate!: NgbDateStruct;
-  message: string = '';  
-  today = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
-  maxDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: 28 };
+  doctorId!: number;
+  isCancelModalVisible: boolean = false;
+  isCheckoutModalVisible: boolean = false;
+  appointmentToCancel: any = null;
+  appointmentToCheckout: any = null;
+  selectedAppointmentId: number | null = null;
+  isCancelModalOpen: boolean = false;
+  private pollingSubscription!: Subscription;
 
-
-
-  constructor(private http: HttpClient, private router: Router, private appointmentService: AppointmentService) {}
+  constructor(
+    private appointmentService: AppointmentService,
+    private toastr: ToastrService,
+    private userService: UserService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.selectedDate = this.today;  
-    this.loadAppointments();
-  }
-
-
-
- loadAppointments(): void {
-    const formattedDate = `${this.selectedDate.year}-${this.selectedDate.month}-${this.selectedDate.day}`;
-
-    this.appointmentService.getAppointmentsByDate(formattedDate).subscribe(
-      (data) => {
-        if (data.length > 0) {
-          this.appointments = data;
-          this.message = '';
-        } else {
-          this.appointments = [];
-          this.message = 'No appointments available on this date.';
-        }
-      },
-      (error) => {
-        console.error('Error loading appointments:', error);
-        this.appointments = [];
-        this.message = 'Error fetching appointments. Please try again later.';
-      }
-    );
-  }
-
- 
-
-  onDateSelect(date: NgbDateStruct): void {
-    this.selectedDate = date;
-    this.loadAppointments();
-  }
-
-
-  onCancelAppointment(appointmentId: number): void {
-    if (confirm('Are you sure you want to cancel this appointment?')) {
-      this.appointmentService.cancelAppointment(appointmentId).subscribe(() => this.loadAppointments());
+    const user = this.userService.getUser();
+    if (user && user.data.applicationRole_En === 'Secretary' && user.data.doctorId) {
+      this.doctorId = user.data.doctorId;
+      this.fetchAvailableDays();
+      this.startPolling();
+    } else {
+      this.toastr.error('No doctor ID found for the secretary.', 'Error');
     }
   }
 
-  onRescheduleAppointment(appointmentId: number): void {
-    const newDate = prompt('Enter new date (YYYY-MM-DD):');  
-    if (newDate) {
-      this.appointmentService.rescheduleAppointment(appointmentId, newDate).subscribe(() => {
-        this.loadAppointments();
+  ngOnDestroy(): void {
+    if (this.pollingSubscription) {
+      this.pollingSubscription.unsubscribe();
+    }
+  }
+
+  startPolling(): void {
+    this.pollingSubscription = interval(5000) // Poll every 5 seconds
+      .pipe(
+        switchMap(() => this.appointmentService.searchAppointmentsByOptionalParams(this.doctorId))
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.appointments = (response.data || []).filter((appointment: any) => {
+            return (
+              appointment.timeSlot.date === this.selectedDate &&
+              appointment.appointmentStatus_En !== 'Cancelled' &&
+              appointment.appointmentStatus_En !== 'Proccessed'
+            );
+          });
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          this.toastr.error('Failed to fetch appointments', 'Error');
+        },
+      });
+  }
+
+  fetchAvailableDays(): void {
+    const numberOfRequiredDays = 14;
+
+    this.appointmentService.getAvailableDays(this.doctorId, numberOfRequiredDays).subscribe({
+      next: (response: any) => {
+        this.availableDays = (response.data.workingDays || []).map((date: string) => {
+          const dayOfWeek = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+          return { date, dayOfWeek };
+        });
+
+        if (this.availableDays.length > 0) {
+          this.selectedDate = this.availableDays[0].date;
+          this.fetchAppointmentsForDate(this.selectedDate);
+        }
+      },
+      error: (error) => {
+        this.toastr.error('Failed to fetch available days', 'Error');
+      },
+    });
+  }
+
+  fetchAppointmentsForDate(date: string): void {
+    this.appointmentService.searchAppointmentsByOptionalParams(this.doctorId).subscribe({
+      next: (response: any) => {
+        this.appointments = (response.data || []).filter((appointment: any) => {
+          return (
+            appointment.timeSlot.date === date &&
+            appointment.appointmentStatus_En !== 'Cancelled' &&
+            appointment.appointmentStatus_En !== 'Proccessed'
+          );
+        });
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.toastr.error('Failed to fetch appointments', 'Error');
+      },
+    });
+  }
+
+  onDateSelect(event: any): void {
+    this.selectedDate = event.target.value;
+    this.fetchAppointmentsForDate(this.selectedDate);
+  }
+
+  markAsArrived(appointmentId: number): void {
+    this.makeAppointmentArrived(appointmentId).subscribe({
+      next: () => {
+        this.toastr.success('Appointment status updated to Arrived');
+        this.fetchAppointmentsForDate(this.selectedDate);
+      },
+      error: (err) => {
+        this.toastr.error('Failed to update appointment status');
+      },
+    });
+  }
+
+  markAsNextInQueue(appointmentId: number): void {
+    this.makeAppointmentNextInQueue(appointmentId).subscribe({
+      next: () => {
+        this.toastr.success('Appointment status updated to Next in Queue');
+        this.fetchAppointmentsForDate(this.selectedDate);
+      },
+      error: (err) => {
+        this.toastr.error('Failed to update appointment status');
+      },
+    });
+  }
+
+  markAsInProgress(appointmentId: number): void {
+    // Disabled for secretary
+  }
+
+  markAsProcessed(appointmentId: number): void {
+    this.makeAppointmentProcessed(appointmentId).subscribe({
+      next: () => {
+        this.toastr.success('Appointment status updated to Processed');
+        this.fetchAppointmentsForDate(this.selectedDate);
+      },
+      error: (err) => {
+        this.toastr.error('Failed to update appointment status');
+      },
+    });
+  }
+
+  reschedule(appointmentId: number, doctorId: number): void {
+    this.router.navigate([`/sec-doctor-appointments-reschedual/${doctorId}/-1/-1`], {
+      queryParams: { isReschedule: true, appointmentId: appointmentId },
+    });
+  }
+
+  openCancelModal(appointmentId: number): void {
+    this.selectedAppointmentId = appointmentId;
+    this.isCancelModalOpen = true;
+  }
+
+  closeCancelModal(): void {
+    this.isCancelModalOpen = false;
+    this.selectedAppointmentId = null;
+  }
+
+  confirmCancel(): void {
+    if (this.selectedAppointmentId) {
+      this.appointmentService.cancelAppointment(this.selectedAppointmentId).subscribe({
+        next: () => {
+          this.toastr.success('Appointment cancelled successfully!');
+          this.appointments = this.appointments.filter((appt) => appt.id !== this.selectedAppointmentId);
+          this.closeCancelModal();
+        },
+        error: (err) => {
+          this.toastr.error('Failed to cancel appointment. Please try again.');
+          this.closeCancelModal();
+        },
       });
     }
   }
-  
 
-  onArrived(appointmentId: number): void {
-    this.appointmentService.markArrived(appointmentId).subscribe(() => this.loadAppointments());
+  openCheckoutModal(appointment: any): void {
+    this.appointmentToCheckout = appointment;
+    this.isCheckoutModalVisible = true;
   }
 
-  onCheckIn(appointmentId: number): void {
-    this.appointmentService.markCheckIn(appointmentId).subscribe(() => this.loadAppointments());
+  closeCheckoutModal(): void {
+    this.isCheckoutModalVisible = false;
+    this.appointmentToCheckout = null;
   }
 
-  onMarkAsDone(appointmentId: number): void {
-    this.appointmentService.markDone(appointmentId).subscribe(() => this.loadAppointments());
+  getAppointmentReceipt(appointmentId: number): void {
+    this.appointmentService.getAppointmentReceipt(appointmentId).subscribe({
+      next: (response: any) => {
+        this.toastr.success('Receipt fetched successfully');
+      },
+      error: (error) => {
+        this.toastr.error('Failed to fetch receipt');
+      },
+    });
   }
 
-  
+  makeAppointmentArrived(appointmentId: number): Observable<any> {
+    return this.appointmentService.makeAppointmentArrived(appointmentId);
+  }
+
+  makeAppointmentNextInQueue(appointmentId: number): Observable<any> {
+    return this.appointmentService.makeAppointmentNextInQueue(appointmentId);
+  }
+
+  makeAppointmentInProgress(appointmentId: number): Observable<any> {
+    return this.appointmentService.makeAppointmentInProgress(appointmentId);
+  }
+
+  makeAppointmentProcessed(appointmentId: number): Observable<any> {
+    return this.appointmentService.makeAppointmentProcessed(appointmentId);
+  }
 }

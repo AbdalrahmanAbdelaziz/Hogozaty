@@ -1,66 +1,66 @@
 <div class="bg-img">
   <div class="overlay"></div>
+  <div class="cover-image">
+    <!-- <img src="www.jpg" alt="Cover Image" class="full-cover"> -->
+  </div>
   
-<app-p-header></app-p-header>
+  <app-p-header></app-p-header>
 
-<div class="navbar-spacer"></div>
+  <div class="navbar-spacer"></div>
 
-<app-side-navbar></app-side-navbar>
+  <app-side-navbar></app-side-navbar>
 
-<div class="content">
-  
-
+  <div class="content">
     <div class="filter-form">
-    <form [formGroup]="locationForm">
-        <!-- اختيار الدولة -->
-       <!-- اختيار الدولة -->
-       <div class="form-group">
-        <label for="countryId">Country</label>
-        <select id="countryId" formControlName="countryId" (change)="updateGovernorates(CountrySelector.value)" #CountrySelector>
-          <option [value]="null" disabled>Select Country</option>
-          <option *ngFor="let c of countries" [value]="c.id">{{ c.name_En }}</option>
-        </select>
-        <div *ngIf="formControls['countryId'].touched && formControls['countryId'].invalid" class="error">
-          <div *ngIf="formControls['countryId'].errors?.['required']">Country is required.</div>
+      <form [formGroup]="locationForm">
+        <!-- Country Field -->
+        <div class="form-group">
+          <label for="countryId">Country</label>
+          <select id="countryId" formControlName="countryId" (change)="updateGovernorates(CountrySelector.value)" #CountrySelector>
+            <option [value]="null" disabled>Select Country</option>
+            <option *ngFor="let c of countries" [value]="c.id">{{ c.name_En }}</option>
+          </select>
+          <div *ngIf="formControls['countryId'].touched && formControls['countryId'].invalid" class="error">
+            <div *ngIf="formControls['countryId'].errors?.['required']">Country is required.</div>
+          </div>
         </div>
-      </div>
-  
-      <!-- Governorate Field -->
-      <div class="form-group">
-        <label for="governorateId">Governorate</label>
-        <select id="governorateId" formControlName="governorateId" (change)="updateDistricts(GovSelector.value)" #GovSelector>
-          <option [value]="null" disabled>Select Governorate</option>
-          <option *ngFor="let g of governorates" [value]="g.id">{{ g.name_En }}</option>
-        </select>
-        <div *ngIf="formControls['governorateId'].touched && formControls['governorateId'].invalid" class="error">
-          <div *ngIf="formControls['governorateId'].errors?.['required']">Governorate is required.</div>
-        </div>
-      </div>
-  
-      <!-- District Field -->
-      <div class="form-group">
-        <label for="districtId">District</label>
-        <select id="districtId" formControlName="districtId">
-          <option [value]="null" disabled>Select District</option>
-          <option *ngFor="let d of districts" [value]="d.id">{{ d.name_En }}</option>
-        </select>
-        <div *ngIf="formControls['districtId'].touched && formControls['districtId'].invalid" class="error">
-          <div *ngIf="formControls['districtId'].errors?.['required']">District is required.</div>
-        </div>
-      </div>
 
-      <div class="form-group">
-      <label for="specializationId">Specialization</label>
-      <select id="specializationId" formControlName="specializationId">
-        <option [value]="null" disabled selected>Select Specialization</option>
-        <option *ngFor="let spec of specializations" [ngValue]="spec.id">{{ spec.name_En }}</option>
-      </select>
-    </div>
-   
+        <!-- Governorate Field -->
+        <div class="form-group">
+          <label for="governorateId">Governorate</label>
+          <select id="governorateId" formControlName="governorateId" (change)="updateDistricts(GovSelector.value)" #GovSelector>
+            <option [value]="null" disabled>Select Governorate</option>
+            <option *ngFor="let g of governorates" [value]="g.id">{{ g.name_En }}</option>
+          </select>
+          <div *ngIf="formControls['governorateId'].touched && formControls['governorateId'].invalid" class="error">
+            <div *ngIf="formControls['governorateId'].errors?.['required']">Governorate is required.</div>
+          </div>
+        </div>
 
-        <!-- زر البحث -->
+        <!-- District Field -->
+        <div class="form-group">
+          <label for="districtId">District</label>
+          <select id="districtId" formControlName="districtId">
+            <option [value]="null" disabled>Select District</option>
+            <option *ngFor="let d of districts" [value]="d.id">{{ d.name_En }}</option>
+          </select>
+          <div *ngIf="formControls['districtId'].touched && formControls['districtId'].invalid" class="error">
+            <div *ngIf="formControls['districtId'].errors?.['required']">District is required.</div>
+          </div>
+        </div>
+
+        <!-- Specialization Field -->
+        <div class="form-group">
+          <label for="specializationId">Specialization</label>
+          <select id="specializationId" formControlName="specializationId">
+            <option [value]="null" disabled selected>Select Specialization</option>
+            <option *ngFor="let spec of specializations" [ngValue]="spec.id">{{ spec.name_En }}</option>
+          </select>
+        </div>
+
+        <!-- Search Button -->
         <button type="button" (click)="filterDoctors()">Find Doctors</button>
-    </form>
-</div>
-
+      </form>
+    </div>
+  </div>
 </div>

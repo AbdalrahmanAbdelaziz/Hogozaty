@@ -18,17 +18,17 @@ export class DayAppointmentsComponent implements OnInit {
   patient!: LoginResponse;
   selectedDate: string = '';
   timeSlots: any[] = [];
-  doctorId: number = 0;
+  docId!: number;
   clinicId: number = 0;    
   specializationId: number = 0;
-  
+
 
   constructor(
     private route: ActivatedRoute,
     private appointmentService: AppointmentService,
     private doctorService: DoctorService,    
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -39,10 +39,10 @@ export class DayAppointmentsComponent implements OnInit {
     });
 
     this.selectedDate = this.route.snapshot.paramMap.get('date') || '';
-    this.doctorId = Number(this.route.snapshot.paramMap.get('doctorId')) || 0;
+    this.docId = Number(this.route.snapshot.paramMap.get('doctorId')) || 0;
     this.specializationId = Number(this.route.snapshot.paramMap.get('specializationId')) || 0;
 
-    if (this.selectedDate && this.doctorId) {
+    if (this.selectedDate && this.docId) {
       this.loadDoctorDetails(); // ✅ Ensure doctor details load first
       this.loadTimeSlots();
     } else {
@@ -51,9 +51,9 @@ export class DayAppointmentsComponent implements OnInit {
   }
 
   loadDoctorDetails(): void {
-    console.log('Fetching doctor details with doctorId:', this.doctorId);
+    console.log('Fetching doctor details with doctorId:', this.docId);
   
-    this.doctorService.getDoctorsBySpecialization(this.doctorId).subscribe(
+    this.doctorService.getDoctorsBySpecialization(this.docId).subscribe(
       (doctors) => {
         if (doctors && doctors.length > 0) { // ✅ Ensure at least one doctor exists
           const doctor = doctors[0]; // ✅ Pick the first doctor from the array
@@ -73,32 +73,20 @@ export class DayAppointmentsComponent implements OnInit {
   
 
   loadTimeSlots(): void {
-    this.appointmentService.getTimeSlotsByDate(this.selectedDate, this.doctorId).subscribe(
+    this.appointmentService.getTimeSlotsByDate(this.selectedDate, this.docId).subscribe(
       (response) => {
         this.timeSlots = response.data || [];
-      },
-      (error) => {
-        console.error('Error loading time slots:', error);
       }
     );
   }
 
-  bookAppointment(timeSlot: any): void {
-    console.log('Booking appointment with:', {
-      date: this.selectedDate,
-      slotId: timeSlot.id,
-      doctorId: this.doctorId,
-      clinicId: this.clinicId,
-      specializationId: this.specializationId
-    });
-
+  bookTimeslot(timeSlot: any): void {
     this.router.navigate(['/confirm-booking'], {
       queryParams: {
         date: this.selectedDate,
-        slotId: timeSlot.id,
-        doctorId: this.doctorId,  
+        slotId: timeSlot.id, // Ensure this is the correct ID
+        doctorId: this.docId,  
         specializationId: this.specializationId,
-      
       }
     });
   }

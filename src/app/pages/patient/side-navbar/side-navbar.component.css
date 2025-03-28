@@ -1,119 +1,7 @@
-/* Full-width Navbar */
-.navbar {
-  background-color: #F5FFFA;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 40px;
-  width: 100vw; /* Full width */
-  position: fixed; /* Sticks to the top */
-  top: 0;
-  left: 0;
-  z-index: 1000; /* Keeps it above other content */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
-}
-
-body {
-  padding-top: 70px; /* Adjust based on navbar height */
-}
-
-/* Logo Styling */
-.logo-container {
-  padding: 0;
-  border-radius: 0;
-  box-shadow: 0;
-  cursor: pointer; 
-}
-
-.logo-image {
-  height: 50px;
-  width: 120px;
-  transition: transform 0.3s ease;
-}
-
-.logo-image:hover {
-  transform: scale(1.05);
-}
-
-/* Center Navigation Links */
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); /* Centers the links */
-}
-
-/* Navbar Links */
-.nav-links li {
-  position: relative;
-}
-
-.nav-links a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1.1rem;
-  font-weight: bolder;
-  color: black;
-  text-decoration: none;
-  padding: 10px 15px;
-  transition: color 0.3s ease;
-  cursor: pointer; /* Makes menu items clickable */
-}
-
-.nav-links a:hover {
-  color: #1A9A63;
-}
-
-/* Dropdown Menu */
-.menu-container {
-  position: relative;
-}
-
-.nav-links a i {
-  color: #24CC81; /* Default color */
-  transition: color 0.3s ease;
-}
-
-.menu {
-  display: none;
-  position: absolute;
-  background-color: white;
-  top: 40px;
-  left: 0;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-}
-
-.menu a {
-  display: block;
-  padding: 12px 25px;
-  color: black;
-  transition: background 0.3s;
-  cursor: pointer;
-  min-width: 80px;
-  text-align: left;
-}
-
-.menu a:hover {
-  background-color: #f4f4f4;
-}
-
-.menu-container:hover .menu {
-  display: block;
-}
-
-/* Side Navbar */
 .side-navbar {
   width: 220px;
-  background-color: #F5FFFA;
-  color: black;
+  background-color: #165B40;
+  color: white;
   font: bold;
   padding: 20px;
   border-radius: 10px;
@@ -134,7 +22,7 @@ body {
 
 .side-navbar-link {
   font-size: 1.1em;
-  color: black;
+  color: white;
   font-weight: bold;
   padding: 10px 20px;
   text-decoration: none;
@@ -179,7 +67,7 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  border: 3px solid #2D3E3F;
+  border: 3px solid white;
   object-fit: cover;
 }
 
@@ -190,6 +78,11 @@ body {
 
 .side-navbar.collapsed .side-navbar-link span {
   display: none;
+}
+
+/* New rule: Make icons white when sidebar is collapsed */
+.side-navbar.collapsed .side-navbar-link i {
+  color: white !important;
 }
 
 .toggle-btn {
@@ -211,61 +104,61 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-
   .side-navbar {
     display: none; /* Hides the sidebar on smaller screens */
   }
+
   /* Navbar */
   .navbar {
-      padding: 10px 20px;
-      flex-direction: column;
-      margin-top: 100px;
+    padding: 10px 20px;
+    flex-direction: column;
+    margin-top: 100px;
   }
 
   .nav-links {
-      flex-direction: column;
-      position: static;
-      transform: none;
-      text-align: center;
-      gap: 15px;
+    flex-direction: column;
+    position: static;
+    transform: none;
+    text-align: center;
+    gap: 15px;
   }
 
   .nav-links a {
-      padding: 8px 12px;
+    padding: 8px 12px;
   }
 
   /* Side Navbar */
   .side-navbar {
-      width: 100%;
-      height: auto;
-      position: relative;
-      top: 0;
-      border-radius: 0;
-      padding: 15px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border-radius: 0;
+    padding: 15px;
   }
 
   .side-navbar-links {
-      flex-direction: row;
-      overflow-x: auto;
-      gap: 10px;
-      justify-content: center;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 10px;
+    justify-content: center;
   }
 
   .side-navbar-link {
-      padding: 10px;
-      font-size: 1rem;
+    padding: 10px;
+    font-size: 1rem;
   }
 
   /* Hide toggle button on mobile */
   .toggle-btn {
-      display: none;
+    display: none;
   }
 
   /* Content Layout */
   .content {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
   }
 }

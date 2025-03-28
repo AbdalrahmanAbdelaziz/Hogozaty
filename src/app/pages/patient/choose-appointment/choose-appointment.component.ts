@@ -117,7 +117,7 @@ export class ChooseAppointmentComponent implements OnInit{
       const filters = this.locationForm.value;
       this.router.navigate(['/filtered-doctors'], { queryParams: filters });
     } else {
-      this.toastrService.error("Please fill in all required fields.", "Error");
+      this.toastrService.warning("Please fill in all required fields.", "Error");
     }
   }
   

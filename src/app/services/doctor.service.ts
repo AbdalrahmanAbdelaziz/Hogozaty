@@ -30,10 +30,7 @@ export class DoctorService {
     return this.http.post<APIResponse<Doctor[]>>(`${this.apiUrl}/getDoctorsByOptionalParams`, params);
   }
 
-  createTimeSlot(timeSlotData: any) {
-    return this.http.post(this.apiUrl, timeSlotData);
-  }
-
+  
 
   getDoctorServices(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/getDoctorServices`);

@@ -1,0 +1,35 @@
+<app-d-header></app-d-header>
+<app-d-sidenavbar></app-d-sidenavbar>
+
+<div class="appointment-container">
+  <h2>Doctor's Appointments</h2>
+  <div class="dropdown-container">
+    <label for="dateDropdown">Select Date:</label>
+    <select id="dateDropdown" [(ngModel)]="selectedDate" (change)="onDateSelect($event)">
+      <option *ngFor="let day of availableDays" [value]="day.date">
+        {{ day.date }} ({{ day.dayOfWeek }})
+      </option>
+    </select>
+  </div>
+
+  <table class="appointment-table">
+    <thead>
+      <tr>
+        <th>Patient Name</th>
+        <th>Time Slot</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let appointment of appointments">
+        <td>{{ appointment.patientName }}</td>
+        <td>{{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</td>
+        <td class="actions">
+          <!-- Only show "In Progress" button for NextInQueue appointments -->
+          <button class="btn btn-progress" (click)="markAsInProgress(appointment.id)">In Progress</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

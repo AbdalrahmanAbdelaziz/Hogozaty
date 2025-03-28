@@ -23,14 +23,15 @@ export class AuthenticationService {
     ).pipe(
       tap({
         next: () => {
-          this._toastr.success("Patient registered successfully!", "Success"); 
+          this._toastr.success("Patient registered successfully!"); 
           
-          this._router.navigate(['/login']);
+          // this._router.navigate(['/login']);
         },
         error: (err) => {
-          this._toastr.error("Failed to register patient. Please try again.", "Error"); 
+          this._toastr.error("Failed to register patient, Please try again."); 
         }
       })
     );
   }
+
 }

@@ -1,30 +1,39 @@
 <div class="s-home-container">
-    <app-s-header></app-s-header>
-  
-    <div class="main-content">
-      <app-side-navbar></app-side-navbar>
-  
-      <div class="chart-container">
-        <h2 class="chart-title">Appointment Status</h2>
-        
-        <!-- Pie Chart Section -->
+  <app-s-header></app-s-header>
+
+  <div class="main-content">
+    <app-s-sidenavbar></app-s-sidenavbar>
+
+    <div class="chart-container">
+      <h2 class="chart-title">Appointment Status</h2>
+      
+      <!-- Pie Chart Section -->
+      <div *ngIf="hasAppointmentData; else noDataMessage" class="hide-legend-title">
         <ngx-charts-pie-chart 
           [view]="view" 
           [results]="pieChartData" 
-          [legend]="showLegend"
-          [labels]="showLabels"
+          [legend]="true" 
+          [labels]="true" 
           [doughnut]="isDoughnut"
           (select)="onSelect($event)">
         </ngx-charts-pie-chart>
-        
-        <!-- Navigation Buttons Section -->
-        <div class="button-container">
-          <button class="nav-button" routerLink="/phone-reserve">Phone Reserve</button>
-          <button class="nav-button" routerLink="/walkin-reserve">Walk-in Reserve</button>
-          <button class="nav-button" routerLink="/service-settings">Service Settings</button>
-          <button class="nav-button" routerLink="/timeslot-management">Timeslot Management</button>
+      </div>
+    
+      <!-- No Data Message -->
+      <ng-template #noDataMessage>
+        <div class="no-data-message">
+          <p>No appointments scheduled for today</p>
         </div>
+      </ng-template>
+      
+      <!-- Navigation Buttons Section -->
+      <div class="button-container">
+        <button class="nav-button" routerLink="/new-patient">Phone Reserve</button>
+        <button class="nav-button" routerLink="/walkin-reserve">Walk-in Reserve</button>
+        <button class="nav-button" routerLink="/service-settings">Service Settings</button>
+        <button class="nav-button" routerLink="/timeslot-management">Timeslot Management</button>
+        <button class="nav-button" routerLink="/patients">Patients</button> 
       </div>
     </div>
   </div>
-  
+</div>

@@ -1,1 +1,37 @@
-<p>d-home works!</p>
+<div class="s-home-container">
+  <app-d-header></app-d-header>
+
+  <div class="main-content">
+    <app-d-sidenavbar></app-d-sidenavbar>
+
+    <div class="chart-container">
+      <h2 class="chart-title">Appointment Status</h2>
+      
+      <!-- No Data Message -->
+      <div *ngIf="showNoDataMessage" class="no-data-message">
+        <p>No appointments scheduled for today</p>
+      </div>
+      
+      <!-- Pie Chart Section -->
+      <div *ngIf="!showNoDataMessage" class="hide-legend-title">
+        <ngx-charts-pie-chart 
+          [view]="view" 
+          [results]="pieChartData" 
+          [legend]="true" 
+          [labels]="true" 
+          [doughnut]="isDoughnut"
+          (select)="onSelect($event)">
+        </ngx-charts-pie-chart>
+      </div>
+      
+      <!-- Navigation Buttons Section -->
+      <div class="button-container">
+        <button class="nav-button" routerLink="/d-my-apointments">Appointments</button>
+        <!-- <button class="nav-button" routerLink="/walkin-reserve">Arrived</button> -->
+        <button class="nav-button" routerLink="/d-service-settings">Service Settings</button>
+        <button class="nav-button" routerLink="/d-timeslot-management">Timeslot Management</button>
+        <button class="nav-button" routerLink="/d-patients">Patients</button> 
+      </div>
+    </div>
+  </div>
+</div>

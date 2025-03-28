@@ -1,35 +1,34 @@
 <app-p-header></app-p-header>
 
 <div class="navbar-spacer"></div>
-
 <app-side-navbar></app-side-navbar>
 
-<div class="container" *ngIf="doctor">
-  <!-- Doctor Image -->
-  <img 
-    [src]="BASE_URL + '/' + doctor.profilePicture || 'default-avatar.jpg'" 
-    alt="Doctor Image" 
-    class="doctor-image"
-  >
+<div class="container">
+  <div class="profile-card" *ngIf="doctor">
+    
+    <!-- Left: Doctor Image -->
+    <div class="image-container">
+      <img 
+        [src]="doctor.profilePicture ? BASE_URL + '/' + doctor.profilePicture : 'default-avatar.jpg'" 
+        alt="Doctor Image"
+        class="doctor-image"
+      >
+    </div>
 
-  <!-- Doctor Details -->
-  <div class="details">
-    <div class="header">
+    <!-- Right: Doctor Details -->
+    <div class="details">
       <h2 class="name">{{ doctor.firstName }} {{ doctor.lastName }}</h2>
       <p class="rating">⭐ {{ doctor.avgFeedbackRating }}</p>
+
+      <div class="info-group">
+        <p><strong>Specialization:</strong> {{ specializationName }}</p>
+        <p><strong>Location:</strong> {{ doctor.country_En }}, {{ doctor.governorate_En }}, {{ doctor.district_En }}</p>
+        <p><strong>Consultation Price: </strong> <span>{{ doctor.checkPrice }} EGP</span></p>
+      </div>
+
+      <p class="bio"><strong>Bio:</strong> {{ doctor.brief }}</p>
+
+      <button (click)="goToAppointments()">See Available Time Slots</button>
     </div>
-
-    <div class="origins">
-      <span>Specialization: {{ specializationName }}</span>
-      <span>{{ doctor.country_En }}, {{ doctor.governorate_En }}, {{ doctor.district_En }}</span>
-    </div>
-
-    <p class="cook-time">
-      <span>Consultation Price: {{ doctor.checkPrice }} EGP</span>
-    </p>
-
-    <p class="price">{{ doctor.brief }}</p>
-
-    <button (click)="goToAppointments()">See Available Time Slots</button>
   </div>
 </div>

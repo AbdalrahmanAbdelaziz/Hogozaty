@@ -1,150 +1,198 @@
-/* Calendar Styling */
-.calendar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30px auto;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 20px;
-    border-radius: 12px;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-    max-width: 400px;
-    margin-top: 100px;
+/* General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  color: #165B40;
+}
+
+/* Default button style */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+/* Button styles for different states */
+.btn-arrived {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+.btn-next {
+  background-color: #2196F3; /* Blue */
+  color: white;
+}
+
+.btn-progress {
+  background-color: #FF9800; /* Orange */
+  color: white;
+}
+
+.btn-processed {
+  background-color: #9C27B0; /* Purple */
+  color: white;
+}
+
+.btn-reschedule {
+  background-color: #FFC107; /* Amber */
+  color: black;
+}
+
+.btn-cancel {
+  background-color: #F44336; /* Red */
+  color: white;
+}
+
+/* Disabled button style */
+.btn:disabled {
+  background-color: #cccccc; /* Gray */
+  color: #666666; /* Dark gray */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Appointment Container */
+.appointment-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+}
+
+/* Title */
+.appointment-container h2 {
+  text-align: center;
+  color: #165B40;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Dropdown Styling */
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dropdown-container label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #165B40;
+  margin-right: 10px;
+}
+
+.dropdown-container select {
+  padding: 12px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #165B40;
+  background: #fff;
+  color: #165B40;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
 /* Table Styling */
-.table {
-    width: 90%;
-    margin: 30px auto;
-    border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    overflow: hidden;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+.appointment-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Table Header */
-.table thead {
-    background: rgba(0, 0, 0, 0.3);
-    color: white;
-    font-size: 1.2rem;
-    text-transform: uppercase;
+.appointment-table thead {
+  background: #165B40;
+  color: white;
+  font-size: 1rem;
 }
 
-/* Table Rows & Cells */
-.table th, .table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
+.appointment-table th, .appointment-table td {
+  padding: 16px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
 }
 
-.table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transition: 0.3s ease-in-out;
+.appointment-table tbody tr:hover {
+  background: rgba(22, 91, 64, 0.1);
+  transition: 0.3s ease-in-out;
 }
 
-/* No Appointments Message */
-.alert-warning {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding: 10px;
-    width: 80%;
-    margin: 20px auto;
-    border-radius: 8px;
-}
-
-/* Action Buttons */
-button {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-    font-weight: bold;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    margin: 3px;
+/* Buttons */
+.btn {
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  margin: 5px;
 }
 
 /* Button Colors */
-.btn-danger {
-    background: #D32F2F;
-    color: white;
+.btn-arrived {
+  background: #24CC81;
+  color: white;
 }
 
-.btn-danger:hover {
-    background: #B71C1C;
+.btn-next {
+  background: #1E90FF;
+  color: white;
 }
 
-.btn-warning {
-    background: #FFA500;
-    color: white;
+.btn-progress {
+  background: #FFA500;
+  color: white;
 }
 
-.btn-warning:hover {
-    background: #E69500;
+.btn-processed {
+  background: #D32F2F;
+  color: white;
 }
 
-.btn-success {
-    background: #24CC81;
-    color: white;
+.btn-reschedule {
+  background: #FFA500;
+  color: white;
 }
 
-.btn-success:hover {
-    background: #1DA362;
+.btn-cancel {
+  background: #B71C1C;
+  color: white;
 }
 
-.btn-info {
-    background: #1E90FF;
-    color: white;
-}
-
-.btn-info:hover {
-    background: #1570CC;
-}
-
-.btn-secondary {
-    background: #757575;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #5C5C5C;
-}
-
-/* Button Status Styles */
-.arrived {
-    background: #FFD700 !important;
-    color: black;
-}
-
-.checked-in {
-    background: #32CD32 !important;
-}
-
-.done {
-    background: #4CAF50 !important;
+.btn:hover {
+  transform: scale(1.05);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .table {
-        width: 100%;
-    }
+  .appointment-container {
+      padding: 20px;
+  }
 
-    .table th, .table td {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
+  .dropdown-container {
+      flex-direction: column;
+      gap: 10px;
+  }
 
-    button {
-        font-size: 0.8rem;
-        padding: 6px 10px;
-    }
+  .appointment-table th, .appointment-table td {
+      font-size: 0.9rem;
+      padding: 12px;
+  }
+
+  .btn {
+      font-size: 0.85rem;
+      padding: 8px 12px;
+  }
 }

@@ -11,22 +11,6 @@ body, html {
   background-color: #f5f5f5;
 }
 
-/* Adjust main content to prevent overlap with navbar */
-.content {
-  margin-top: 80px;
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.98); /* Increased opacity for better contrast */
-  padding: 45px;
-  border-radius: 15px;  
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Darker shadow for better depth */
-  text-align: center;
-  z-index: 2;
-  animation: fadeIn 0.8s ease-out;
-  border: 2px solid rgba(0, 0, 0, 0.1); /* Subtle border for more definition */
-}
-
 .bg-img {
   position: absolute;
   top: 0;
@@ -46,24 +30,101 @@ body, html {
   left: 0;
   right: 0;
   bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better contrast */
   z-index: 1;
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+.cover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; 
+  overflow: hidden; 
 }
 
+.full-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  filter: brightness(40%); /* Slightly brighter for better visibility */
+}
 
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent; /* Dark green background for the navbar */
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  height: 50px;
+  width: 120px;
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+}
+
+.right-button {
+  display: flex;
+  gap: 20px;
+}
+
+.right-button button {
+  background-color: #24CC81; /* Green background for buttons */
+  color: #fff;
+  font-size: 1em;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.right-button button:hover {
+  background-color: #1A9A63; /* Darker green on hover */
+  transform: scale(1.05);
+}
+
+.navbar-spacer {
+  height: 80px; /* Adjust based on navbar height */
+}
+
+.content {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.98); /* White background with slight transparency */
+  padding: 40px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 2;
+  animation: fadeIn 0.8s ease-out;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
 
 .logo {
-  width: 140px; /* Slightly larger for better visibility */
+  width: 140px;
   height: auto;
   margin-bottom: 25px;
-  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3)); 
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
   cursor: pointer;
-  
 }
 
 .field {
@@ -77,7 +138,7 @@ body, html {
   left: 15px;
   transform: translateY(-50%);
   font-size: 18px;
-  color: #444; /* Darker icon color */
+  color: #444;
   transition: color 0.3s ease;
 }
 
@@ -85,7 +146,7 @@ body, html {
   width: 100%;
   padding: 16px 14px 16px 50px;
   font-size: 16px;
-  border: 2px solid #bbb; /* Darker border */
+  border: 2px solid #bbb;
   border-radius: 10px;
   outline: none;
   background-color: #fff;
@@ -93,9 +154,9 @@ body, html {
 }
 
 .field input:focus {
-  border-color: #e63946;
+  border-color: #24CC81;
   background-color: #fff;
-  box-shadow: 0 0 8px rgba(230, 57, 70, 0.3); /* Glowing effect */
+  box-shadow: 0 0 8px rgba(36, 204, 129, 0.3);
 }
 
 .field input[type="submit"] {
@@ -113,11 +174,11 @@ body, html {
 
 .field input[type="submit"]:hover {
   background-color: #1A9A63;
-  transform: scale(1.05); /* Slight pop-out effect */
+  transform: scale(1.05);
 }
 
 .error {
-  color: red;
+  color: #e63946;
   font-size: 14px;
   margin-top: 5px;
   text-align: left;
@@ -126,18 +187,18 @@ body, html {
 
 .signup, .forgot-password {
   font-size: 14px;
-  color: #333; /* Darker text for better readability */
+  color: #333;
   margin-top: 20px;
 }
 
 .signup a, .forgot-password a {
-  color: #0087BB;
+  color: #24CC81;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .signup a:hover, .forgot-password a:hover {
-  color: #24CC81;
+  color: #1A9A63;
   text-decoration: underline;
 }
 
@@ -145,7 +206,35 @@ body, html {
   margin-top: 15px;
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo-container {
+    margin-bottom: 10px;
+  }
+
+  .right-button {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .right-button button {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9em;
+  }
+
   .content {
     padding: 30px;
     max-width: 370px;
@@ -158,9 +247,4 @@ body, html {
   .field input {
     font-size: 14px;
   }
-}
-
-.cta-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }

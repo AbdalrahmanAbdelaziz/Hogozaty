@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { UserLogin } from '../shared/models/login-request.dto';
-import { LOGIN_URL } from '../shared/constants/urls';
+import { BASE_URL, LOGIN_URL } from '../shared/constants/urls';
 import { LoginResponse } from '../shared/models/login-response';
+import { APIResponse } from '../shared/models/api-response.dto';
 
 const USER_KEY = 'User';
 
@@ -34,14 +35,6 @@ export class UserService {
     );
   }
 
-  updateEmail(userId: number, newEmail: string) {
-    return this.http.put(`api/users/${userId}/email`, { email: newEmail });
-  }
-
-  updateProfilePicture(userId: string, imageUrl: string) {
-    return this.http.put(`YOUR_BACKEND_URL/api/users/${userId}/profile-picture`, { imageUrl });
-  }
-
   logout() {
     this.userSubject.next(null);
     localStorage.removeItem(USER_KEY);
@@ -52,13 +45,13 @@ export class UserService {
     return localStorage.getItem('userRole');
   }
 
-  private setUserToLocalStorage(user: LoginResponse) {
+  setUserToLocalStorage(user: LoginResponse) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
     localStorage.setItem('userRole', user.data.applicationRole_En);
-
     if (user.data.applicationRole_En === 'Secretary' && user.data.doctorId) {
       localStorage.setItem('doctorId', user.data.doctorId.toString());
     }
+    this.userSubject.next(user);
   }
 
   getUserFromLocalStorage(): LoginResponse | null {
@@ -68,5 +61,23 @@ export class UserService {
 
   getUser(): LoginResponse | null {
     return this.getUserFromLocalStorage();
+  }
+
+  getUserById(userId: number): Observable<APIResponse<LoginResponse>> {
+    const url = `${BASE_URL}/api/users/${userId}`;
+    return this.http.get<APIResponse<LoginResponse>>(url);
+  }
+
+  // ✅ Refresh user data after profile update
+  refreshUserData(): Observable<LoginResponse> {
+    const user = this.getUser();
+    if (!user) return new Observable<LoginResponse>();
+
+    return this.http.get<LoginResponse>(`http://localhost:8585/api/users/${user.data.id}`).pipe(
+      tap((updatedUser) => {
+        this.setUserToLocalStorage(updatedUser);
+        this.userSubject.next(updatedUser); // Update observable
+      })
+    );
   }
 }

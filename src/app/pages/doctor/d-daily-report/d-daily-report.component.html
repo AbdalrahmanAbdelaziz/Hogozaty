@@ -1,0 +1,63 @@
+<app-d-header></app-d-header>
+<app-d-sidenavbar></app-d-sidenavbar>
+
+<!-- Main Content Wrapper -->
+<div class="main-content">
+  <div class="container">
+    <h2>Daily Report</h2>
+
+    <!-- Dropdown for date selection -->
+    <div class="dropdown-container">
+      <label for="dateDropdown">Select Date:</label>
+      <select
+        id="dateDropdown"
+        [(ngModel)]="selectedDate"
+        (change)="onDateSelect($event)"
+      >
+        <option *ngFor="let day of availableDays" [value]="day.date">
+          {{ day.date }} ({{ day.dayOfWeek }})
+        </option>
+      </select>
+    </div>
+
+    <!-- Table to display revenue data -->
+    <div class="table-container">
+      <table class="revenue-table">
+        <thead>
+          <tr>
+            <th rowspan="2">Total</th>
+            <th colspan="4">Paid</th>
+            <th rowspan="2">Remaining</th>
+          </tr>
+          <tr>
+            <th>Cash</th>
+            <th>Visa</th>
+            <th>Wallet</th>
+            <th>Instapay</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Display message if no data is available -->
+          <tr *ngIf="appointments.length === 0">
+            <td colspan="8" class="no-data">
+              <div class="no-data-message">
+                <i class="fas fa-calendar-times"></i>
+                <p>No revenue data found for the selected date.</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Display data if available -->
+          <tr *ngFor="let appointment of appointments; let rowIndex = index">
+            <td>{{ (appointment.cash || 0) + (appointment.visa || 0) + (appointment.wallet || 0) + (appointment.instapay || 0) }}</td>
+            <td>{{ appointment.cash || 0 }}</td>
+            <td>{{ appointment.visa || 0 }}</td>
+            <td>{{ appointment.wallet || 0 }}</td>
+            <td>{{ appointment.instapay || 0 }}</td>
+            <td>{{ appointment.remaining || 0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,75 +1,116 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { SHeaderComponent } from '../s-header/s-header.component';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SideNavbarComponent } from '../../patient/side-navbar/side-navbar.component';
-import { DoctorService } from '../../../services/doctor.service';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+
+import { SHeaderComponent } from '../s-header/s-header.component';
+import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
+import { DoctorService } from '../../../services/doctor.service';
+import { UserService } from '../../../services/user.service';
+import { ServiceOfDoctor } from '../../../services/doctorService.service';
 
 @Component({
   selector: 'app-service-setting',
-   imports: [
-      CommonModule,
-      RouterModule,
-      SHeaderComponent,
-      SideNavbarComponent,
-      FormsModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    SHeaderComponent,
+    SSidenavbarComponent,
+    FormsModule
+  ],
   templateUrl: './service-setting.component.html',
   styleUrl: './service-setting.component.css'
 })
 export class ServiceSettingComponent implements OnInit {
   doctorServices: any[] = [];
   availableServices: any[] = [];
-  selectedServices: any[] = [];
   isModalOpen: boolean = false;
 
-  constructor(private doctorService: DoctorService) {}
+  constructor(
+    private serivicesOfDoctor: ServiceOfDoctor,
+    private doctorService: DoctorService,
+    private userService: UserService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadDoctorServices();
-    this.loadAvailableServices();
   }
 
   loadDoctorServices() {
-    this.doctorService.getDoctorServices().subscribe((data) => {
-      this.doctorServices = data;
-    });
-  }
-
-  loadAvailableServices() {
-    this.doctorService.getAvailableServices().subscribe((data) => {
-      this.availableServices = data;
-    });
+    const user = this.userService.getUser();
+    if (user && user.data.doctorId) {
+      this.serivicesOfDoctor.getServicesByDoctorId(user.data.doctorId).subscribe((response) => {
+        this.doctorServices = response.data;
+      });
+    }
   }
 
   openServiceModal() {
-    this.isModalOpen = true;
+    const user = this.userService.getUser();
+    if (user && user.data.specializationId) {
+      this.serivicesOfDoctor.getServicesBySpecializationId(user.data.specializationId).subscribe(
+        (response) => {
+          this.availableServices = response.data.map((service: any) => ({
+            ...service,
+            price: null,
+            doctorAvgDurationForServiceInMinutes: null
+          }));
+          this.isModalOpen = true;
+        },
+        (error) => {
+          console.error('Error fetching available services:', error);
+          this.toastr.error('Failed to fetch available services.', 'Error');
+        }
+      );
+    } else {
+      console.error('Specialization ID is missing in user data.');
+      this.toastr.error('Specialization ID is missing.', 'Error');
+    }
   }
 
   closeServiceModal() {
     this.isModalOpen = false;
-    this.selectedServices = [];
   }
 
-  toggleServiceSelection(service: any) {
-    const index = this.selectedServices.indexOf(service);
-    if (index === -1) {
-      this.selectedServices.push(service);
-    } else {
-      this.selectedServices.splice(index, 1);
+  validateAndAddService(service: any) {
+    if (!service.price || !service.doctorAvgDurationForServiceInMinutes) {
+      this.toastr.warning('Please fill all fields.', 'Warning');
+      return;
     }
+    this.addService(service);
   }
 
-  saveSelectedServices() {
-    const newServices = this.selectedServices.map(service => ({
-      serviceId: service.id,
-      price: service.price
-    }));
+  addService(service: any) {
+    const user = this.userService.getUser();
+    if (!user || !user.data.doctorId) {
+      console.error('Doctor ID is missing in user data.');
+      this.toastr.error('Doctor ID is missing.', 'Error');
+      return;
+    }
 
-    this.doctorService.addDoctorServices(newServices).subscribe(() => {
-      this.loadDoctorServices();
-      this.closeServiceModal();
-    });
+    const requestBody = {
+      doctorPriceForService: service.price || 0,
+      doctorAvgDurationForServiceInMinutes: service.doctorAvgDurationForServiceInMinutes || 0,
+      specializationServiceId: service.id,
+      doctorId: user.data.doctorId
+    };
+
+    this.serivicesOfDoctor.assignServiceToDoctor(requestBody).subscribe(
+      (response) => {
+        if (response.message === 'This service is already assigned to you.') {
+          this.toastr.warning(response.message, 'Warning');
+        } else {
+          this.toastr.success('Service added successfully.', 'Success');
+          this.loadDoctorServices();
+          this.closeServiceModal();
+        }
+      },
+      (error) => {
+        console.error('Error assigning service to doctor:', error);
+        this.toastr.info('This service is already assigned to you.', 'Info');
+      }
+    );
   }
 }

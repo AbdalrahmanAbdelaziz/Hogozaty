@@ -1,5 +1,5 @@
 <app-s-header></app-s-header>
-<app-side-navbar></app-side-navbar>
+<app-s-sidenavbar></app-s-sidenavbar>
 
 <div class="container">
   <h2>Manage Time Slots</h2>
@@ -10,7 +10,7 @@
     <label for="day">Select a Day:</label>
     <select id="day" formControlName="selectedDay">
       <option *ngFor="let day of weekDays" [value]="day.date">
-        {{ day.day }} 
+        {{ day.day }} ({{ day.date }})
       </option>
     </select>
 

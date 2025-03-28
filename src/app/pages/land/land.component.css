@@ -8,12 +8,14 @@ body, html {
     height: 100%;
     width: 100%;
     overflow: hidden; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .landing-page {
     display: flex;
     flex-direction: column;
     height: 100%; 
+    background-color: #1a1a1a; /* Dark background for a modern look */
 }
 
 .left-button, .right-button {
@@ -41,7 +43,7 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: cover; 
-    filter: brightness(25%);
+    filter: brightness(40%); /* Slightly brighter for better visibility */
 }
 
 .hero-text {
@@ -116,6 +118,7 @@ body, html {
     align-items: center;
     z-index: 10;
     font-size: 1rem;
+    background-color: transparent
 }
 
 .navbar .left-button, .navbar .right-button {
@@ -151,15 +154,58 @@ body, html {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .hero-text h1 {
-        font-size: 2.5em;
+        font-size: 2em; /* Smaller font size for mobile */
     }
 
     .hero-text p {
-        font-size: 1.3em;
+        font-size: 1em; /* Smaller font size for mobile */
     }
 
     .hero-text button {
-        padding: 12px 25px;
-        font-size: 1em;
+        padding: 10px 20px; /* Smaller padding for mobile */
+        font-size: 0.9em; /* Smaller font size for mobile */
+    }
+
+    .navbar {
+        padding: 15px 20px; /* Smaller padding for mobile */
+    }
+
+    .logo-image {
+        height: 50px; /* Smaller logo for mobile */
+        width: 120px; /* Smaller logo for mobile */
+    }
+
+    .navbar button {
+        padding: 8px 15px; /* Smaller padding for mobile */
+        font-size: 0.9em; /* Smaller font size for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 1.8em; /* Even smaller font size for very small screens */
+    }
+
+    .hero-text p {
+        font-size: 0.9em; /* Even smaller font size for very small screens */
+    }
+
+    .hero-text button {
+        padding: 8px 15px; /* Even smaller padding for very small screens */
+        font-size: 0.8em; /* Even smaller font size for very small screens */
+    }
+
+    .navbar {
+        padding: 10px 15px; /* Even smaller padding for very small screens */
+    }
+
+    .logo-image {
+        height: 40px; /* Even smaller logo for very small screens */
+        width: 100px; /* Even smaller logo for very small screens */
+    }
+
+    .navbar button {
+        padding: 6px 12px; /* Even smaller padding for very small screens */
+        font-size: 0.8em; /* Even smaller font size for very small screens */
     }
 }

@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.isSubmitted = true;
 
     if (this.loginForm.invalid) {
-      this.toastr.error('Please enter valid credentials');
+      this.toastr.warning("Please complete all required fields.", "Incomplete Data");
       return;
     }
 

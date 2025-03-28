@@ -1,13 +1,17 @@
 import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DarkModeService } from '../../services/dark-mode.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-info',
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './info.component.html',
   styleUrl: './info.component.css'
 })
 export class InfoComponent implements OnInit{
+  isDarkMode = false;
 
 
 
@@ -24,6 +28,9 @@ export class InfoComponent implements OnInit{
       section.classList.add('show');
     });
   }
+
+ 
+
 }
 
   // sections: HTMLElement[] = [];

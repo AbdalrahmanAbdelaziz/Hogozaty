@@ -1,0 +1,38 @@
+<!-- Conditional Header -->
+<ng-container *ngIf="patient?.data?.applicationRole_En === 'Patient'; else secretaryHeader">
+  <app-s-header></app-s-header>
+</ng-container>
+<ng-template #secretaryHeader>
+  <app-s-header></app-s-header>
+</ng-template>
+
+<div class="navbar-spacer"></div>
+
+<!-- Conditional Sidebar -->
+<ng-container *ngIf="patient?.data?.applicationRole_En === 'Patient'; else secretarySidebar">
+  <app-s-sidenavbar></app-s-sidenavbar>
+</ng-container>
+<ng-template #secretarySidebar>
+  <app-s-sidenavbar></app-s-sidenavbar>
+</ng-template>
+
+<div class="content">
+  <div class="days-wrapper">
+    <h2 class="title">Select an Appointment Date</h2>
+
+    <!-- Show when there are available dates -->
+    <div *ngIf="availableDays.length > 0; else noAppointments" class="days-grid">
+      <button *ngFor="let day of availableDays" (click)="goToDayAppointments(day)" class="day-card">
+        <span class="date">{{ day | date: 'dd MMM yyyy' }}</span>
+        <span class="day-name">{{ day | date: 'EEEE' }}</span>
+      </button>
+    </div>
+
+    <!-- Template for No Available Appointments -->
+    <ng-template #noAppointments>
+      <div class="no-appointments">
+        <p>No available appointments at the moment.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

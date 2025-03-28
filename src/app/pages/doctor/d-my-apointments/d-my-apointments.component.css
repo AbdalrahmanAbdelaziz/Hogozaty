@@ -1,0 +1,149 @@
+/* General Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+  color: #165B40;
+}
+
+/* Appointment Container */
+.appointment-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+}
+
+/* Title */
+.appointment-container h2 {
+  text-align: center;
+  color: #165B40;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Dropdown Styling */
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dropdown-container label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #165B40;
+  margin-right: 10px;
+}
+
+.dropdown-container select {
+  padding: 12px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #165B40;
+  background: #fff;
+  color: #165B40;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+/* Table Styling */
+.appointment-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-table thead {
+  background: #165B40;
+  color: white;
+  font-size: 1rem;
+}
+
+.appointment-table th, .appointment-table td {
+  padding: 16px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.appointment-table tbody tr:hover {
+  background: rgba(22, 91, 64, 0.1);
+  transition: 0.3s ease-in-out;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  margin: 5px;
+}
+
+/* Button Colors */
+.btn-arrived {
+  background: #24CC81;
+  color: white;
+}
+
+.btn-next {
+  background: #1E90FF;
+  color: white;
+}
+
+.btn-progress {
+  background: #FFA500;
+  color: white;
+}
+
+.btn-processed {
+  background: #D32F2F;
+  color: white;
+}
+
+.btn-reschedule {
+  background: #FFA500;
+  color: white;
+}
+
+.btn-cancel {
+  background: #B71C1C;
+  color: white;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .appointment-container {
+      padding: 20px;
+  }
+
+  .dropdown-container {
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  .appointment-table th, .appointment-table td {
+      font-size: 0.9rem;
+      padding: 12px;
+  }
+
+  .btn {
+      font-size: 0.85rem;
+      padding: 8px 12px;
+  }
+}

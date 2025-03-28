@@ -1,5 +1,5 @@
 <app-s-header></app-s-header>
-<app-side-navbar></app-side-navbar>
+<app-s-sidenavbar></app-s-sidenavbar>
 
 <div class="container">
   <h2>Manage Services</h2>
@@ -9,13 +9,15 @@
     <thead>
       <tr>
         <th>Service Name</th>
-        <th>Price</th>
+        <th>Description</th>
+        <th>Duration (Minutes)</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let service of doctorServices">
-        <td>{{ service.name }}</td>
-        <td>{{ service.price }} EGP</td>
+        <td>{{ service.serviceName }}</td>
+        <td>{{ service.serviceDescription }}</td>
+        <td>{{ service.avgDurationInMinutes }}</td>
       </tr>
     </tbody>
   </table>
@@ -26,31 +28,36 @@
   <!-- Service Modal -->
   <div class="modal" *ngIf="isModalOpen">
     <div class="modal-content">
+      <!-- Close Button (X) -->
+      <button class="close-btn" (click)="closeServiceModal()">
+        <span class="close-icon">&times;</span>
+      </button>
       <h3>Select Services to Add</h3>
       <ul>
         <li *ngFor="let service of availableServices">
+          <!-- Service Name -->
+          <label class="service-name">
+            {{ service.serviceName }}
+          </label>
+          <!-- Price Input -->
           <label>
-            <input 
-              type="checkbox" 
-              [value]="service" 
-              (change)="toggleServiceSelection(service)"
-            /> 
-            {{ service.name }}
-          </label>
-          <label *ngIf="selectedServices.includes(service)" for="price-{{ service.id }}">
             Enter Price:
-            <input 
-              id="price-{{ service.id }}" 
-              type="number" 
-              placeholder="Enter price in USD" 
-              [(ngModel)]="service.price" 
-              min="0" 
-              title="Enter price for the selected service"
-            />
+            <input type="number" placeholder="Price (EGP)" [(ngModel)]="service.price" min="0" />
           </label>
+          <!-- Duration Input -->
+          <label>
+            Enter Duration (Minutes):
+            <input type="number" placeholder="Duration (min)" [(ngModel)]="service.doctorAvgDurationForServiceInMinutes" min="0" />
+          </label>
+          <!-- Add Button -->
+          <button
+            class="add-btn"
+            (click)="validateAndAddService(service)"
+          >
+            Add
+          </button>
         </li>
       </ul>
-      <button class="save-btn" (click)="saveSelectedServices()">Save</button>
       <button class="cancel-btn" (click)="closeServiceModal()">Cancel</button>
     </div>
   </div>

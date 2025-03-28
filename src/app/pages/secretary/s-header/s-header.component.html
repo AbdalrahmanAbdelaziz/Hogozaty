@@ -1,33 +1,36 @@
 <div class="navbar">
     <div class="logo-container">
-      <img src="vv.png" alt="HOGOZATY Logo" class="logo-image">
+        <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image">
     </div>
-    <ul class="nav-links">
-      <li>
-        <a routerLink="/secretary-home">
-          <i class="fas fa-home"></i> Home
-        </a>
-      </li>
-      <li>
-
-        <a routerLink="/my-appointment">
-          <i class="fas fa-calendar-check"></i> Appointments
-        </a>
-      </li>
-      <li>
-
+    <ul class="nav-links" [class.active]="menuOpen">
         <li>
-            <a routerLink="/revenue">
-              <i class="fas fa-dollar-sign"></i> Today's revenue
+            <a routerLink="/secretary-home">
+                <i class="fas fa-home"></i> Home
             </a>
         </li>
-          
-
-      <li class="menu-container">
-        <a routerLink="/p-profile">
-          <i class="fas fa-user"></i> {{ patient.data.firstName | titlecase }}
-        </a>
-      </li>
+        <li>
+            <a routerLink="/my-appointment">
+                <i class="fas fa-calendar-check"></i> Appointments
+            </a>
+        </li>
+        <li>
+            <a routerLink="/revenues">
+                <i class="fas fa-dollar-sign"></i> Today's revenue
+            </a>
+        </li>
+        <li class="menu-container">
+            <a routerLink="/s-profile">
+                <i class="fas fa-user"></i> {{ patient.data.firstName | titlecase }}
+            </a>
+        </li>
+        <li>
+            <a (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </li>
     </ul>
+    <!-- Hamburger Icon for Mobile -->
+    <div class="menu-toggle" (click)="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
   </div>
-  

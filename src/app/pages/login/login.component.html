@@ -1,9 +1,23 @@
 <div class="bg-img">
   <div class="overlay"></div>
+  <div class="cover-image">
+    <img src="www.jpg" alt="Cover Image" class="full-cover">
+  </div>
+  <!-- <header class="navbar">
+    <div class="logo-container">
+        <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image">
+    </div>
 
+    <div class="right-button">
+        <button routerLink="/login">Login</button>
+        <button routerLink="/register">Register</button>
+    </div>
+  </header> -->
+
+  <div class="navbar-spacer"></div>
 
   <div class="content">
-    <img src="vv.png" alt="Logo" class="logo" routerLink="/" />
+    <img src="vv_b.png" alt="Logo" class="logo" routerLink="/" />
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
       <div class="field">
         <span class="fa fa-user"></span>

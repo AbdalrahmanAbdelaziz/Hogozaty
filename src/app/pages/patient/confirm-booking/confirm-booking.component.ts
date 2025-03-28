@@ -42,7 +42,6 @@ export class ConfirmBookingComponent implements OnInit {
   notes: string = ''; // Stores user input for notes
   BASE_URL = BASE_URL;
 
-
   constructor(
     private doctorService: DoctorService,
     private specializationService: SpecializationService,
@@ -52,17 +51,16 @@ export class ConfirmBookingComponent implements OnInit {
     private appointmentService: AppointmentService,
     private clinicService: ClinicService,
     private toastr: ToastrService // ✅ Inject ToastrService
-
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
+      console.log("Received Query Params:", params); // Log the received query parameters
       const doctorId = Number(params['doctorId']);
       const timeSlotId = Number(params['slotId']);
   
       if (doctorId) {
-        console.log("Query Params:", this.activatedRoute.snapshot.queryParams);
-
+        console.log("Fetching details for Doctor ID:", doctorId); // Log the doctorId being used
         this.getDoctorDetails(doctorId);
       }
       if (timeSlotId) {
@@ -76,97 +74,63 @@ export class ConfirmBookingComponent implements OnInit {
       }
     });
   }
-  
+
   getClinicDetails(clinicId: number) {
     this.clinicService.getClinicById(clinicId).subscribe(
-      (response: APIResponse<Clinic>) =>{
+      (response: APIResponse<Clinic>) => {
         this.clinic = response.data;
       }
-    )
+    );
   }
 
   getTimeSlotDetails(timeSlotId: number) {
     this.appointmentService.getTimeSlotById(timeSlotId).subscribe(
-      (response: APIResponse<TimeSlot>) =>{
+      (response: APIResponse<TimeSlot>) => {
         this.selectedTimeSlot = response.data;
       }
-    )
-  }
-
-
-  getDoctorDetails(doctorId: number): void {          
-    this.doctorService.getDoctorsByOptionalParams({ id: doctorId }).subscribe(
-      (response: APIResponse<Doctor[]>) => {
-        var doctors = response.data;
-        if (doctors.length > 0) {
-          
-          this.selectedDoctor = doctors[0];  // Set doctor data
-          this.specializationService.getSpecializationById(this.selectedDoctor.specializationId).subscribe((name) => {
-            this.specialization = name;
-            // this.specializations.push({ id, name });
-          });       
-          this.getClinicDetails(this.selectedDoctor.clinicId);
-
-        } else {
-          console.warn("No doctor found for ID:", doctorId);
-        }
-      },
-      (error) => {
-        console.error("Error loading doctor details:", error);
-      }
     );
   }
-  
 
-  loadDoctors(): void {
-    this.doctorService.getTopDoctors().subscribe((data) => {
-      this.doctors = data;
-      this.filteredDoctors = data;
-      
 
-      // Fetch specializations
-      const uniqueSpecializationIds = [...new Set(data.map((doctor) => doctor.specializationId))];
+  getDoctorDetails(doctorId: number): void {
+  console.log("Fetching details for Doctor ID:", doctorId); // Log the doctorId being used
 
-      // Retrieve specialization names
-      uniqueSpecializationIds.forEach((id) => {
-        this.specializationService.getSpecializationById(id).subscribe((name) => {
-          this.specializations.push({ id, name });
+  // Prepare the request body as expected by the backend
+  const requestBody = {
+    doctorId: doctorId, // Include the doctorId
+  };
+
+  this.doctorService.getDoctorsByOptionalParams(requestBody).subscribe(
+    (response: APIResponse<Doctor[]>) => {
+      const doctors = response.data;
+      if (doctors.length > 0) {
+        this.selectedDoctor = doctors[0];
+        console.log("Selected Doctor:", this.selectedDoctor); // Log the selected doctor
+        this.specializationService.getSpecializationById(this.selectedDoctor.specializationId).subscribe((name) => {
+          this.specialization = name;
         });
-      });
-    });
-  }
-
-
-
-  getSpecializationName(id: number): string {
-    const spec = this.specializations.find((s) => s.id === id);
-    return spec ? spec.name : 'Unknown';
-  }
-
-  
-  filterDoctors(specialization: string): void {
-    this.selectedSpecialization = specialization;
-    this.filteredDoctors = this.doctors.filter((doctor) =>
-      this.getSpecializationName(doctor.specializationId) === specialization
-    );
-  }
-
-  
-
-  
-  
-  
-
-  
-
-
+        this.getClinicDetails(this.selectedDoctor.clinicId);
+      } else {
+        console.warn("No doctor found for ID:", doctorId);
+      }
+    },
+    (error) => {
+      console.error("Error loading doctor details:", error);
+    }
+  );
+}
 
   confirmBooking(): void {
     if (!this.selectedDoctor || !this.selectedTimeSlot || !this.clinic || !this.patient) {
       this.toastr.error("Missing required booking information.", "Booking Failed");
       return;
     }
-  
+
+    if (!this.selectedTimeSlot.id || !this.clinic.id || !this.selectedDoctor.id || !this.patient.data.id) {
+      this.toastr.error("Invalid appointment details. Please try again.", "Booking Failed");
+      return;
+    }
+
     const bookingData: Appointment = {
       notes: this.notes,
       timeSlotId: this.selectedTimeSlot.id,
@@ -174,17 +138,17 @@ export class ConfirmBookingComponent implements OnInit {
       doctorId: this.selectedDoctor.id,
       patientID: this.patient.data.id
     };
-  
+
+    console.log("Booking Data:", bookingData); // Log the payload
+
     this.appointmentService.createAppointment(bookingData).subscribe(
       response => {
         this.toastr.success("Your appointment has been booked successfully!");
-        // this.router.navigate(['/appointments']);
+        this.router.navigate(['/patient-home']);
       },
       error => {
         this.toastr.error("An error occurred while booking. Please try again.");
       }
     );
   }
-  
-  
 }

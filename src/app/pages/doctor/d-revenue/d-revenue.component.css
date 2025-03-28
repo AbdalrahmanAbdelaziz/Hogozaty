@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* No Data Message */
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-style: italic;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.no-data-message i {
+  font-size: 2.5rem;
+  color: #165B40;
+}
+
+.no-data-message p {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.main-content {
+  padding: 20px;
+  margin-top: 100px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+h2 {
+  color: #165B40;
+  margin-bottom: 20px;
+  font-size: 2.5rem; /* Bigger font size */
+  text-align: center; /* Center the title */
+}
+
+.dropdown-container {
+  margin-bottom: 20px;
+  text-align: center; /* Center the dropdown container */
+}
+
+.dropdown-container label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.dropdown-container select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  font-size: 1rem;
+  width: 200px; /* Optional: Set a fixed width for the dropdown */
+  text-align: center; /* Center the text inside the dropdown */
+}
+
+
+.table-container {
+  overflow-x: auto;
+  padding: 20px;
+}
+
+.revenue-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 1rem;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.revenue-table th,
+.revenue-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+}
+
+.revenue-table th {
+  background-color: #165B40;
+  color: #fff;
+  font-weight: bold;
+}
+
+.revenue-table th[rowspan] {
+  vertical-align: middle;
+}
+
+.revenue-table tbody tr:hover {
+  background-color: rgba(22, 91, 64, 0.1);
+}
+
+.revenue-table tbody tr:nth-child(even) {
+  background-color: #f4f4f4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .revenue-table {
+    font-size: 0.9rem;
+  }
+
+  .revenue-table th,
+  .revenue-table td {
+    padding: 8px;
+  }
+
+  .table-container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .revenue-table {
+    font-size: 0.8rem;
+  }
+
+  .revenue-table th,
+  .revenue-table td {
+    padding: 6px;
+  }
+}

@@ -1,0 +1,64 @@
+<app-d-header></app-d-header>
+<app-d-sidenavbar></app-d-sidenavbar>
+
+<div class="container">
+  <h2>Manage Services</h2>
+
+  <!-- Services Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Service Name</th>
+        <th>Description</th>
+        <th>Duration (Minutes)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let service of doctorServices">
+        <td>{{ service.serviceName }}</td>
+        <td>{{ service.serviceDescription }}</td>
+        <td>{{ service.avgDurationInMinutes }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add New Service Button -->
+  <button class="add-btn" (click)="openServiceModal()">+ Add Service</button>
+
+  <!-- Service Modal -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <!-- Close Button (X) -->
+      <button class="close-btn" (click)="closeServiceModal()">
+        <span class="close-icon">&times;</span>
+      </button>
+      <h3>Select Services to Add</h3>
+      <ul>
+        <li *ngFor="let service of availableServices">
+          <!-- Service Name -->
+          <label class="service-name">
+            {{ service.serviceName }}
+          </label>
+          <!-- Price Input -->
+          <label>
+            Enter Price:
+            <input type="number" placeholder="Price (EGP)" [(ngModel)]="service.price" min="0" />
+          </label>
+          <!-- Duration Input -->
+          <label>
+            Enter Duration (Minutes):
+            <input type="number" placeholder="Duration (min)" [(ngModel)]="service.doctorAvgDurationForServiceInMinutes" min="0" />
+          </label>
+          <!-- Add Button -->
+          <button
+            class="add-btn"
+            (click)="validateAndAddService(service)"
+          >
+            Add
+          </button>
+        </li>
+      </ul>
+      <button class="cancel-btn" (click)="closeServiceModal()">Cancel</button>
+    </div>
+  </div>
+</div>

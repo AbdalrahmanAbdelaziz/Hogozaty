@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Appointment, TimeSlot } from '../shared/models/appointment.model';
 import { BASE_URL } from '../shared/constants/urls';
 import { APIResponse } from '../shared/models/api-response.dto';
+import { AppointmentStats } from '../shared/models/appointment-stats.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,90 +22,121 @@ export class AppointmentService {
     return this.http.post(`${this.baseUrl}/api/TimeSlot/GetWorkingDaysOfDoctor`, requestBody);
   }
 
+  getAllDays(docId: number, numberOfRequiredDays: number): Observable<any> {
+    const requestBody = { docId, numberOfRequiredDays };
+    return this.http.post(`${this.baseUrl}/api/TimeSlot/GetAllWorkingDaysOfDoctor`, requestBody);
+  }
+
   getTimeSlotsByDate(date: string, doctorId: number): Observable<any> {
     const body = { doctorId, date };
     return this.http.post(`${this.baseUrl}/api/TimeSlot/GetDoctorSlots`, body);
   }
   
-     getTimeSlotById(timeSlotId: number): Observable<APIResponse<TimeSlot>> {
-      return this.http.get<APIResponse<TimeSlot>>(`${this.baseUrl}/api/TimeSlot/GetByIdAsync/${timeSlotId}`);
-     }
-    
-
-     createAppointment(appointmentData: any): Observable<any> {
-      return this.http.post(`${this.baseUrl}/api/Appointment/createAppointment`, appointmentData);
-    }
-    
-  
-
-    getAppointments(patientId: number): Observable<any> {
-      const requestBody = {
-        appointmentId: 0,
-        doctorId: 0,
-        doctortFirstName: "",
-        doctorLastName: "",
-        clinicId: 0,
-        specializationId: 0,
-        status: "",
-        patientId: patientId // Pass the patient ID here
-      };
-    
-      return this.http.post(`${this.baseUrl}/api/Appointment/SearchForAppointmentsByOptionalParams`, requestBody);
-    }
-    
-    
-
-
-
-  cancelAppointment(appointmentId: number): Observable<any> {
-    return this.http.put(`${this.baseUrl}/api/Appointment/cancelAppointment/${appointmentId}`, {});
+  getTimeSlotById(timeSlotId: number): Observable<APIResponse<TimeSlot>> {
+    return this.http.get<APIResponse<TimeSlot>>(`${this.baseUrl}/api/TimeSlot/GetByIdAsync/${timeSlotId}`);
   }
   
+  createAppointment(appointmentData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/createAppointment`, appointmentData);
+  }
+  
+  getAppointments(patientId: number): Observable<any> {
+    const requestBody = {
+      appointmentId: null,
+      doctorId: null,
+      doctortFirstName: null,
+      doctorLastName: null,
+      clinicId: null,
+      specializationId: null,
+      status: null,
+      patientId: patientId 
+    };
+  
+    return this.http.post(`${this.baseUrl}/api/Appointment/SearchForAppointmentsByOptionalParams`, requestBody);
+  }
+  
+  cancelAppointment(appointmentId: number): Observable<any> {
+    const url = `${this.baseUrl}/api/Appointment/cancelAppointment/${appointmentId}`;
+    return this.http.post(url, {}); // Use POST method with an empty body
+  }
 
+  ////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
+  getAppointmentStats(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/Appointment/getAppointmentStats`);
+  }
 
+  reserveAppointment(appointmentData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/appointments/book`, appointmentData);
+  }
 
-getAppointmentStats(): Observable<any> {
-  return this.http.get(`${this.baseUrl}/api/Appointment/getAppointmentStats`);
-}
+  rescheduleAppointment(data: { appointmentId: number, newTimeSlotId: number }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/rescheduleSingleAppointment`, data);
+  }
 
-reserveAppointment(appointmentData: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/appointments/book`, appointmentData);
-}
+  makeAppointmentArrived(appointmentId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/makeAppointmentArrived/${appointmentId}`, {});
+  }
 
+  makeAppointmentNextInQueue(appointmentId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/makeAppointmentNextInQueue/${appointmentId}`, {});
+  }
 
-rescheduleAppointment(appointmentId: number, newDate: string): Observable<void> {
-  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/reschedule`, { newDate });
-}
+  makeAppointmentInProgress(appointmentId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/startProgressingTheAppointment/${appointmentId}`, {});
+  }
 
+  makeAppointmentProcessed(appointmentId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/makeAppointmentProccessed/${appointmentId}`, {});
+  }
 
-getAppointmentsByDate(date: string): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}?date=${date}`);
-}
+  getAppointmentReceipt(appointmentId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/Appointment/getAppointmentReceipt/${appointmentId}`);
+  }
 
-markArrived(appointmentId: number): Observable<void> {
-  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/arrived`, {});
-}
+  getAppointmentById(appointmentId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/Appointment/getAppointment/${appointmentId}`);
+  }
 
-markCheckIn(appointmentId: number): Observable<void> {
-  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/checkin`, {});
-}
+  getDoctorDayAppointmentsCount(docId: number, date: string): Observable<AppointmentStats> {
+    const requestBody = { docId, date };
+    return this.http.post<AppointmentStats>(`${this.baseUrl}/api/Doctor/getDoctorDayAppointmentsCount`, requestBody);
+  }
 
-markDone(appointmentId: number): Observable<void> {
-  return this.http.patch<void>(`${this.baseUrl}/${appointmentId}/done`, {});
-}
+  searchAppointmentsByOptionalParams(doctorId: number): Observable<any> {
+    const requestBody = {
+      appointmentId: null,
+      doctorId: doctorId, 
+      doctortFirstName: null,
+      doctorLastName: null,
+      clinicId: null,
+      specializationId: null,
+      status: null,
+      patientId: null,
+    };
 
+    return this.http.post(`${this.baseUrl}/api/Appointment/SearchForAppointmentsByOptionalParams`, requestBody);
+  }
 
-getDoctorDayAppointmentsCount(docId: number, date: string): Observable<any> {
-  const requestBody = { docId, date };
-  return this.http.post(`${this.baseUrl}/api/Doctor/getDoctorDayAppointmentsCount`, requestBody);
-}
+  getAppointmentServices(appointmentId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/Appointment/GetAppointmentServices/${appointmentId}`);
+  }
 
+  // New method to add service to appointment
+  addServiceToAppointment(serviceId: number, appointmentId: number, price: number): Observable<any> {
+    const requestBody = {
+      servieId: serviceId,
+      appointmentId: appointmentId,
+      price: price
+    };
+    return this.http.post(`${this.baseUrl}/api/Appointment/addServiceForAppointment`, requestBody);
+  }
 
+  submitPayment(paymentData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/SubmitPayment`, paymentData);
+  }
 
-
-
-
-
+  getRevenueData(doctorId: number, date: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/Revenue/GetRevenueData?doctorId=${doctorId}&date=${date}`);
+  }
 }

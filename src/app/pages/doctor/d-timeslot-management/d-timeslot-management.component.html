@@ -1,0 +1,36 @@
+<app-d-header></app-d-header>
+<app-d-sidenavbar></app-d-sidenavbar>
+
+<div class="container">
+  <h2>Manage Time Slots</h2>
+
+  <form [formGroup]="timeSlotForm" (ngSubmit)="onSubmit()">
+    <!-- Select Day -->
+    <label for="day">Select a Day:</label>
+    <select id="day" formControlName="selectedDay">
+      <option *ngFor="let day of weekDays" [value]="day.date">
+        {{ day.day }} ({{ day.date }})
+      </option>
+    </select>
+
+    <!-- Working Hours -->
+    <div class="time-container">
+      <label for="from">Working From:</label>
+      <input type="time" id="from" formControlName="workingFrom" required />
+
+      <label for="to">Working To:</label>
+      <input type="time" id="to" formControlName="workingTo" required />
+    </div>
+
+    <!-- Slot Interval -->
+    <label for="interval">Slot Interval (mins):</label>
+    <input type="number" id="interval" formControlName="slotInterval" min="1" />
+
+    <!-- Repeat Weeks -->
+    <label for="repeat">Repeat for How Many Weeks:</label>
+    <input type="number" id="repeat" formControlName="repeatWeeks" min="1" />
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="timeSlotForm.invalid">Submit</button>
+  </form>
+</div>

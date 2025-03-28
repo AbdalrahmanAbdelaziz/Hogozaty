@@ -1,23 +1,36 @@
 /* Most Chosen Doctors Section */
 .most-chosen-doctors {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 30px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 15px;
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 40px;
+    background: #24CC81;
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
     text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 /* Section Title */
 .most-chosen-doctors h2 {
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 700;
     color: white;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    letter-spacing: -0.5px;
+    position: relative;
+    display: inline-block;
+}
+
+.most-chosen-doctors h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: #165B40;
+    border-radius: 2px;
 }
 
 /* Specialization Tags */
@@ -25,71 +38,76 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 25px;
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
 .specialization-tags span {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 10px 18px;
-    border-radius: 20px;
+    background: #165B40;
+    padding: 12px 24px;
+    border-radius: 30px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
-    color: #1B5E20;
+    color: white;
     transition: all 0.3s ease-in-out;
     border: 2px solid transparent;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .specialization-tags span:hover,
 .specialization-tags .active {
-    background: #24CC81;
-    color: white;
-    border-color: #24CC81;
-    transform: scale(1.08);
-    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.3);
+    background: #24CC3D;
+    color: black;
+    border-color: #24CC3D;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(36, 204, 129, 0.3);
 }
 
 /* Doctor List */
 .doctor-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr); /* Two columns with equal width */
+    gap: 40px; /* Increased gap between cards */
     justify-content: center;
 }
 
+/* Doctor Card - Professional Design */
 /* Doctor Card - Professional Design */
 .doctor-card {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 360px;
-    height: 110px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    width: 80%;
+    height: 150px; /* Slightly increased height for better spacing */
+    padding: 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     cursor: pointer;
+    overflow: hidden;
 }
 
 .doctor-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* Doctor Image */
 .doctor-img {
-    width: 70px;
-    height: 70px;
+    width: 90px; /* Slightly larger image */
+    height: 90px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #1B5E20;
-    margin-right: 15px;
+    border: 3px solid #165B40;
+    margin-right: 25px; /* Increased margin for better spacing */
+    transition: transform 0.3s ease-in-out;
+}
+
+.doctor-card:hover .doctor-img {
+    transform: scale(1.1);
 }
 
 /* Doctor Info */
@@ -98,32 +116,33 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 5px;
+    gap: 10px; /* Increased gap for better spacing */
 }
 
 .doctor-info h3 {
     margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-    color: black;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    font-size: 20px; /* Larger font size for name */
+    font-weight: 700;
+    color: #1B5E20;
+    letter-spacing: -0.5px;
 }
 
 /* Doctor Details */
 .doctor-info p {
     margin: 0;
-    font-size: 13px;
-    color: #333;
+    font-size: 14px;
+    color: #555;
     opacity: 0.9;
     display: flex;
     align-items: center;
     font-weight: 500;
-    gap: 6px;
+    gap: 8px;
 }
 
 /* Icons */
 .doctor-info p i {
-    color: #24CC81;
+    color: #165B40;
+    font-size: 16px;
 }
 
 /* Star Rating */
@@ -132,21 +151,38 @@
     align-items: center;
     font-size: 14px;
     color: #FFD700;
-    gap: 4px;
+    gap: 6px;
 }
 
 .star-rating i {
-    font-size: 15px;
+    font-size: 16px;
 }
 
 /* Number Rating */
 .rating-number {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
-    color: #333;
+    color: #555;
     opacity: 0.9;
 }
 
+/* Additional Professional Enhancements */
+.doctor-info p.specialization {
+    font-size: 15px; /* Slightly larger font size for specialization */
+    font-weight: 600;
+    color: #333;
+}
+
+.doctor-info p.location {
+    font-size: 14px;
+    color: #777; /* Subtle color for location */
+}
+
+.doctor-info p.rating {
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .doctor-list {
@@ -156,7 +192,16 @@
     }
 
     .doctor-card {
-        width: 95%;
-        max-width: 360px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .most-chosen-doctors h2 {
+        font-size: 28px;
+    }
+
+    .specialization-tags span {
+        padding: 10px 20px;
+        font-size: 13px;
     }
 }

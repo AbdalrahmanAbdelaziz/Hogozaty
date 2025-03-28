@@ -20,12 +20,13 @@ export interface LoginResponse {
     governorate_Ar: string;
     district_En: string;
     district_Ar: string;
-    accountStatus_En: string;
+    accountStatus_En: string; 
     accountStatus_Ar: string;
     applicationRole_En: string;
     applicationRole_Ar: string;
     applicationRole_ID: number;
     doctorId: number | null;
+    specializationId: number | null;
   };
   statusCode: number;
   succeeded: boolean;

@@ -1,0 +1,72 @@
+<div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal-content">
+    <h3>Checkout</h3>
+
+    <!-- Services Table -->
+    <table class="services-table">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of services">
+          <td>{{ service.name }}</td>
+          <td>${{ service.price.toFixed(2) }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th>${{ totalPrice.toFixed(2) }}</th>
+        </tr>
+      </tfoot>
+    </table>
+
+    <!-- Payment Form -->
+    <form (ngSubmit)="onSubmit()" class="payment-form">
+      <div class="payment-methods">
+        <label>Select Payment Method:</label>
+        <div class="payment-icons">
+          <div
+            *ngFor="let method of paymentMethods"
+            [class.active]="paymentMethod === method.name"
+            (click)="onPaymentMethodChange(method.name)"
+          >
+            <i [class]="method.icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="paidAmount">Amount Paid:</label>
+        <input
+          type="number"
+          id="paidAmount"
+          [(ngModel)]="paidAmount"
+          name="paidAmount"
+          (input)="calculateRemainingAmount()"
+          min="0"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="remainingAmount">Remaining Amount:</label>
+        <input
+          type="text"
+          id="remainingAmount"
+          [(ngModel)]="remainingAmount"
+          name="remainingAmount"
+          disabled
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Confirm Payment</button>
+      </div>
+    </form>
+  </div>
+</div>

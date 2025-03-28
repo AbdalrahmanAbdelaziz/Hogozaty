@@ -18,6 +18,8 @@ export class DoctorAppointmentsComponent implements OnInit {
   availableDays: string[] = [];
   docId!: number;
   specializationId!: number;
+  isReschedule = false;
+  appointmentId!: number;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -33,25 +35,26 @@ export class DoctorAppointmentsComponent implements OnInit {
       }
     });
 
-    // Get the doctor ID and specialization ID from route parameters
+    // Get parameters and query params
     this.route.paramMap.subscribe(params => {
-      const id = params.get('docId');
-      const specialization = params.get('specializationId');
+      this.docId = +params.get('docId')!;
+      this.specializationId = +params.get('specializationId')!;
 
-      if (id) {
-        this.docId = +id;
-      } else {
-        console.error('Doctor ID is missing');
-      }
-
-      if (specialization) {
-        this.specializationId = +specialization;
-      } else {
-        console.error('Specialization ID is missing');
-      }
+      if (!this.docId) console.error('Doctor ID is missing');
+      if (!this.specializationId) console.error('Specialization ID is missing');
 
       if (this.docId) {
         this.loadAvailableDays();
+      }
+    });
+
+    // Handle rescheduling params
+    this.route.queryParams.subscribe(params => {
+      this.isReschedule = params['isReschedule'] === 'true';
+      this.appointmentId = +params['appointmentId'] || -1;
+
+      if (this.isReschedule) {
+        console.log(`Rescheduling Appointment ID: ${this.appointmentId}`);
       }
     });
   }
@@ -61,7 +64,7 @@ export class DoctorAppointmentsComponent implements OnInit {
 
     this.appointmentService.getAvailableDays(this.docId, numberOfRequiredDays).subscribe(
       (response) => {
-        this.availableDays = response.data.workingDays || []; // Ensure it's always an array
+        this.availableDays = response.data.workingDays || [];
       },
       (error) => {
         console.error('Error loading available days:', error);
@@ -71,7 +74,9 @@ export class DoctorAppointmentsComponent implements OnInit {
 
   goToDayAppointments(selectedDate: string): void {
     if (this.docId && this.specializationId) {
-      this.router.navigate(['/appointments', this.docId, this.specializationId, selectedDate]);
+      this.router.navigate(['/appointments', this.docId, this.specializationId, selectedDate], {
+        queryParams: this.isReschedule ? { isReschedule: true, appointmentId: this.appointmentId } : {}
+      });
     } else {
       console.error('Doctor ID or Specialization ID is not available.');
     }

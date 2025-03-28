@@ -1,103 +1,144 @@
 /* Container Layout */
 .container {
-    max-width: 600px;
-    margin: 100px auto; /* Centering the form */
+  max-width: 600px;
+  margin: 100px auto; /* Centering the form */
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95); /* Slightly opaque white */
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+}
+
+/* Form Title */
+.container h2 {
+  font-size: 2.2rem;
+  font-weight: 600; /* Semi-bold */
+  color: black; 
+  margin-bottom: 30px;
+  letter-spacing: -0.5px; /* Slightly tighter letter spacing */
+}
+
+/* Input Fields */
+label {
+  display: block;
+  text-align: left;
+  font-size: 1rem;
+  color: #1A9A63; /* Dark gray-blue */
+  margin-bottom: 8px;
+  font-weight: 500; /* Medium weight */
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dfe6e9; /* Light gray border */
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #ffffff; /* Pure white */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 20px; /* Space between fields */
+}
+
+input:focus,
+select:focus {
+  border-color: #24CC81; /* Bright blue for focus */
+  box-shadow: 0 0 8px rgba(52, 219, 88, 0.3); /* Glow effect */
+}
+
+/* Submit Button */
+button {
+  background: #24CC81; /* Bright blue */
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 100%;
+  font-weight: 600; /* Semi-bold */
+}
+
+button:hover {
+  background: #1A9A63; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight lift */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(0); /* Reset lift on click */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Toast Messages */
+.toast-success {
+  background-color: #27ae60 !important; /* Green */
+  color: white !important;
+}
+
+.toast-error {
+  background-color: #e74c3c !important; /* Red */
+  color: white !important;
+}
+
+.toast-warning {
+  background-color: #f39c12 !important; /* Orange */
+  color: black !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
     padding: 30px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-    text-align: center;
-  }
-  
-  /* Form Title */
-  .container h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: white;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-    margin-bottom: 20px;
-  }
-  
-  /* Input Fields */
-  label {
-    display: block;
-    text-align: left;
-    font-size: 1.1rem;
-    color: white;
-    margin-bottom: 5px;
-  }
-  
-  input,
-  select {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    outline: none;
-    transition: all 0.3s ease;
-  }
-  
-  input:focus,
-  select:focus {
-    border: 2px solid #1B5E20;
-    background: white;
-  }
-  
-  /* Dropdown */
-  select {
-    cursor: pointer;
-  }
-  
-  /* Submit Button */
-  button {
-    background: #1A9A63;
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
-    width: 100%;
-  }
-  
-  button:hover {
-    background: #157a50;
-    transform: scale(1.05);
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .container {
-      width: 90%;
-      padding: 20px;
-    }
-  
-    button {
-      font-size: 1rem;
-    }
   }
 
-  .toast-success {
-    background-color: #28a745 !important;
-    color: white !important;
+  .container h2 {
+    font-size: 1.8rem;
   }
-  
-  .toast-error {
-    background-color: #dc3545 !important;
-    color: white !important;
+
+  button {
+    font-size: 1rem;
+    padding: 12px 18px;
   }
-  
-  .toast-warning {
-    background-color: #ffc107 !important;
-    color: black !important;
+}
+
+/* Additional Enhancements */
+.container {
+  animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover Effects for Inputs */
+input:hover,
+select:hover {
+  border-color: #24CC81; /* Bright blue on hover */
+}
+
+/* Placeholder Styling */
+input::placeholder {
+  color: #95a5a6; /* Light gray */
+  opacity: 1; /* Ensure full opacity */
+}
+
+/* Focus State for Labels */
+input:focus + label,
+select:focus + label {
+  color: #24CC81; /* Bright blue for focused labels */
+}
