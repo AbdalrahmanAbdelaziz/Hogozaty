@@ -5,22 +5,26 @@
   <h2>Manage Services</h2>
 
   <!-- Services Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>Service Name</th>
-        <th>Description</th>
-        <th>Duration (Minutes)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let service of doctorServices">
-        <td>{{ service.serviceName }}</td>
-        <td>{{ service.serviceDescription }}</td>
-        <td>{{ service.avgDurationInMinutes }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Service Name</th>
+          <th>Price</th>
+          <th>Description</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let service of doctorServices">
+          <td data-label="Service Name">{{ service.serviceName }}</td>
+          <td data-label="Price">{{ service.servicePrice }} EGP</td>
+          <td data-label="Description">{{ service.serviceDescription }}</td>
+          <td data-label="Duration">{{ service.avgDurationInMinutes }} min</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Add New Service Button -->
   <button class="add-btn" (click)="openServiceModal()">+ Add Service</button>
@@ -33,31 +37,32 @@
         <span class="close-icon">&times;</span>
       </button>
       <h3>Select Services to Add</h3>
-      <ul>
-        <li *ngFor="let service of availableServices">
-          <!-- Service Name -->
-          <label class="service-name">
-            {{ service.serviceName }}
-          </label>
-          <!-- Price Input -->
-          <label>
-            Enter Price:
-            <input type="number" placeholder="Price (EGP)" [(ngModel)]="service.price" min="0" />
-          </label>
-          <!-- Duration Input -->
-          <label>
-            Enter Duration (Minutes):
-            <input type="number" placeholder="Duration (min)" [(ngModel)]="service.doctorAvgDurationForServiceInMinutes" min="0" />
-          </label>
+      <div class="services-list">
+        <div class="service-item" *ngFor="let service of availableServices">
+          <div class="service-header">
+            <label class="service-name">
+              {{ service.serviceName }}
+            </label>
+            <p class="service-description">{{ service.serviceDescription }}</p>
+          </div>
+          <div class="service-inputs">
+            <!-- Price Input -->
+            <div class="input-group">
+              <label>Price (EGP)</label>
+              <input type="number" placeholder="0.00" [(ngModel)]="service.price" min="0" step="0.01" />
+            </div>
+            <!-- Duration Input -->
+            <div class="input-group">
+              <label>Duration (minutes)</label>
+              <input type="number" placeholder="0" [(ngModel)]="service.doctorAvgDurationForServiceInMinutes" min="0" />
+            </div>
+          </div>
           <!-- Add Button -->
-          <button
-            class="add-btn"
-            (click)="validateAndAddService(service)"
-          >
-            Add
+          <button class="add-btn" (click)="validateAndAddService(service)">
+            Add Service
           </button>
-        </li>
-      </ul>
+        </div>
+      </div>
       <button class="cancel-btn" (click)="closeServiceModal()">Cancel</button>
     </div>
   </div>

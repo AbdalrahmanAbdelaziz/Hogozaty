@@ -1,71 +1,168 @@
-<div class="modal-overlay" *ngIf="isVisible">
+<div class="modal-overlay" *ngIf="isVisible && appointmentData">
   <div class="modal-content">
-    <h3>Checkout</h3>
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <div class="spinner"></div>
+      <p class="loading-text">Processing your request...</p>
+    </div>
 
-    <!-- Services Table -->
-    <table class="services-table">
-      <thead>
-        <tr>
-          <th>Service</th>
-          <th>Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let service of services">
-          <td>{{ service.name }}</td>
-          <td>${{ service.price.toFixed(2) }}</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>Total</th>
-          <th>${{ totalPrice.toFixed(2) }}</th>
-        </tr>
-      </tfoot>
-    </table>
+    <!-- Receipt Content for PDF -->
+    <div #receiptContent class="receipt-content">
+      <div class="receipt-header">
+        <!-- <img src="assets/images/logo.png" alt="Clinic Logo" class="logo"> -->
+        <h3 class="receipt-title">Appointment Receipt</h3>
+        <p class="receipt-subtitle">Transaction #{{appointmentId}}</p>
+      </div>
 
-    <!-- Payment Form -->
-    <form (ngSubmit)="onSubmit()" class="payment-form">
-      <div class="payment-methods">
-        <label>Select Payment Method:</label>
-        <div class="payment-icons">
-          <div
-            *ngFor="let method of paymentMethods"
-            [class.active]="paymentMethod === method.name"
-            (click)="onPaymentMethodChange(method.name)"
-          >
-            <i [class]="method.icon"></i>
+      <!-- Appointment Info -->
+      <div class="appointment-info">
+        <div class="info-section">
+          <h4 class="section-title">Appointment Details</h4>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Patient:</span>
+              <span class="value">{{ appointmentData.patientName }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Doctor:</span>
+              <span class="value">{{ appointmentData.doctorName }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Date:</span>
+              <span class="value">{{ appointmentData.timeSlot.date | date:'mediumDate' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Time:</span>
+              <span class="value">{{ appointmentData.timeSlot.startTime | slice:0:5 }} - {{ appointmentData.timeSlot.endTime | slice:0:5 }}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="paidAmount">Amount Paid:</label>
-        <input
-          type="number"
-          id="paidAmount"
-          [(ngModel)]="paidAmount"
-          name="paidAmount"
-          (input)="calculateRemainingAmount()"
-          min="0"
-          required
-        />
+      <!-- Services Table -->
+      <div class="services-section">
+        <h4 class="section-title">Services Rendered</h4>
+        <div class="table-container">
+          <table class="services-table" *ngIf="receiptServices.length > 0">
+            <thead>
+              <tr>
+                <th class="service-name">Service</th>
+                <th class="service-desc">Description</th>
+                <th class="service-duration">Duration</th>
+                <th class="service-price">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let service of receiptServices">
+                <td class="service-name">{{ service.serviceName || 'N/A' }}</td>
+                <td class="service-desc">{{ service.serviceDescription || 'No description' }}</td>
+                <td class="service-duration">{{ service.avgDurationInMinutes }} mins</td>
+                <td class="service-price">${{ (service.singleServicePriceForAppointment || 0).toFixed(2) }}</td>
+              </tr>
+              <tr class="check-price-row">
+                <td colspan="3" class="check-price-label">Doctor Consultation Fee</td>
+                <td class="check-price-value">${{ (appointmentData.checkPrice || 0).toFixed(2) }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="total-label">Total Amount Due</td>
+                <td class="total-value">${{ (appointmentData.totalPrice || 0).toFixed(2) }}</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div *ngIf="receiptServices.length === 0" class="no-services">
+            <p>No services were recorded for this appointment</p>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="remainingAmount">Remaining Amount:</label>
-        <input
-          type="text"
-          id="remainingAmount"
-          [(ngModel)]="remainingAmount"
-          name="remainingAmount"
-          disabled
-        />
+      <!-- Payment Summary -->
+      <div class="payment-summary">
+        <h4 class="section-title">Payment Summary</h4>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="label">Total Price:</span>
+            <span class="value">${{ (appointmentData.totalPrice || 0).toFixed(2) }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">Amount Paid:</span>
+            <span class="value">${{ calculateTotalPaid().toFixed(2) }}</span>
+          </div>
+          <div class="summary-item remaining">
+            <span class="label">Remaining Balance:</span>
+            <span class="value">${{ (appointmentData.remainingToPay || 0).toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="receipt-footer">
+        <p>Thank you for choosing our clinic</p>
+        <!-- <p class="contact-info">For any inquiries, please contact: info@clinic.com</p> -->
+      </div>
+    </div>
+
+    <!-- Payment Form -->
+    <form (ngSubmit)="onSubmit()" class="payment-form" *ngIf="!isLoading">
+      <div class="form-section">
+        <h4 class="section-title">Complete Payment</h4>
+        
+        <div class="payment-methods">
+          <label class="methods-label">Select Payment Method:</label>
+          <div class="payment-options">
+            <div *ngFor="let method of paymentMethods"
+                 [class.active]="paymentMethod === method.name"
+                 (click)="onPaymentMethodChange(method.name)"
+                 class="payment-option">
+              <div class="option-icon">
+                <i [class]="method.icon"></i>
+              </div>
+              <span class="option-label">{{method.displayName}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="amount-input">
+          <label for="paidAmount">Payment Amount ($)</label>
+          <div class="input-group">
+            <span class="currency-symbol">$</span>
+            <input type="number"
+                   id="paidAmount"
+                   [(ngModel)]="paidAmount"
+                   name="paidAmount"
+                   min="0"
+                   [max]="appointmentData.remainingToPay"
+                   step="0.01"
+                   placeholder="0.00"
+                   required
+                   class="amount-field">
+          </div>
+          <div class="amount-hint" *ngIf="appointmentData.remainingToPay > 0">
+            Maximum payable amount: ${{ appointmentData.remainingToPay.toFixed(2) }}
+          </div>
+        </div>
       </div>
 
       <div class="form-actions">
-        <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
-        <button type="submit" class="btn btn-primary">Confirm Payment</button>
+        <button type="button" 
+                class="btn btn-secondary" 
+                (click)="onClose()" 
+                [disabled]="isLoading">
+          Cancel
+        </button>
+        <button type="button" 
+                class="btn btn-pdf" 
+                (click)="generatePDF()" 
+                [disabled]="isLoading || isGeneratingPDF">
+          <i class="fa-solid fa-file-pdf"></i> 
+          {{ isGeneratingPDF ? 'Generating PDF...' : 'Download Receipt' }}
+        </button>
+        <button type="submit" 
+                class="btn btn-primary" 
+                [disabled]="isLoading || !paymentMethod || paidAmount <= 0">
+          <i class="fa-solid fa-credit-card"></i>
+          {{ isLoading ? 'Processing...' : 'Confirm Payment' }}
+        </button>
       </div>
     </form>
   </div>

@@ -1,39 +1,62 @@
-<div class="s-home-container">
+<div class="dashboard-container">
   <app-s-header></app-s-header>
 
-  <div class="main-content">
+  <div class="dashboard-layout">
     <app-s-sidenavbar></app-s-sidenavbar>
 
-    <div class="chart-container">
-      <h2 class="chart-title">Appointment Status</h2>
-      
-      <!-- Pie Chart Section -->
-      <div *ngIf="hasAppointmentData; else noDataMessage" class="hide-legend-title">
-        <ngx-charts-pie-chart 
-          [view]="view" 
-          [results]="pieChartData" 
-          [legend]="true" 
-          [labels]="true" 
-          [doughnut]="isDoughnut"
-          (select)="onSelect($event)">
-        </ngx-charts-pie-chart>
-      </div>
-    
-      <!-- No Data Message -->
-      <ng-template #noDataMessage>
-        <div class="no-data-message">
-          <p>No appointments scheduled for today</p>
+    <main class="dashboard-content">
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h2 class="card-title">Appointment Status</h2>
+          <div class="card-actions">
+          </div>
         </div>
-      </ng-template>
+        
+        <!-- Data Visualization Section -->
+        <div *ngIf="hasAppointmentData; else noDataMessage" class="data-visualization">
+          <div class="chart-wrapper">
+            <ngx-charts-pie-chart 
+              [view]="view" 
+              [results]="pieChartData" 
+              [legend]="true" 
+              [labels]="true"
+              [doughnut]="true"
+              (select)="onSelect($event)">
+            </ngx-charts-pie-chart>
+          </div>
+        </div>
       
-      <!-- Navigation Buttons Section -->
-      <div class="button-container">
-        <button class="nav-button" routerLink="/new-patient">Phone Reserve</button>
-        <button class="nav-button" routerLink="/walkin-reserve">Walk-in Reserve</button>
-        <button class="nav-button" routerLink="/service-settings">Service Settings</button>
-        <button class="nav-button" routerLink="/timeslot-management">Timeslot Management</button>
-        <button class="nav-button" routerLink="/patients">Patients</button> 
+        <!-- No Data State -->
+        <ng-template #noDataMessage>
+          <div class="no-data-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Appointments Today</h3>
+            <p>You currently have no scheduled appointments</p>
+            <button class="action-button" routerLink="/new-patient">
+              <i class="fas fa-plus"></i> Create New Appointment
+            </button>
+          </div>
+        </ng-template>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="action-button" routerLink="/new-patient">
+            <i class="fas fa-phone"></i> Phone Reserve
+          </button>
+          <button class="action-button" routerLink="/walkin-reserve">
+            <i class="fas fa-user-clock"></i> Walk-in Reserve
+          </button>
+          <button class="action-button" routerLink="/service-settings">
+            <i class="fas fa-cog"></i> Service Settings
+          </button>
+          <button class="action-button" routerLink="/timeslot-management">
+            <i class="fas fa-calendar-alt"></i> Timeslot Management
+          </button>
+          <button class="action-button" routerLink="/patients">
+            <i class="fas fa-users"></i> Patients
+          </button> 
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>

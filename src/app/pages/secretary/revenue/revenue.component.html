@@ -1,3 +1,4 @@
+<!-- revenue.component.html -->
 <app-s-header></app-s-header>
 <app-s-sidenavbar></app-s-sidenavbar>
 
@@ -28,6 +29,7 @@
             <th rowspan="2">Total</th>
             <th colspan="4">Paid</th>
             <th rowspan="2">Remaining</th>
+            <th rowspan="2">Actions</th>
           </tr>
           <tr>
             <th>Cash</th>
@@ -39,7 +41,7 @@
         <tbody>
           <!-- Display message if no data is available -->
           <tr *ngIf="appointments.length === 0">
-            <td colspan="9" class="no-data">
+            <td colspan="10" class="no-data">
               <div class="no-data-message">
                 <i class="fas fa-calendar-times"></i>
                 <p>No revenue data found for the selected date.</p>
@@ -51,15 +53,31 @@
           <tr *ngFor="let appointment of appointments; let rowIndex = index">
             <td>{{ rowIndex + 1 }}</td>
             <td>{{ appointment.patientName }}</td>
-            <td>{{ appointment.total || 0 }}</td>
-            <td>{{ appointment.cash || 0 }}</td>
-            <td>{{ appointment.wallet || 0 }}</td>
-            <td>{{ appointment.instapay || 0 }}</td>
-            <td>{{ appointment.visa || 0 }}</td>
-            <td>{{ appointment.remaining || 0 }}</td>
+            <td>{{ appointment.totalPrice || 0 }}</td>
+            <td>{{ appointment.paidCash || 0 }}</td>
+            <td>{{ appointment.paidWallet || 0 }}</td>
+            <td>{{ appointment.paidInstapay || 0 }}</td>
+            <td>{{ appointment.paidVisa || 0 }}</td>
+            <td>{{ getRemainingToPay(appointment) }}</td>
+            <td>
+              <button 
+                *ngIf="hasRemainingPayment(appointment)" 
+                class="btn-pay-remaining"
+                (click)="openCheckoutModal(appointment)"
+              >
+                Pay Remaining
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
+
+<!-- Checkout Modal -->
+<app-checkout-modal
+  [isVisible]="isCheckoutModalVisible"
+  [appointmentId]="selectedAppointmentId"
+  (closed)="closeCheckoutModal()"
+></app-checkout-modal>

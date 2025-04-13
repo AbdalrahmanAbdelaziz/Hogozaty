@@ -1,3 +1,4 @@
+// revenue.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -8,11 +9,19 @@ import { AppointmentService } from '../../../services/appointment.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../services/user.service';
 import { Appointment } from '../../../shared/models/appointment.model';
+import { CheckoutModalComponent } from '../checkout-modal/checkout-modal.component';
 
 @Component({
   selector: 'app-revenue',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SHeaderComponent, SSidenavbarComponent],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    FormsModule, 
+    SHeaderComponent, 
+    SSidenavbarComponent,
+    CheckoutModalComponent
+  ],
   templateUrl: './revenue.component.html',
   styleUrls: ['./revenue.component.css'],
 })
@@ -22,6 +31,8 @@ export class RevenueComponent implements OnInit {
   appointments: Appointment[] = [];
   doctorId!: number;
   userRole: string | null = null;
+  isCheckoutModalVisible: boolean = false;
+  selectedAppointmentId: number = 0; // Initialize with default value
 
   constructor(
     private appointmentService: AppointmentService,
@@ -38,6 +49,31 @@ export class RevenueComponent implements OnInit {
     } else {
       this.toastr.error('No doctor ID found for the secretary.', 'Error');
     }
+  }
+
+  // Helper method to safely get remaining payment
+  getRemainingToPay(appointment: Appointment): number {
+    return appointment.remainingToPay ?? 0;
+  }
+
+  // Check if there's remaining payment
+  hasRemainingPayment(appointment: Appointment): boolean {
+    return (appointment.remainingToPay ?? 0) > 0;
+  }
+
+  openCheckoutModal(appointment: Appointment): void {
+    if (appointment.id) {
+      this.selectedAppointmentId = appointment.id;
+      this.isCheckoutModalVisible = true;
+    } else {
+      this.toastr.error('Invalid appointment selected', 'Error');
+    }
+  }
+
+  closeCheckoutModal(): void {
+    this.isCheckoutModalVisible = false;
+    this.selectedAppointmentId = 0;
+    this.fetchAppointmentsForDate(this.selectedDate);
   }
 
   fetchAvailableDays(): void {
@@ -65,7 +101,7 @@ export class RevenueComponent implements OnInit {
     this.appointmentService.searchAppointmentsByOptionalParams(this.doctorId).subscribe({
       next: (response: any) => {
         this.appointments = (response.data || []).filter((appointment: Appointment) => {
-          return appointment.timeSlot?.date === date; // Filter by timeSlot.date
+          return appointment.timeSlot?.date === date;
         });
       },
       error: (error) => {

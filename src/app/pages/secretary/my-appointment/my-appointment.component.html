@@ -12,39 +12,49 @@
     </select>
   </div>
 
-  <table class="appointment-table">
-    <thead>
-      <tr>
-        <th>Patient Name</th>
-        <th>Time Slot</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let appointment of appointments">
-        <td>{{ appointment.patientName }}</td>
-        <td>{{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</td>
-        <td class="actions">
-          <!-- Buttons for each state -->
-          <ng-container *ngIf="appointment.appointmentStatus_En === 'UpComing'">
-            <button class="btn btn-arrived" (click)="markAsArrived(appointment.id)">Arrived</button>
-            <button class="btn btn-reschedule" (click)="reschedule(appointment.id, doctorId)">Reschedule</button>
-            <button class="btn btn-cancel" (click)="openCancelModal(appointment.id)">Cancel</button>
-          </ng-container>
-          <ng-container *ngIf="appointment.appointmentStatus_En === 'Arrived'">
-            <button class="btn btn-next" (click)="markAsNextInQueue(appointment.id)">Next in Queue</button>
-          </ng-container>
-          <ng-container *ngIf="appointment.appointmentStatus_En === 'NextInQueue'">
-            <!-- Disable the "In Progress" button for NextInQueue status -->
-            <button class="btn btn-progress" (click)="markAsInProgress(appointment.id)" [disabled]="appointment.appointmentStatus_En === 'NextInQueue'">In Progress</button>
-          </ng-container>
-          <ng-container *ngIf="appointment.appointmentStatus_En === 'InProgress'">
-            <button class="btn btn-processed" (click)="markAsProcessed(appointment.id)">Processed</button>
-          </ng-container>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="appointments && appointments.length > 0; else emptyState">
+    <table class="appointment-table">
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Time Slot</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of appointments">
+          <td>{{ appointment.patientName }}</td>
+          <td>{{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</td>
+          <td class="actions">
+            <!-- Buttons for each state -->
+            <ng-container *ngIf="appointment.appointmentStatus_En === 'UpComing'">
+              <button class="btn btn-arrived" (click)="markAsArrived(appointment.id)">Arrived</button>
+              <button class="btn btn-reschedule" (click)="reschedule(appointment.id, doctorId)">Reschedule</button>
+              <button class="btn btn-cancel" (click)="openCancelModal(appointment.id)">Cancel</button>
+            </ng-container>
+            <ng-container *ngIf="appointment.appointmentStatus_En === 'Arrived'">
+              <button class="btn btn-next" (click)="markAsNextInQueue(appointment.id)">Next in Queue</button>
+            </ng-container>
+            <ng-container *ngIf="appointment.appointmentStatus_En === 'NextInQueue'">
+              <button class="btn btn-progress" (click)="markAsInProgress(appointment.id)" [disabled]="appointment.appointmentStatus_En === 'NextInQueue'">In Progress</button>
+            </ng-container>
+            <ng-container *ngIf="appointment.appointmentStatus_En === 'InProgress'">
+              <button class="btn btn-processed" (click)="markAsProcessed(appointment.id)">Processed</button>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="no-appointments">
+      <div class="empty-state">
+        <h3>No Appointments Scheduled</h3>
+        <p>There are no appointments booked for the selected date. Please check another day or enjoy your free time!</p>
+      </div>
+    </div>
+  </ng-template>
 </div>
 
 <!-- Cancel Confirmation Modal -->

@@ -3,10 +3,10 @@
   display: flex;
   flex-direction: row;
   gap: 20px;
-  padding-top: 100px; /* Ensures content starts below the navbar */
+  padding-top: 100px;
   min-height: 100vh;
+  background-color: #f5f7fa;
 }
-
 
 /* Modal Overlay */
 .modal-overlay {
@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Darker overlay for better focus */
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +32,7 @@
   max-height: 80vh;
   overflow-y: auto;
   padding: 25px;
-  animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -51,12 +51,14 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
 }
 
 .modal-header h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #165B40; 
+  color: #165B40;
   margin: 0;
 }
 
@@ -70,7 +72,7 @@
 }
 
 .close-btn:hover {
-  color: #D32F2F; /* Red on hover */
+  color: #D32F2F;
 }
 
 /* History Cards */
@@ -100,25 +102,25 @@
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #165B40; 
+  border: 3px solid #24CC81;
 }
 
 .history-card .doctor-info h3 {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #165B40; /* Dark green for the doctor's name */
+  color: #24CC81;
   margin: 0;
 }
 
 .history-card .doctor-info p {
   font-size: 1rem;
-  color: #555; /* Gray for the doctor's specialization */
+  color: #555;
   margin: 3px 0;
 }
 
 .history-card .clinic {
   font-size: 0.9rem;
-  color: #165B40; /* Green for the clinic name */
+  color: #24CC81;
   font-weight: 600;
 }
 
@@ -129,7 +131,7 @@
 }
 
 .history-card .status.done {
-  background: #165B40;
+  background: #24CC81;
   color: white;
   padding: 6px 12px;
   border-radius: 8px;
@@ -137,7 +139,7 @@
   margin-top: 10px;
 }
 
-/* Cancel Confirmation Modal */
+/* Cancel Confirmation Modal - UPDATED */
 .confirmation-modal {
   background: white;
   border-radius: 16px;
@@ -146,13 +148,13 @@
   max-width: 500px;
   padding: 25px;
   text-align: center;
-  animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .confirmation-modal .modal-header h2 {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #165B40;
+  color: #24CC81;
   margin-bottom: 15px;
 }
 
@@ -168,36 +170,36 @@
   gap: 15px;
 }
 
-.confirmation-modal .confirm-btn {
-  background: #24CC81; 
-  color: white;
-  padding: 10px 20px;
+.confirmation-modal .confirm-btn,
+.confirmation-modal .cancel-btn {
+  padding: 10px 25px;
+  font-size: 1rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
   font-weight: bold;
   border: none;
   transition: background 0.3s ease;
+  flex: 1;
+  max-width: 120px;
+}
+
+.confirmation-modal .confirm-btn {
+  background: #24CC81;
+  color: white;
 }
 
 .confirmation-modal .confirm-btn:hover {
-  background: #165B40;
+  background: #1A9A63
+  ;
 }
 
 .confirmation-modal .cancel-btn {
-  background: #D32F2F; /* Dark green for cancel */
+  background: #D32F2F;
   color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  transition: background 0.3s ease;
 }
 
 .confirmation-modal .cancel-btn:hover {
-  background:#B71C1C;  /* Green on hover */
+  background: #B71C1C;
 }
 
 /* Main Content */
@@ -205,27 +207,28 @@
   margin-left: 10px;
   flex-grow: 1;
   padding: 20px;
-  background: #ffffff; /* White background for main content */
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* Appointments Container */
 .appointment-container {
   max-width: 1200px;
   margin: auto;
-  padding: 20px;
+  padding: 25px;
   text-align: center;
-  background: #24CC81; 
+  background: #24CC81;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px; /* Add space between containers */
+  margin-bottom: 40px;
+  position: relative;
 }
 
 .appointment-container h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: white; /* Dark green for the heading */
+  color: white;
   margin-bottom: 2rem;
 }
 
@@ -234,16 +237,21 @@
   font-size: 1.2rem;
   color: white;
   margin-top: 2rem;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
 .no-appointments a {
-  color: black; /* Green for the link */
+  color: #FFD700;
   text-decoration: none;
   font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .no-appointments a:hover {
   text-decoration: underline;
+  color: white;
 }
 
 /* Appointment Grid */
@@ -256,19 +264,20 @@
 
 /* Appointment Card */
 .appointment-card {
-  background: #ffffff; /* White background for the cards */
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 0;
+  position: relative;
 }
 
 .appointment-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Card Header */
@@ -276,8 +285,9 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: #f9f9f9;
 }
 
 .card-header img {
@@ -285,222 +295,228 @@
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #165B40 ; /* Green border for the doctor image */
+  border: 3px solid #24CC81;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-info {
+  text-align: left;
+  flex: 1;
 }
 
 .doctor-info h3 {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #165B40; /* Dark green for the doctor's name */
-  margin: 0;
+  color: #24CC81;
+  margin: 0 0 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.doctor-info h3::before {
+  content: "👨‍⚕️";
+  margin-right: 8px;
+  font-size: 1.1rem;
 }
 
 .doctor-info p {
-  font-size: 1rem;
-  color: #555; /* Gray for the doctor's specialization */
+  font-size: 0.95rem;
+  color: #555;
   margin: 3px 0;
+  display: flex;
+  align-items: center;
+}
+
+.doctor-info p::before {
+  content: "🩺";
+  margin-right: 8px;
+  font-size: 0.9rem;
 }
 
 .clinic {
   font-size: 0.9rem;
-  color: #165B40; 
+  color: #24CC81;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
 }
 
-/* Card Body */
+.clinic::before {
+  content: "🏥";
+  margin-right: 8px;
+  font-size: 0.9rem;
+}
+
+/* Card Body - UPDATED status centering */
 .card-body {
-  margin-top: 15px;
+  padding: 20px;
   font-size: 1rem;
-  color: #555; /* Gray for the card body text */
+  color: #555;
+  text-align: left;
 }
 
 .card-body p {
-  margin: 8px 0;
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+}
+
+.card-body p strong {
+  min-width: 70px;
+  display: inline-block;
+  color: #333;
+}
+
+.card-body p::before {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.card-body p:nth-child(1)::before {
+  content: "📅";
+}
+
+.card-body p:nth-child(2)::before {
+  content: "⏰";
 }
 
 .status {
-  font-size: 1rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 15px 0 5px 0;
+  padding: 8px 15px;
+  font-size: 0.9rem;
   font-weight: bold;
-  padding: 6px 12px;
-  border-radius: 8px;
-  display: inline-block;
-  margin-top: 10px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.status::before {
+  margin-right: 8px;
+  font-size: 0.9rem;
 }
 
 .status.done {
-  background: #24CC81; /* Green for "Done" status */
+  background: #24CC81;
   color: white;
+}
+
+.status.done::before {
+  content: "✅";
 }
 
 .status.upcoming {
-  background: #FFA500; /* Orange for "Upcoming" status */
+  background: #FFA500;
   color: white;
 }
 
+.status.upcoming::before {
+  content: "⏳";
+}
+
 .status.in-progress {
-  background: #1E90FF; /* Blue for "In Progress" status */
+  background: #1E90FF;
   color: white;
+}
+
+.status.in-progress::before {
+  content: "🔄";
 }
 
 /* Card Footer */
 .card-footer {
-  margin-top: 15px;
+  margin-top: auto;
+  padding: 15px 20px;
   text-align: center;
   display: flex;
-  gap: 10px; /* Add space between buttons */
+  gap: 10px;
+  background: #f9f9f9;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .cancel-btn {
-  background: #D32F2F; /* Red for the cancel button */
+  background: #D32F2F;
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
-  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
   font-weight: bold;
   border: none;
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.cancel-btn::before {
+  /* content: "✖"; */
+  margin-right: 8px;
+  font-size: 1rem;
 }
 
 .cancel-btn:hover {
-  background: #B71C1C; /* Darker red on hover */
+  background: #B71C1C;
+  transform: translateY(-2px);
 }
 
 .reschedule-btn {
-  background: #FFA500; /* Dark green for the reschedule button */
+  background: #FFA500;
   color: white;
   padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
-  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
   font-weight: bold;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.reschedule-btn::before {
+  content: "↻";
+  margin-right: 8px;
+  font-size: 1rem;
 }
 
 .reschedule-btn:hover {
-  background: #FF7F50; /* Green on hover */
+  background: #FF7F50;
+  transform: translateY(-2px);
 }
 
 /* History Button */
 .history-btn {
-  background: #165B40; /* Dark green for the button */
+  background: #165B40;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   font-size: 1rem;
   font-weight: bold;
   border: none;
   margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.history-btn::before {
+  content: "🕒";
+  margin-right: 8px;
+  font-size: 1.1rem;
 }
 
 .history-btn:hover {
-  background: #24CC3D; /* Green on hover */
-}
-
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* History Modal */
-.history-modal {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 800px;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.modal-header h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #165B40;
-}
-
-.close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #555;
-}
-
-.close-btn:hover {
-  color: #D32F2F; /* Red on hover */
-}
-
-/* History Cards */
-.history-card {
-  background: #f9f9f9; /* Light gray background for history cards */
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.history-card .card-header img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #24CC81;
-}
-
-.history-card .doctor-info h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #165B40;
-  margin: 0;
-}
-
-.history-card .doctor-info p {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 3px 0;
-}
-
-.history-card .clinic {
-  font-size: 0.8rem;
-  color: #24CC81;
-  font-weight: 600;
-}
-
-.history-card .card-body {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.history-card .status.done {
-  background: #24CC81;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
-  display: inline-block;
-  margin-top: 10px;
+  background: #1A9A63;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Design */
@@ -530,11 +546,152 @@
   }
 
   .card-footer {
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 15px; /* Increase space between buttons */
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .cancel-btn {
-    margin-right: 0; /* Remove right margin on mobile */
+  .cancel-btn,
+  .reschedule-btn {
+    width: 100%;
   }
+
+  .appointment-container {
+    padding: 20px 15px;
+  }
+}
+
+/* Animation for buttons */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cancel-btn:hover,
+.reschedule-btn:hover,
+.history-btn:hover {
+  animation: pulse 0.5s ease;
+}
+
+/* Feedback Modal Styles */
+.feedback-modal {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  padding: 25px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.feedback-modal .modal-header {
+  margin-bottom: 20px;
+}
+
+.feedback-modal .modal-body {
+  margin-bottom: 20px;
+}
+
+.feedback-modal .modal-body p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.rating-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  font-size: 2rem;
+}
+
+.rating-container div {
+  cursor: pointer;
+  color: #ddd;
+  transition: color 0.2s;
+  margin: 0 5px;
+}
+
+.rating-container div.active {
+  color: #FFD700;
+}
+
+.rating-container div:hover {
+  color: #FFD700;
+}
+
+.form-group {
+  margin-top: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-btn {
+  background: #24CC81;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.submit-btn:hover {
+  background: #165B40;
+}
+
+/* History Card Rating Button */
+.history-card .rate-btn {
+  background: #24CC81;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.history-card .rate-btn:hover {
+  background: #165B40;
+}
+
+.rated-message {
+  color: #24CC81;
+  font-weight: bold;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rated-message i {
+  font-size: 1.2rem;
 }

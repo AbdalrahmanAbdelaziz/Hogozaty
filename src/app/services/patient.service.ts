@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../shared/constants/urls';
 import { LoginResponse } from '../shared/models/login-response';
+import { APIResponse } from '../shared/models/api-response.dto';
+import { Patient } from '../shared/models/patient';
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +23,8 @@ export class PatientService {
   }
 
   // Fetch patient details by ID
-  getPatientById(patientId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/Patient/getPatientById/${patientId}`);
+  getPatientById(patientId: number): Observable<APIResponse<Patient>> {
+    return this.http.get<APIResponse<Patient>>(`${this.apiUrl}/api/Patient/getPatientById/${patientId}`);
   }
 
   getMedicalRecordsByPatient(patientId: number): Observable<any> {

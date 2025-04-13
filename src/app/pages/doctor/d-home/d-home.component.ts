@@ -1,39 +1,40 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AppointmentService } from '../../../services/appointment.service';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { UserService } from '../../../services/user.service';
 import { Observable, take } from 'rxjs';
-import { AppointmentStats } from '../../../shared/models/appointment-stats.model';
-import { DHeaderComponent } from '../d-header/d-header.component';
+
 
 @Component({
   selector: 'app-d-home',
+  standalone: true,
   imports: [
-      CommonModule,
-      RouterModule,
-      DHeaderComponent,
-      DSidenavbarComponent,
-      NgxChartsModule,
-    ],
+    CommonModule,
+    RouterModule,
+    DHeaderComponent,
+    DSidenavbarComponent,
+    NgxChartsModule,
+    
+  ],
   templateUrl: './d-home.component.html',
-  styleUrl: './d-home.component.css'
+  styleUrls: ['./d-home.component.css']
 })
 export class DHomeComponent implements OnInit {
+ 
+
   view: [number, number] = [700, 400];
   colorScheme = {
-    domain: ['#FF5733', '#33FF57', '#3357FF'], 
+    domain: ['#24CC81', '#FF5733', '#3357FF'] // Green, Red, Blue
   };
   pieChartData: any[] = [];
-  showLegend = true;
-  showLabels = true;
-  isDoughnut = false;
   doctorId: number | null = null;
   todayDate: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
-  showNoDataMessage: boolean = false;
+  hasAppointmentData: boolean = false;
 
   constructor(
     private appointmentService: AppointmentService,
@@ -88,27 +89,33 @@ export class DHomeComponent implements OnInit {
         next: (response: any) => {
           console.log('API Response:', response);
 
-          // Check if all counts are zero
-          if (response.data.upcominAppointmentsCount === 0 && 
-              response.data.cancelledAppointmentsCount === 0 && 
-              response.data.completedAppointmentsCount === 0) {
-            this.showNoDataMessage = true;
-            this.pieChartData = [];
-          } else {
-            this.showNoDataMessage = false;
+          // Check if there are any appointments
+          const hasData = response.data.upcominAppointmentsCount > 0 || 
+                         response.data.cancelledAppointmentsCount > 0 || 
+                         response.data.completedAppointmentsCount > 0;
+          
+          this.hasAppointmentData = hasData;
+
+          if (hasData) {
             this.pieChartData = [
               { name: 'Upcoming', value: response.data.upcominAppointmentsCount },
               { name: 'Cancelled', value: response.data.cancelledAppointmentsCount },
-              { name: 'Completed', value: response.data.completedAppointmentsCount },
+              { name: 'Processed', value: response.data.completedAppointmentsCount },
             ];
+          } else {
+            this.pieChartData = [];
           }
-
-          console.log('Transformed Chart Data:', this.pieChartData);
         },
         error: (err) => {
           console.error('Error fetching appointment data:', err);
+          this.hasAppointmentData = false;
+          this.pieChartData = [];
         },
       });
+  }
+
+  refreshAppointments(): void {
+    this.loadAppointmentData();
   }
 
   onSelect(data: any): void {

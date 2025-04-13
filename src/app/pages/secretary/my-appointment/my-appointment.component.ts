@@ -11,6 +11,7 @@ import { ConfirmationModalComponent } from '../../../confirmation-modal/confirma
 import { CheckoutModalComponent } from '../checkout-modal/checkout-modal.component';
 import { Observable, interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { Appointment } from '../../../shared/models/appointment.model';
 
 @Component({
   selector: 'app-my-appointment',
@@ -32,12 +33,11 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
   selectedDate: string = '';
   appointments: any[] = [];
   doctorId!: number;
-  isCancelModalVisible: boolean = false;
+  isCancelModalOpen: boolean = false;
   isCheckoutModalVisible: boolean = false;
   appointmentToCancel: any = null;
   appointmentToCheckout: any = null;
   selectedAppointmentId: number | null = null;
-  isCancelModalOpen: boolean = false;
   private pollingSubscription!: Subscription;
 
   constructor(
@@ -66,7 +66,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
   }
 
   startPolling(): void {
-    this.pollingSubscription = interval(5000) // Poll every 5 seconds
+    this.pollingSubscription = interval(5000)
       .pipe(
         switchMap(() => this.appointmentService.searchAppointmentsByOptionalParams(this.doctorId))
       )
@@ -74,7 +74,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           this.appointments = (response.data || []).filter((appointment: any) => {
             return (
-              appointment.timeSlot.date === this.selectedDate &&
+              appointment.timeSlot?.date === this.selectedDate &&
               appointment.appointmentStatus_En !== 'Cancelled' &&
               appointment.appointmentStatus_En !== 'Proccessed'
             );
@@ -113,7 +113,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.appointments = (response.data || []).filter((appointment: any) => {
           return (
-            appointment.timeSlot.date === date &&
+            appointment.timeSlot?.date === date &&
             appointment.appointmentStatus_En !== 'Cancelled' &&
             appointment.appointmentStatus_En !== 'Proccessed'
           );
@@ -163,6 +163,27 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
     this.makeAppointmentProcessed(appointmentId).subscribe({
       next: () => {
         this.toastr.success('Appointment status updated to Processed');
+        
+        // Find and update the appointment in the current list
+        const processedAppointment = this.appointments.find(appt => appt.id === appointmentId);
+        if (processedAppointment) {
+          // Set the processed status
+          processedAppointment.appointmentStatus_En = 'Processed';
+          
+          // Fetch the updated appointment data before opening the modal
+          this.appointmentService.getAppointmentById(appointmentId).subscribe({
+            next: (response) => {
+              this.appointmentToCheckout = response.data;
+              this.isCheckoutModalVisible = true;
+              this.cdr.detectChanges();
+            },
+            error: (err) => {
+              this.toastr.error('Failed to fetch updated appointment data');
+            }
+          });
+        }
+        
+        // Refresh the appointments list
         this.fetchAppointmentsForDate(this.selectedDate);
       },
       error: (err) => {
@@ -203,15 +224,31 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
     }
   }
 
-  openCheckoutModal(appointment: any): void {
-    this.appointmentToCheckout = appointment;
-    this.isCheckoutModalVisible = true;
-  }
+
 
   closeCheckoutModal(): void {
     this.isCheckoutModalVisible = false;
     this.appointmentToCheckout = null;
+    this.fetchAppointmentsForDate(this.selectedDate);
   }
+
+  getRemainingToPay(appointment: Appointment): number {
+      return appointment.remainingToPay ?? 0;
+    }
+  
+    // Check if there's remaining payment
+    hasRemainingPayment(appointment: Appointment): boolean {
+      return (appointment.remainingToPay ?? 0) > 0;
+    }
+  
+    openCheckoutModal(appointment: Appointment): void {
+      if (appointment.id) {
+        this.selectedAppointmentId = appointment.id;
+        this.isCheckoutModalVisible = true;
+      } else {
+        this.toastr.error('Invalid appointment selected', 'Error');
+      }
+    }
 
   getAppointmentReceipt(appointmentId: number): void {
     this.appointmentService.getAppointmentReceipt(appointmentId).subscribe({

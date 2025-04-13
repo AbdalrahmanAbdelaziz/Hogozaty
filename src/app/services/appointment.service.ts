@@ -90,9 +90,7 @@ export class AppointmentService {
     return this.http.post(`${this.baseUrl}/api/Appointment/makeAppointmentProccessed/${appointmentId}`, {});
   }
 
-  getAppointmentReceipt(appointmentId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/api/Appointment/getAppointmentReceipt/${appointmentId}`);
-  }
+
 
   getAppointmentById(appointmentId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/Appointment/getAppointment/${appointmentId}`);
@@ -127,7 +125,7 @@ export class AppointmentService {
     const requestBody = {
       servieId: serviceId,
       appointmentId: appointmentId,
-      price: price
+      price: price,
     };
     return this.http.post(`${this.baseUrl}/api/Appointment/addServiceForAppointment`, requestBody);
   }
@@ -138,5 +136,18 @@ export class AppointmentService {
 
   getRevenueData(doctorId: number, date: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/Revenue/GetRevenueData?doctorId=${doctorId}&date=${date}`);
+  }
+
+  getAppointmentReceipt(appointmentId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/api/Appointment/getAppointmentReceipt/${appointmentId}`);
+  }
+
+  payAppointment(paymentData: {
+    paidCash: number;
+    paidInstapay: number;
+    paidWallet: number;
+    appointmentId: number;
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/api/Appointment/payAppointment`, paymentData);
   }
 }

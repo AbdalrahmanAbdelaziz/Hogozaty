@@ -20,6 +20,23 @@ export class InfoComponent implements OnInit{
 
   ngOnInit(): void {
     this.showSectionsImmediately();
+    this.checkScroll();
+  }
+  
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    this.checkScroll();
+  }
+
+  checkScroll() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+      const sectionTop = section.getBoundingClientRect().top;
+      if (sectionTop < window.innerHeight - 100) {
+        section.classList.add('show');
+      }
+    });
   }
 
   private showSectionsImmediately() {

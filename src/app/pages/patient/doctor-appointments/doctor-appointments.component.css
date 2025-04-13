@@ -24,7 +24,7 @@ body {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background-color: #165B40;
+  background-color: #24CC81;
 }
 
 /* ====== Title Styling ====== */
@@ -66,7 +66,7 @@ body {
 
 /* Hover Effect */
 .day-card:hover {
-  background: #24CC81;
+  background: #165B40;
   color: white;
   transform: translateY(-5px);
 }

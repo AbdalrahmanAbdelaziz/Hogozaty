@@ -1,0 +1,105 @@
+<app-admin-header></app-admin-header>
+
+<div class="clinics-container">
+  <div class="clinics-header">
+    <h1>Clinics Management</h1>
+    
+    <div class="controls-container">
+      <div class="search-filter-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search Clinics</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (input)="filterClinics()" placeholder="Search by name, email or phone">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <div class="filter-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <mat-select [(ngModel)]="selectedCountry" (selectionChange)="filterClinics()">
+              <mat-option value="">All Countries</mat-option>
+              <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Governorate</mat-label>
+            <mat-select [(ngModel)]="selectedGovernorate" (selectionChange)="filterClinics()">
+              <mat-option value="">All Governorates</mat-option>
+              <mat-option *ngFor="let governorate of governorates" [value]="governorate">{{governorate}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-stroked-button (click)="resetFilters()" class="reset-btn">
+            <mat-icon>refresh</mat-icon>
+            Reset Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- <button mat-raised-button color="primary" routerLink="/admin/new-clinic" class="add-btn">
+        <mat-icon>add</mat-icon>
+        Add New Clinic
+      </button> -->
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading clinics...</p>
+  </div>
+
+  <div *ngIf="!isLoading && filteredClinics.length === 0" class="no-results">
+    <mat-icon>search_off</mat-icon>
+    <h3>No clinics found</h3>
+    <p>Try adjusting your search or filters</p>
+  </div>
+
+  <div class="clinics-grid">
+    <mat-card *ngFor="let clinic of filteredClinics" class="clinic-card">
+      <div class="card-header">
+        <h2>{{clinic.name}}</h2>
+        <span class="location-badge">
+          <mat-icon>location_on</mat-icon>
+          {{clinic.district_En}}, {{clinic.governorate_En}}
+        </span>
+      </div>
+
+      <div class="card-content">
+        <div class="clinic-info">
+          <div class="info-item">
+            <mat-icon>email</mat-icon>
+            <span>{{clinic.email}}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>phone</mat-icon>
+            <span>{{clinic.phone}}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>public</mat-icon>
+            <span>{{clinic.country_En}}</span>
+          </div>
+        </div>
+
+        <div class="gallery-preview" *ngIf="clinic.clinicGallery?.length > 0">
+          <div class="preview-image" *ngFor="let image of clinic.clinicGallery.slice(0, 3)">
+            <img [src]="getImageUrl(image)" alt="Clinic image">
+          </div>
+          <div class="image-count" *ngIf="clinic.clinicGallery.length > 3">
+            +{{clinic.clinicGallery.length - 3}} more
+          </div>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button mat-button color="primary" [routerLink]="['/admin/clinics', clinic.id]">
+          <mat-icon>visibility</mat-icon>
+          View Details
+        </button>
+        <button mat-button color="accent" [routerLink]="['/admin/clinics/edit', clinic.id]">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>

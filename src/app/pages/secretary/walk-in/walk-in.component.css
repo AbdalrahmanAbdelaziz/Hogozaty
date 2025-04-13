@@ -3,7 +3,7 @@
   max-width: 600px;
   margin: 100px auto;
   padding: 30px;
-  background: #165B40;
+  background: #24CC81;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
   text-align: center;
@@ -46,7 +46,7 @@ input[type="text"]:focus {
 
 /* Buttons */
 button {
-  background: linear-gradient(145deg, #1A9A63, #157A50);
+  background: #165B40;
   color: white;
   border: none;
   padding: 12px 18px;
@@ -60,7 +60,7 @@ button {
 }
 
 button:hover {
-  background: linear-gradient(145deg, #157A50, #1A9A63);
+  background: #1A9A63;
   transform: scale(1.05);
 }
 
@@ -75,7 +75,7 @@ p {
   font-size: 1.2rem;
   color: white;
   margin-top: 15px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #1A9A63;
   padding: 12px;
   border-radius: 8px;
 }

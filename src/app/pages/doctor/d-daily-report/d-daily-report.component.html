@@ -21,7 +21,7 @@
     </div>
 
     <!-- Table to display revenue data -->
-    <div class="table-container">
+    <div class="table-container"> 
       <table class="revenue-table">
         <thead>
           <tr>
@@ -37,24 +37,24 @@
           </tr>
         </thead>
         <tbody>
+          <!-- Single row showing the daily summary -->
+          <tr>
+            <td>{{ calculateTotalPaid() }}</td>
+            <td>{{ revenueData.paidCash }}</td>
+            <td>{{ revenueData.paidVisa }}</td>
+            <td>{{ revenueData.paidWallet }}</td>
+            <td>{{ revenueData.paidInstapay }}</td>
+            <td>{{ revenueData.remainingToPay }}</td>
+          </tr>
+          
           <!-- Display message if no data is available -->
-          <tr *ngIf="appointments.length === 0">
-            <td colspan="8" class="no-data">
+          <tr *ngIf="calculateTotalPaid() === 0 && revenueData.remainingToPay === 0">
+            <td colspan="6" class="no-data">
               <div class="no-data-message">
                 <i class="fas fa-calendar-times"></i>
                 <p>No revenue data found for the selected date.</p>
               </div>
             </td>
-          </tr>
-
-          <!-- Display data if available -->
-          <tr *ngFor="let appointment of appointments; let rowIndex = index">
-            <td>{{ (appointment.cash || 0) + (appointment.visa || 0) + (appointment.wallet || 0) + (appointment.instapay || 0) }}</td>
-            <td>{{ appointment.cash || 0 }}</td>
-            <td>{{ appointment.visa || 0 }}</td>
-            <td>{{ appointment.wallet || 0 }}</td>
-            <td>{{ appointment.instapay || 0 }}</td>
-            <td>{{ appointment.remaining || 0 }}</td>
           </tr>
         </tbody>
       </table>

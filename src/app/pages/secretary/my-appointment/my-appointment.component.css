@@ -70,7 +70,7 @@ body {
 /* Title */
 .appointment-container h2 {
   text-align: center;
-  color: #165B40;
+  color: #24CC81;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 20px;
@@ -175,24 +175,141 @@ body {
   transform: scale(1.05);
 }
 
-/* Responsive Design */
+/* Empty State Styles */
+.no-appointments {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  padding: 40px;
+}
+
+.empty-state {
+  text-align: center;
+  max-width: 500px;
+}
+
+.empty-image {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.empty-state h3 {
+  color: #165B40;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.btn-primary {
+  background-color: #165B40;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-primary:hover {
+  background-color: #0e4630;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary i {
+  margin-right: 8px;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .appointment-container {
-      padding: 20px;
+    padding: 20px;
+    margin-top: 80px;
   }
 
   .dropdown-container {
-      flex-direction: column;
-      gap: 10px;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .appointment-table th, .appointment-table td {
-      font-size: 0.9rem;
-      padding: 12px;
+    font-size: 0.9rem;
+    padding: 12px;
   }
 
   .btn {
-      font-size: 0.85rem;
-      padding: 8px 12px;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .empty-state {
+    padding: 20px;
+  }
+  
+  .empty-image {
+    width: 150px;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.3rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .appointment-container {
+    padding: 20px;
+    margin-top: 80px;
+    padding-bottom: 100px; /* Added this line for bottom navbar space */
+  }
+
+  .dropdown-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .appointment-table th, .appointment-table td {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .empty-state {
+    padding: 20px;
+  }
+  
+  .empty-image {
+    width: 150px;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.3rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
   }
 }

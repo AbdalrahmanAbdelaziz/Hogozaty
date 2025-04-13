@@ -1,0 +1,136 @@
+<app-admin-header></app-admin-header>
+
+<div class="registration-container">
+    <div class="registration-card">
+      <h2>Register New Doctor</h2>
+      
+      <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" formControlName="firstName">
+            <div *ngIf="formControls['firstName'].touched && formControls['firstName'].errors" class="error-message">
+              First name is required
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" formControlName="lastName">
+            <div *ngIf="formControls['lastName'].touched && formControls['lastName'].errors" class="error-message">
+              Last name is required
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="username">Username *</label>
+            <input type="text" id="username" formControlName="username">
+            <div *ngIf="formControls['username'].touched && formControls['username'].errors" class="error-message">
+              Username is required (min 4 characters)
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" formControlName="email">
+            <div *ngIf="formControls['email'].touched && formControls['email'].errors" class="error-message">
+              Valid email is required
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number *</label>
+            <input type="tel" id="phoneNumber" formControlName="phoneNumber">
+            <div *ngIf="formControls['phoneNumber'].touched && formControls['phoneNumber'].errors" class="error-message">
+              Phone number is required
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password" id="password" formControlName="password">
+            <div *ngIf="formControls['password'].touched && formControls['password'].errors" class="error-message">
+              Password is required (min 6 characters)
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dateOfBirth">Date of Birth *</label>
+            <input type="date" id="dateOfBirth" formControlName="dateOfBirth">
+            <div *ngIf="formControls['dateOfBirth'].touched && formControls['dateOfBirth'].errors" class="error-message">
+              Date of birth is required
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="genderId">Gender *</label>
+            <select id="genderId" formControlName="genderId">
+              <option value="">Select Gender</option>
+              <option *ngFor="let gender of genders" [value]="gender.id">{{gender.name_En}}</option>
+            </select>
+            <div *ngIf="formControls['genderId'].touched && formControls['genderId'].errors" class="error-message">
+              Gender is required
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="clinicId">Clinic *</label>
+            <select id="clinicId" formControlName="clinicId">
+              <option value="">Select Clinic</option>
+              <option *ngFor="let clinic of clinics" [value]="clinic.id">{{clinic.name}}</option>
+            </select>
+            <div *ngIf="formControls['clinicId'].touched && formControls['clinicId'].errors" class="error-message">
+              Clinic is required
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="specializationId">Specialization *</label>
+            <select id="specializationId" formControlName="specializationId">
+              <option value="">Select Specialization</option>
+              <option *ngFor="let spec of specializations" [value]="spec.id">{{spec.name_En}}</option>
+            </select>
+            <div *ngIf="formControls['specializationId'].touched && formControls['specializationId'].errors" class="error-message">
+              Specialization is required
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group">
+            <label for="brief">Brief *</label>
+            <textarea id="brief" formControlName="brief" rows="3"></textarea>
+            <div *ngIf="formControls['brief'].touched && formControls['brief'].errors" class="error-message">
+              Brief description is required
+            </div>
+          </div>
+  
+          <div class="form-group">
+            <label for="checkPrice">Check Price *</label>
+            <input type="number" id="checkPrice" formControlName="checkPrice" min="0">
+            <div *ngIf="formControls['checkPrice'].touched && formControls['checkPrice'].errors" class="error-message">
+              Valid price is required
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="profilePicture">Profile Picture</label>
+          <input type="file" id="profilePicture" (change)="onFileChange($event)" accept="image/*">
+        </div>
+  
+        <div class="form-actions">
+          <button type="submit" [disabled]="doctorForm.invalid">Register Doctor</button>
+          <button type="button" class="cancel" routerLink="/admin/users">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>

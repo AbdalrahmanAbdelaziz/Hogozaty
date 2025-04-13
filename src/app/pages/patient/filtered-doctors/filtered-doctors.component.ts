@@ -166,10 +166,13 @@ export class FilteredDoctorsComponent implements OnInit {
     this.router.navigate([link]);
   }
 
-  goToDoctorProfile(doctor: any): void {
-    this.router.navigate(['/view-doctor-profile', doctor.id, doctor.specializationId]);
-
+  goToDoctorProfile(doctor: Doctor): void {
+    this.router.navigate(
+      ['/view-doctor-profile', doctor.id, doctor.specializationId],
+      { queryParams: { clinicId: doctor.clinicId } }
+    );
   }
+  
 
   
   

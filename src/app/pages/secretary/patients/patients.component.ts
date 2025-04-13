@@ -34,24 +34,34 @@ export class PatientsComponent implements OnInit {
   // Fetch doctorId from the login response
   fetchDoctorId(): void {
     const user = this.userService.getUser();
+    console.log('User data:', user); // Debug log
+    
     if (user && user.data.applicationRole_En === 'Secretary' && user.data.doctorId) {
       this.doctorId = user.data.doctorId;
+      console.log('Doctor ID:', this.doctorId); // Debug log
       this.fetchPatients();
     } else {
+      console.error('No doctor ID found for the secretary or user data is invalid');
       this.toastr.error('No doctor ID found for the secretary.', 'Error');
     }
   }
-
-  // Fetch patients data from the backend
+  
   fetchPatients(): void {
-    if (!this.doctorId) return;
-
+    if (!this.doctorId) {
+      console.error('Doctor ID is null or undefined');
+      return;
+    }
+  
+    console.log('Fetching patients for doctor ID:', this.doctorId); // Debug log
+    
     this.patientService.getPatientsByDoctorId(this.doctorId).subscribe({
       next: (response: any) => {
+        console.log('API Response:', response); // Debug log
         this.patients = response.data || [];
-        this.filteredPatients = this.patients; // Initialize filteredPatients with all patients
+        this.filteredPatients = this.patients;
       },
       error: (error) => {
+        console.error('API Error:', error); // Debug log
         this.toastr.error('Failed to fetch patients.', 'Error');
       },
     });

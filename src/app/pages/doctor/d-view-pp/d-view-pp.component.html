@@ -1,55 +1,50 @@
-  <app-d-header></app-d-header>
-  <app-d-sidenavbar></app-d-sidenavbar>
+<app-d-header></app-d-header>
+<app-d-sidenavbar></app-d-sidenavbar>
 
-  <div class="patient-profile-container">
-    <div class="profile-header">
-      <h2>Patient Profile</h2>
-      <div class="appointment-info">
-        <span>Appointment Time: {{formatDate(appointmentDetails?.timeSlot?.date)}}, {{appointmentDetails?.timeSlot?.startTime}} - {{appointmentDetails?.timeSlot?.endTime}}</span>
+<div class="patient-profile-container">
+  <div class="profile-header">
+    <h2>Patient Profile</h2>
+    <div class="appointment-info">
+      <span>Appointment Time: {{formatDate(appointmentDetails?.timeSlot?.date)}}, {{appointmentDetails?.timeSlot?.startTime}} - {{appointmentDetails?.timeSlot?.endTime}}</span>
+    </div>
+  </div>
+
+  <div class="profile-content" *ngIf="!isLoading; else loading">
+    <div class="patient-overview">
+      <div class="patient-avatar">
+        <div class="avatar-placeholder">
+          {{patientDetails?.firstName?.charAt(0) || 'P'}}{{patientDetails?.lastName?.charAt(0) || 'P'}}
+        </div>
+      </div>
+      <div class="patient-basic-info">
+        <h3>{{patientDetails?.firstName}} {{patientDetails?.lastName}}</h3>
+        <p><strong>ID:</strong> {{patientDetails?.id}}</p>
+        <p><strong>Gender:</strong> {{patientDetails?.gender_En || 'Not specified'}}</p>
+        <p><strong>Age:</strong> {{patientDetails?.dateOfBirth ? (calculateAge(patientDetails.dateOfBirth)) + ' years' : 'Not specified'}}</p>
+        <p><strong>Blood Type:</strong> {{patientDetails?.bloodType || 'Not specified'}}</p>
       </div>
     </div>
 
-    <div class="profile-content" *ngIf="!isLoading; else loading">
-      <div class="patient-overview">
-        <div class="patient-avatar">
-          <div class="avatar-placeholder">
-            {{patientDetails?.firstName?.charAt(0) || 'P'}}{{patientDetails?.lastName?.charAt(0) || 'P'}}
-          </div>
-        </div>
-        <div class="patient-basic-info">
-          <h3>{{patientDetails?.firstName}} {{patientDetails?.lastName}}</h3>
-          <p><strong>ID:</strong> {{patientDetails?.id}}</p>
-          <p><strong>Gender:</strong> {{patientDetails?.gender || 'Not specified'}}</p>
-          <p><strong>Age:</strong> {{patientDetails?.dateOfBirth ? (calculateAge(patientDetails.dateOfBirth)) + ' years' : 'Not specified'}}</p>
-          <p><strong>Blood Type:</strong> {{patientDetails?.bloodType || 'Not specified'}}</p>
-        </div>
-      </div>
+    <div class="tabs">
+      <button 
+        [class.active]="currentTab === 'personal'" 
+        (click)="changeTab('personal')">
+        Personal Information
+      </button>
+      <button 
+        [class.active]="currentTab === 'current'" 
+        (click)="changeTab('current')">
+        Current Visit
+      </button>
+    </div>
 
-      <div class="tabs">
-        <button 
-          [class.active]="currentTab === 'personal'" 
-          (click)="changeTab('personal')">
-          Personal Information
-        </button>
-        <button 
-          [class.active]="currentTab === 'medical'" 
-          (click)="changeTab('medical')">
-          Medical History
-        </button>
-        <button 
-          [class.active]="currentTab === 'current'" 
-          (click)="changeTab('current')">
-          Current Visit
-        </button>
-      </div>
-
-      <div class="tab-content">
-        <div *ngIf="currentTab === 'personal'" class="personal-info">
+    <div class="tab-content">
+      <div *ngIf="currentTab === 'personal'" class="personal-info">
+        <div class="info-grid">
           <div class="info-section">
             <h4>Contact Information</h4>
             <p><strong>Email:</strong> {{patientDetails?.email || 'Not specified'}}</p>
             <p><strong>Phone:</strong> {{patientDetails?.phoneNumber || 'Not specified'}}</p>
-            <!-- <p><strong>Address:</strong> {{patientDetails?.address || 'Not specified'}}</p> -->
           </div>
 
           <div class="info-section">
@@ -61,150 +56,114 @@
           <div class="info-section">
             <h4>Emergency Contact</h4>
             <p><strong>Name:</strong> {{patientDetails?.emergencyContactName || 'Not specified'}}</p>
-            <p><strong>Relationship:</strong> {{patientDetails?.emergencyContactRelation || 'Not specified'}}</p>
             <p><strong>Phone:</strong> {{patientDetails?.emergencyContactPhone || 'Not specified'}}</p>
           </div>
         </div>
+      </div>
 
-        <div *ngIf="currentTab === 'medical'" class="medical-history">
-          <div class="info-section">
-            <h4>Allergies</h4>
-            <p *ngIf="patientDetails?.allergies?.length; else noAllergies">
-              {{patientDetails?.allergies?.join(', ') || 'Not specified'}}
-            </p>
-            <ng-template #noAllergies>No known allergies</ng-template>
-          </div>
-
-          <div class="info-section">
-            <h4>Chronic Conditions</h4>
-            <p *ngIf="patientDetails?.chronicConditions?.length; else noConditions">
-              {{patientDetails?.chronicConditions?.join(', ') || 'Not specified'}}
-            </p>
-            <ng-template #noConditions>No chronic conditions</ng-template>
-          </div>
-
-          <div class="info-section">
-            <h4>Medical Records</h4>
-            <div *ngIf="medicalHistory.length; else noRecords">
-              <div class="record-card" *ngFor="let record of medicalHistory">
-                <div class="record-header">
-                  <span class="record-date">{{formatDate(record.createdAt)}}</span>
-                  <span class="record-doctor">Dr. {{record.doctorName}}</span>
-                </div>
-                <div class="record-details">
-                  <p><strong>Diagnosis:</strong> {{record.diagnosis}}</p>
-                  <p><strong>Treatment:</strong> {{record.treatment}}</p>
-                  <p><strong>Notes:</strong> {{record.notes}}</p>
-                </div>
-              </div>
+      <div *ngIf="currentTab === 'current'" class="current-visit">
+        <div class="receipt-container">
+          <div class="receipt-header">
+            <h3>Medical Services Receipt</h3>
+            <div class="appointment-info">
+              <p>Appointment #{{appointmentDetails?.id}}</p>
+              <p>Date: {{formatDate(appointmentDetails?.timeSlot?.date)}}</p>
             </div>
-            <ng-template #noRecords>No medical records found</ng-template>
           </div>
-        </div>
-
-        <div *ngIf="currentTab === 'current'" class="current-visit">
-          <div class="receipt-container">
-            <div class="receipt-header">
-              <h3>Medical Services Receipt</h3>
-              <div class="appointment-info">
-                <p>Appointment #{{appointmentDetails?.id}}</p>
-                <p>Date: {{formatDate(appointmentDetails?.timeSlot?.date)}}</p>
-              </div>
-            </div>
-        
-            <div class="services-section">
-              <h4>Available Services</h4>
-              <div class="services-grid">
-                <div *ngFor="let service of doctorServices" class="service-card">
-                  <div class="service-info">
-                    <h5>{{service.name}}</h5>
-                    <p>{{service.description}}</p>
-                    <div class="service-price">{{service.price | currency}}</div>
+      
+          <div class="services-section">
+            <h4>Available Services</h4>
+            <div class="services-grid">
+              <div *ngFor="let service of doctorServices" class="service-card">
+                <div class="service-info">
+                  <h5>{{service.serviceName}}</h5>
+                  <p>{{service.serviceDescription}}</p>
+                  <div class="service-price">
+                    <span *ngIf="!service.discountApplied">{{service.price | currency}}</span>
+                    <span *ngIf="service.discountApplied" class="original-price">{{service.originalPrice | currency}}</span>
+                    <span *ngIf="service.discountApplied" class="discounted-price">
+                      {{service.price | currency}}
+                      <span class="discount-percentage">({{service.discountPercentage}}% off)</span>
+                    </span>
                   </div>
-                  <button class="add-service-btn" (click)="addService(service)">
-                    <i class="fas fa-plus"></i> Add
+                </div>
+          
+                <div class="discount-control" *ngIf="!isServiceSelected(service.id)">
+                  <input type="number" 
+                        [(ngModel)]="service.discountPercentage"
+                        min="0" 
+                        max="100"
+                        placeholder="Discount %"
+                        (change)="validateDiscount(service)">
+                  <span class="percent-symbol">%</span>
+                </div>
+                
+                <button 
+                  class="add-service-btn" 
+                  (click)="addService(service)"
+                  [disabled]="isServiceSelected(service.id)">
+                  <i class="fas fa-plus"></i> 
+                  {{isServiceSelected(service.id) ? 'Added' : 'Add'}}
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="selected-services-section" *ngIf="selectedServices.length > 0">
+            <h4>Selected Services</h4>
+            <div class="selected-services-list">
+              <div *ngFor="let service of selectedServices" class="selected-service">
+                <div class="service-details">
+                  <h5>{{service.serviceName}}</h5>
+                  <p>{{service.serviceDescription}}</p>
+                  <div *ngIf="service.discountPercentage > 0" class="service-discount-info">
+                    <span class="original-price-small">{{service.originalPrice | currency}}</span>
+                    <span class="discount-percentage-small">{{service.discountPercentage}}% off</span>
+                  </div>
+                </div>
+                <div class="service-actions">
+                  <div class="service-total">{{service.singleServicePriceForAppointment || service.price | currency}}</div>
+                  <button 
+                    class="remove-btn" 
+                    title="Remove service">
+                    <i class="fas fa-trash" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
             </div>
-        
-            <div class="selected-services-section" *ngIf="selectedServices.length > 0">
-              <h4>Selected Services</h4>
-              <div class="selected-services-list">
-                <div *ngFor="let service of selectedServices" class="selected-service">
-                  <div class="service-details">
-                    <h5>{{service.name}}</h5>
-                    <div class="quantity-controls">
-                      <button 
-                        type="button" 
-                        (click)="updateQuantity(service, -1)"
-                        [attr.aria-label]="'Decrease quantity of ' + service.name"
-                        title="Decrease quantity">
-                        -
-                      </button>
-                      <span aria-live="polite">{{service.quantity}}</span>
-                      <button 
-                        type="button" 
-                        (click)="updateQuantity(service, 1)"
-                        [attr.aria-label]="'Increase quantity of ' + service.name"
-                        title="Increase quantity">
-                        +
-                      </button>
-                    </div>
-                  </div>
-                  <div class="service-actions">
-                    <div class="service-total">{{service.price * service.quantity | currency}}</div>
-                    <button 
-                      type="button" 
-                      class="remove-btn" 
-                      (click)="removeService(service.id)"
-                      [attr.aria-label]="'Remove ' + service.name + ' from appointment'"
-                      title="Remove service">
-                      <i class="fas fa-trash" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
+          </div>
+          
+          <div class="receipt-summary">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span>{{totalAmount | currency}}</span>
+            </div>
+            
+            <div class="summary-row" *ngIf="totalDiscount > 0">
+              <span>Total Discount:</span>
+              <span class="discount-amount">-{{totalDiscount | currency}}</span>
             </div>
         
-              <div class="receipt-summary">
-                <div class="summary-row">
-                  <span>Subtotal:</span>
-                  <span>{{totalAmount | currency}}</span>
-                </div>
-                <div class="summary-row">
-                  <span>Tax (0%):</span>
-                  <span>{{0 | currency}}</span>
-                </div>
-                <div class="summary-row total">
-                  <span>Total Amount:</span>
-                  <span>{{totalAmount | currency}}</span>
-                </div>
-              </div>
-        
-            <div class="receipt-actions">
-              <button class="btn btn-save" (click)="saveServices()" [disabled]="selectedServices.length === 0">
-                <i class="fas fa-save"></i> Save Services
-              </button>
-              <button class="btn btn-complete" (click)="completeVisit()">
-                <i class="fas fa-check-circle"></i> Complete Visit
-              </button>
+            <div class="summary-row total">
+              <span>Total Amount:</span>
+              <span>{{totalAmount | currency}}</span>
             </div>
           </div>
-        </div>
-
-
-          <div class="action-buttons">
-            <!-- <button class="btn btn-primary">Save Notes</button> -->
-            <button class="btn btn-success">Complete Visit</button>
+          
+          <div class="receipt-actions">
+            <button class="btn btn-complete" (click)="completeVisit()">
+              <i class="fas fa-check-circle"></i> Complete Visit
+            </button>
           </div>
         </div>
       </div>
-
-    <ng-template #loading>
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <p>Loading patient information...</p>
-      </div>
-    </ng-template>
+    </div>
   </div>
+
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading patient information...</p>
+    </div>
+  </ng-template>
+</div>

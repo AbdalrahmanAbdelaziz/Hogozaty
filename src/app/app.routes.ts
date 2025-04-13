@@ -40,6 +40,13 @@ import { SecDocAppResComponent } from './pages/secretary/sec-doc-app-res/sec-doc
 import { SecDocDayResComponent } from './pages/secretary/sec-doc-day-res/sec-doc-day-res.component';
 import { DPatientsComponent } from './pages/doctor/d-patients/d-patients.component';
 import { DViewPpComponent } from './pages/doctor/d-view-pp/d-view-pp.component';
+import { ForgetPasswordComponent } from './pages/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
+import { NewDoctorComponent } from './pages/admin/new-doctor/new-doctor.component';
+import { NewSecretaryComponent } from './pages/admin/new-secretary/new-secretary.component';
+import { ClinicsComponent } from './pages/admin/clinics/clinics.component';
+import { CreateClinicComponent } from './pages/admin/create-clinic/create-clinic.component';
 
 
 
@@ -99,6 +106,16 @@ export const routes: Routes = [
     { path: 'sec-appointments-reschedual/:doctorId/:specializationId/:date', component: SecDocDayResComponent},
 
     { path: 'd-view-pp',component: DViewPpComponent},
+
+
+  { path: 'forget-password', component: ForgetPasswordComponent},
+  { path: 'reset-password', component: ResetPasswordComponent},
+
+  { path: 'admin-home', component: AdminHomeComponent},
+  { path: 'new-doctor', component: NewDoctorComponent },
+  { path: 'new-secretary', component: NewSecretaryComponent },
+  { path: 'clinics', component: ClinicsComponent},
+  { path: 'create_clinic' , component: CreateClinicComponent},
 
 
 

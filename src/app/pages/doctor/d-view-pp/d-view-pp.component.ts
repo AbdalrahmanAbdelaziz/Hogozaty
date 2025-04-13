@@ -27,6 +27,7 @@ export class DViewPpComponent implements OnInit {
   doctorServices: any[] = [];
   selectedServices: any[] = [];
   totalAmount: number = 0;
+  totalDiscount: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +46,7 @@ export class DViewPpComponent implements OnInit {
         this.loadAppointmentDetails();
       } else {
         this.toastr.error('No appointment ID provided');
-        this.router.navigate(['/doctor/appointments']);
+        this.router.navigate(['/doctor-home']);
       }
     });
   }
@@ -55,7 +56,12 @@ export class DViewPpComponent implements OnInit {
     if (user && user.data.doctorId) {
       this.servicesOfDoctor.getServicesByDoctorId(user.data.doctorId).subscribe({
         next: (response) => {
-          this.doctorServices = response.data;
+          this.doctorServices = response.data.map((service: any) => ({
+            ...service,
+            price: parseFloat(service.servicePrice),
+            discountPercentage: 0,
+            discountApplied: false
+          }));
         },
         error: (err) => {
           this.toastr.error('Failed to load doctor services');
@@ -113,7 +119,7 @@ export class DViewPpComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.toastr.error('Failed to load medical history');
+        // this.toastr.error('Failed to load medical history');
       }
     });
   }
@@ -136,79 +142,104 @@ export class DViewPpComponent implements OnInit {
     });
   }
 
+  validateDiscount(service: any): void {
+    // Ensure discount is between 0-100
+    if (service.discountPercentage > 100) {
+      service.discountPercentage = 100;
+    } else if (service.discountPercentage < 0) {
+      service.discountPercentage = 0;
+    }
+    service.discountApplied = service.discountPercentage > 0;
+    
+    // Ensure originalPrice is set
+    if (!service.originalPrice) {
+      service.originalPrice = service.price;
+    }
+    
+    // Update the price with discount applied
+    if (service.discountApplied) {
+      const discountAmount = service.originalPrice * (service.discountPercentage / 100);
+      service.price = service.originalPrice - discountAmount;
+    } else {
+      service.price = service.originalPrice;
+    }
+  }
+
+
+
   addService(service: any): void {
     if (this.selectedServices.some(s => s.id === service.id)) {
       this.toastr.warning('Service already added');
       return;
     }
+  
+    // Round the price to nearest integer
+    const roundedPrice = Math.round(service.price);
     
+    // Create a copy of the service with the discounted price
     const serviceToAdd = {
       ...service,
-      quantity: 1
+      singleServicePriceForAppointment: roundedPrice
     };
-    
-    this.selectedServices.push(serviceToAdd);
-    this.calculateTotal();
-    this.toastr.success('Service added successfully');
+  
+    this.appointmentService.addServiceToAppointment(
+      service.id, 
+      this.appointmentId, 
+      roundedPrice // Send the rounded price
+    ).subscribe({
+      next: (response) => {
+        this.selectedServices.push(serviceToAdd);
+        this.calculateTotal();
+        this.toastr.success('Service added successfully');
+        // Reset discount for the service in the available services list
+        const originalService = this.doctorServices.find(s => s.id === service.id);
+        if (originalService) {
+          originalService.discountPercentage = 0;
+          originalService.discountApplied = false;
+          originalService.price = originalService.originalPrice;
+        }
+      },
+      error: (err) => {
+        this.toastr.error('Failed to add service', 'Error');
+        console.error('Error adding service:', err);
+      }
+    });
   }
 
-  removeService(serviceId: number): void {
-    this.selectedServices = this.selectedServices.filter(s => s.id !== serviceId);
-    this.calculateTotal();
-    this.toastr.info('Service removed');
-  }
+
+  // removeService(serviceId: number): void {
+  //   this.appointmentService.removeServiceFromAppointment(serviceId, this.appointmentId)
+  //     .subscribe({
+  //       next: () => {
+  //         this.selectedServices = this.selectedServices.filter(s => s.id !== serviceId);
+  //         this.calculateTotal();
+  //         this.toastr.info('Service removed');
+  //       },
+  //       error: (err) => {
+  //         this.toastr.error('Failed to remove service');
+  //       }
+  //     });
+  // }
 
   calculateTotal(): void {
     this.totalAmount = this.selectedServices.reduce((total, service) => {
-      return total + (service.price * service.quantity);
+      return total + (service.singleServicePriceForAppointment || service.price || 0);
     }, 0);
   }
 
-  updateQuantity(service: any, change: number): void {
-    const newQuantity = service.quantity + change;
-    if (newQuantity < 1) return;
-    
-    service.quantity = newQuantity;
-    this.calculateTotal();
-  }
-
-  saveServices(): void {
-    if (this.selectedServices.length === 0) {
-      this.toastr.warning('Please add at least one service');
-      return;
-    }
-
-    const requests = this.selectedServices.map(service => {
-      return this.appointmentService.addServiceToAppointment(
-        service.id,
-        this.appointmentId,
-        service.price
-      );
-    });
-
-    // You might want to use forkJoin here if you need to wait for all requests
-    requests.forEach(request => {
-      request.subscribe({
-        next: () => {
-          // Individual service added successfully
-        },
-        error: (err) => {
-          this.toastr.error('Failed to add some services');
-        }
-      });
-    });
-
-    this.toastr.success('Services saved successfully');
-  }
 
   completeVisit(): void {
-    this.saveServices();
     this.toastr.success('Patient processed successfully', '', {
-      timeOut: 3000,
-      progressBar: true,
-      closeButton: true,
-      positionClass: 'toast-top-right'
     });
-    this.router.navigate(['/doctor/d-home']);
+    this.router.navigate(['/doctor-home']);
   }
-}
+  
+  isServiceSelected(serviceId: number): boolean {
+    return this.selectedServices.some(service => service.id === serviceId);
+  }
+  }
+
+
+
+
+

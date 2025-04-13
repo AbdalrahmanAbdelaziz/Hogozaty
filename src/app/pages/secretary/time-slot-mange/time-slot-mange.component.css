@@ -183,3 +183,26 @@ input:focus + label,
 select:focus + label {
   color: #24CC81; /* Bright green for focused labels */
 }
+
+/* Add this to your existing media query */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 30px;
+    padding-bottom: 100px; /* Add this line for fixed bottom navbar */
+  }
+
+  .container h2 {
+    font-size: 1.8rem;
+  }
+
+  .time-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 12px;
+  }
+}

@@ -80,6 +80,13 @@
           <p><strong>Date:</strong> {{ appointment.timeSlot.date }}</p>
           <p><strong>Time:</strong> {{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</p>
           <p class="status done">Done</p>
+          
+          <button *ngIf="!appointment.hasRated" class="rate-btn" (click)="openFeedbackModal(appointment)">
+            Rate This Appointment
+          </button>
+          <div *ngIf="appointment.hasRated" class="rated-message">
+            <i class="fas fa-check-circle"></i> Rated
+          </div>
         </div>
       </div>
     </div>
@@ -99,6 +106,65 @@
     <div class="modal-footer">
       <button class="confirm-btn" (click)="confirmCancel()">Yes</button>
       <button class="cancel-btn" (click)="closeCancelModal()">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- Initial Feedback Modal (appears automatically for latest appointment) -->
+<div class="modal-overlay" *ngIf="showInitialFeedbackModal">
+  <div class="feedback-modal">
+    <div class="modal-header">
+      <h2>Rate Your Latest Appointment</h2>
+      <button class="close-btn" (click)="closeFeedbackModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>How was your recent appointment with Dr. {{ currentFeedbackAppointment?.doctorName }} on {{ currentFeedbackAppointment?.timeSlot.date }}?</p>
+      
+      <div class="rating-container">
+        <div *ngFor="let star of [1,2,3,4,5]" 
+             (click)="setRating(star)"
+             [class.active]="star <= rating">
+          ★
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="feedbackComment">Comments (optional):</label>
+        <textarea id="feedbackComment" [(ngModel)]="comment" placeholder="Share your experience..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="submit-btn" (click)="submitFeedback()">Submit Feedback</button>
+      <button class="skip-btn" (click)="closeFeedbackModal()">Skip for Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manual Feedback Modal (triggered by button) -->
+<div class="modal-overlay" *ngIf="isFeedbackModalOpen">
+  <div class="feedback-modal">
+    <div class="modal-header">
+      <h2>Rate Your Appointment</h2>
+      <button class="close-btn" (click)="closeFeedbackModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>How was your appointment with Dr. {{ currentFeedbackAppointment?.doctorName }} on {{ currentFeedbackAppointment?.timeSlot.date }}?</p>
+      
+      <div class="rating-container">
+        <div *ngFor="let star of [1,2,3,4,5]" 
+             (click)="setRating(star)"
+             [class.active]="star <= rating">
+          ★
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="feedbackComment">Comments (optional):</label>
+        <textarea id="feedbackComment" [(ngModel)]="comment" placeholder="Share your experience..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="submit-btn" (click)="submitFeedback()">Submit Feedback</button>
     </div>
   </div>
 </div>

@@ -3,7 +3,7 @@
   max-width: 600px;
   margin: 100px auto; /* Centering the form */
   padding: 40px;
-  background: rgba(255, 255, 255, 0.95); /* Slightly opaque white */
+  background: #24CC81; 
   border-radius: 16px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   text-align: center;
@@ -14,7 +14,7 @@
 .container h2 {
   font-size: 2.2rem;
   font-weight: 600; /* Semi-bold */
-  color: black; 
+  color: #ffffff; 
   margin-bottom: 30px;
   letter-spacing: -0.5px; /* Slightly tighter letter spacing */
 }
@@ -24,7 +24,7 @@ label {
   display: block;
   text-align: left;
   font-size: 1rem;
-  color: #1A9A63; /* Dark gray-blue */
+  color: #ffffff;
   margin-bottom: 8px;
   font-weight: 500; /* Medium weight */
 }
@@ -45,13 +45,13 @@ select {
 
 input:focus,
 select:focus {
-  border-color: #24CC81; /* Bright blue for focus */
+  border-color: #165B40; /* Bright blue for focus */
   box-shadow: 0 0 8px rgba(52, 219, 88, 0.3); /* Glow effect */
 }
 
 /* Submit Button */
 button {
-  background: #24CC81; /* Bright blue */
+  background: #165B40; /* Bright blue */
   color: white;
   border: none;
   padding: 14px 20px;

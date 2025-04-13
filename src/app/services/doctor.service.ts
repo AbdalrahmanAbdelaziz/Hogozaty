@@ -46,6 +46,14 @@ export class DoctorService {
     return this.http.post(`${this.apiUrl}/addDoctorServices`, services);
   }
 
+  // Add this method to your AppointmentService class
+getDoctorDayFinalRevenue(docId: number, date: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/getDoctorDayFinalRevenue`, {
+    docId,
+    date
+  });
+}
+
 
  
   

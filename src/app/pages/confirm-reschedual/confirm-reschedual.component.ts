@@ -144,7 +144,7 @@ export class ConfirmReschedualComponent implements OnInit {
     this.appointmentService.rescheduleAppointment(rescheduleData).subscribe(
       response => {
         this.toastr.success("Your appointment has been rescheduled successfully!");
-        this.router.navigate(['/appointments']); // Redirect to appointments page
+        this.router.navigate(['/patient-home']);  
       },
       error => {
         this.toastr.error("An error occurred while rescheduling. Please try again.");

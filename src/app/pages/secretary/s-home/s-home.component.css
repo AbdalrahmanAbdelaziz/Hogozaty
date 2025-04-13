@@ -1,227 +1,247 @@
-/* General Content Layout */
-.s-home-container {
+/* Modern Color Scheme */
+:root {
+  --primary: #24CC81;
+  --primary-dark: #165B40;
+  --primary-light: #E8F5E9;
+  --accent: #6C63FF;
+  --text-dark: #2D3748;
+  --text-medium: #4A5568;
+  --text-light: #718096;
+  --white: #FFFFFF;
+  --light-gray: #F7FAFC;
+  --medium-gray: #E2E8F0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--light-gray);
+  color: var(--text-dark);
+}
+
+/* Hide the legend title while keeping the items visible */
+::ng-deep .legend-title {
+  display: none !important;
+}
+
+
+.dashboard-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-top: 80px; /* Space for the header */
   min-height: 100vh;
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #165B40, #0B3A2A);
 }
 
-/* Main Content */
-.main-content {
-  margin-left: 240px; /* Space for the side navbar */
+/* Dashboard Layout */
+.dashboard-layout {
+  display: flex;
   flex-grow: 1;
-  padding: 20px;
+  padding-top: 80px;
 }
 
-/* Chart Container */
-.chart-container {
-  text-align: center;
-  background: #165B40;
+.dashboard-content {
+  flex-grow: 1;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  max-width: 1000px;
-  margin: auto;
+  /* margin-left: 240px; */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-/* No Data Message Styles */
-.no-data-message {
-  text-align: center;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-  margin: 20px auto;
-  max-width: 600px;
+/* Dashboard Card */
+.dashboard-card {
+  background: #24CC81;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 1200px;
+  overflow: hidden;
+  transition: var(--transition);
 }
 
-.no-data-message p {
-  font-size: 1.2rem;
-  color: white;
-  font-weight: 500;
+.dashboard-card:hover {
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 30px;
+  background: var(--primary-dark);
+  color: #FFFFFF;
+}
+
+.card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
   margin: 0;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
 }
 
-/* Chart Title */
-.chart-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+.card-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Data Visualization */
+.data-visualization {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+}
+
+@media (min-width: 1024px) {
+  .data-visualization {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.chart-wrapper {
+  flex: 2;
+  min-height: 400px;
+}
+
+@media (min-width: 1024px) {
+  .data-summary {
+    margin-top: 0;
+    margin-left: 30px;
+  }
+}
+
+/* No Data State */
+.no-data-state {
+  text-align: center;
+  padding: 60px 30px;
+}
+
+.no-data-state i {
+  font-size: 3rem;
+  color: #E2E8F0;
   margin-bottom: 20px;
 }
 
-/* Pie Chart */
-ngx-charts-pie-chart {
-  max-width: 100%;
-  margin: auto;
+.no-data-state h3 {
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  margin-bottom: 10px;
 }
 
-/* Pie Chart Container */
-.chart-container ngx-charts-pie-chart {
-  height: 400px;
-  width: 100%;
-  max-width: 100%;
-  margin-top: 30px;
+.no-data-state p {
+  color: #F7FAFC;
+  margin-bottom: 25px;
 }
 
-/* Hide the legend title (the word "Legend") */
-.hide-legend-title ::ng-deep .legend-title {
-  display: none;
-}
-
-/* Ensure labels remain visible */
-.hide-legend-title ::ng-deep .pie-label {
-  display: block !important;
-}
-
-/* Navigation Buttons Section */
-.button-container {
+/* Quick Actions */
+.quick-actions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  justify-content: center;
-  margin-top: 40px;
+  padding: 0 30px 30px;
 }
 
-/* Individual Button Styles */
-.nav-button {
-  background: linear-gradient(145deg, #24CC81, #157A50);
-  color: white;
-  border: none;
-  padding: 15px;
-  font-size: 1.1rem;
-  font-weight: 500;
+.action-button {
+  background: #165B40;
+  color: #FFFFFF;
+  border: 2px solid var(--primary);
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 8px;
-  transition: 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  text-transform: uppercase;
-  text-align: center;
+  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
 }
 
-.nav-button:hover:not(:disabled) {
-  transform: scale(1.05);
-  background: linear-gradient(145deg, #157A50, #1A9A63);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+.action-button:hover {
+  background: #1ea76b;
+  color: var(--white);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
-.nav-button:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(26, 154, 99, 0.6);
+.action-button i {
+  font-size: 1.1rem;
 }
 
-.nav-button:disabled {
-  background: gray;
-  cursor: not-allowed;
-  box-shadow: none;
+/* Chart Customization */
+::ng-deep .pie-chart .pie-label {
+  fill: #ffffff !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
 }
 
-/* Responsive Fixes for Small Screens */
-@media (max-width: 1024px) {
-  .main-content {
+::ng-deep .pie-chart .legend-labels {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+}
+
+::ng-deep .legend-label-text {
+  color: #ffffff !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-content {
     margin-left: 0;
-    padding: 15px;
-  }
-
-  .chart-container {
     padding: 20px;
   }
-
-  .button-container {
+  
+  .quick-actions {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .chart-title {
-    font-size: 1.8rem;
+  .dashboard-content {
+    padding-bottom: 100px; /* Added space for fixed bottom navbar */
   }
-
-  .no-data-message p {
-    font-size: 1.1rem;
+  
+  .card-title {
+    font-size: 1.5rem;
   }
-
-  .button-container {
-    gap: 15px;
+  
+  .data-visualization {
+    padding: 20px;
   }
-
-  .nav-button {
-    font-size: 1rem;
-    padding: 12px;
+  
+  .chart-wrapper {
+    min-height: 300px;
   }
-
-  .chart-container ngx-charts-pie-chart {
-    height: 280px;
-  }
-
-  .hide-legend-title ::ng-deep .pie-label {
-    font-size: 12px !important;
-    max-width: 50px;
-  }
-
-  .hide-legend-title ::ng-deep .legend {
-    display: none;
+  
+  .quick-actions {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .chart-title {
-    font-size: 1.5rem;
+  .dashboard-content {
+    padding: 15px;
+    padding-bottom: 100px; /* Ensure bottom padding persists on smallest screens */
   }
-
-  .no-data-message p {
-    font-size: 1rem;
+  
+  .card-header {
+    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
   }
-
-  .button-container {
-    grid-template-columns: 1fr;
-    gap: 10px;
+  
+  .data-summary {
+    padding: 15px;
   }
-
-  .nav-button {
+  
+  .summary-item {
     font-size: 0.9rem;
-    padding: 10px;
-  }
-
-  .chart-container ngx-charts-pie-chart {
-    height: 230px;
-  }
-
-  .hide-legend-title ::ng-deep .pie-label {
-    font-size: 10px !important;
-    max-width: 40px;
-  }
-}
-
-@media (max-width: 320px) {
-  .chart-title {
-    font-size: 1.3rem;
-  }
-
-  .no-data-message p {
-    font-size: 0.9rem;
-  }
-
-  .nav-button {
-    font-size: 0.8rem;
-    padding: 8px;
-  }
-
-  .chart-container ngx-charts-pie-chart {
-    height: 200px;
-  }
-
-  .hide-legend-title ::ng-deep .pie-label {
-    font-size: 9px !important;
-    max-width: 35px;
   }
 }

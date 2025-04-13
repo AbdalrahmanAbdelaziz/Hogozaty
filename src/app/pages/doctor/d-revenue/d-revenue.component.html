@@ -51,12 +51,12 @@
           <tr *ngFor="let appointment of appointments; let rowIndex = index">
             <td>{{ rowIndex + 1 }}</td>
             <td>{{ appointment.patientName }}</td>
-            <td>{{ appointment.total || 0}}</td>
-            <td>{{ appointment.cash || 0 }}</td>
-            <td>{{ appointment.wallet || 0 }}</td>
-            <td>{{ appointment.instapay || 0 }}</td>
-            <td>{{ appointment.visa || 0 }}</td>
-            <td>{{ appointment.remaining || 0 }}</td>
+            <td>{{ appointment.totalPrice || 0 }}</td>
+            <td>{{ appointment.paidCash || 0 }}</td>
+            <td>{{ appointment.paidWallet || 0 }}</td>
+            <td>{{ appointment.paidInstapay || 0 }}</td>
+            <td>{{ appointment.paidVisa || 0 }}</td>
+            <td>{{ appointment.remainingToPay || 0 }}</td>
           </tr>
         </tbody>
       </table>

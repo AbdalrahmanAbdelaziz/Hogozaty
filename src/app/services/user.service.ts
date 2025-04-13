@@ -6,6 +6,7 @@ import { UserLogin } from '../shared/models/login-request.dto';
 import { BASE_URL, LOGIN_URL } from '../shared/constants/urls';
 import { LoginResponse } from '../shared/models/login-response';
 import { APIResponse } from '../shared/models/api-response.dto';
+import { ResetPassword } from '../shared/models/ResetPassword';
 
 const USER_KEY = 'User';
 
@@ -80,4 +81,24 @@ export class UserService {
       })
     );
   }
+
+
+  forgetPassword(email: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8585/api/users/forgot-password', { email }).pipe(
+      tap({
+        next: () => this.toaster.success('Password reset link sent!'),
+        error: () => this.toaster.error('Failed to send reset link.')
+      })
+    );
+    
+}
+
+resetPassword(payload: ResetPassword): Observable<any> {
+  return this.http.post<any>('http://localhost:8585/api/users/forgot-password', payload).pipe(
+      tap({
+          next: () => this.toaster.success('Password reset successfully.'),
+          error: () => this.toaster.error('Failed to reset password.')
+      })
+  );
+}
 }

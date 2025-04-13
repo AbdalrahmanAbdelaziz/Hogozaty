@@ -29,7 +29,4 @@ export class SHeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
 }

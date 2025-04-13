@@ -21,7 +21,7 @@ body {
 
 /* الحاوية الأساسية */
 .booking-container {
-  background: #165B40;
+  background: #24CC81;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   padding: 30px;
@@ -38,7 +38,7 @@ body {
 
 /* كارت الدكتور */
 .doctor-card {
-  background: rgba(255, 255, 255, 0.3);
+  background: #1A9A63;
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
@@ -58,7 +58,7 @@ body {
   height: 90px;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid #165B40;
+  border: 3px solid #24CC81;
   margin-bottom: 10px;
 }
 
@@ -75,7 +75,7 @@ body {
 
 /* كروت المعلومات */
 .info-card {
-  background: rgba(255, 255, 255, 0.2);
+  background: #1A9A63;
   border-radius: 16px;
   padding: 15px;
   text-align: center;
@@ -88,13 +88,13 @@ body {
 }
 
 .info-card:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: #1A9A63;
   transform: scale(1.05);
 }
 
 /* ملاحظات */
 .notes-container {
-  background: rgba(255, 255, 255, 0.2);
+  background: #1A9A63;
   border-radius: 16px;
   padding: 15px;
   width: 100%;
@@ -127,7 +127,7 @@ body {
 
 /* زر التأكيد */
 .confirm-button {
-  background: #24CC81;
+  background: #165B40;
   color: white;
   border: none;
   padding: 14px;
@@ -143,7 +143,7 @@ body {
 }
 
 .confirm-button:hover {
-  background: #24CC3D;
+  background: #1A9A63;
   transform: scale(1.05);
 }
 

@@ -1,0 +1,27 @@
+<div class="navbar">
+    <div class="logo-container">
+      <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image" routerLink="/admin-home">
+    </div>
+  
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/admin-home" title="Home">
+          <i class="fas fa-home"></i>
+          <span class="nav-text">Home</span>
+        </a>
+      </li>
+      
+      <li class="menu-container">
+        <a routerLink="/complete-data" title="Profile">
+          <i class="fas fa-user"></i>
+          <span class="nav-text">{{ patient?.data?.firstName | titlecase }}</span>
+        </a>
+      </li>
+      <li>
+        <a (click)="logout()" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="nav-text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>

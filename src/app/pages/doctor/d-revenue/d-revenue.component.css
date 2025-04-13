@@ -1,3 +1,4 @@
+/* revenue.component.css */
 /* General Styles */
 body {
   font-family: 'Arial', sans-serif;
@@ -24,7 +25,7 @@ body {
 
 .no-data-message i {
   font-size: 2.5rem;
-  color: #165B40;
+  color: #24CC81;
 }
 
 .no-data-message p {
@@ -47,15 +48,15 @@ body {
 }
 
 h2 {
-  color: #165B40;
+  color: #24CC81;
   margin-bottom: 20px;
-  font-size: 2.5rem; /* Bigger font size */
-  text-align: center; /* Center the title */
+  font-size: 2.5rem;
+  text-align: center;
 }
 
 .dropdown-container {
   margin-bottom: 20px;
-  text-align: center; /* Center the dropdown container */
+  text-align: center;
 }
 
 .dropdown-container label {
@@ -69,10 +70,9 @@ h2 {
   border: 1px solid #ddd;
   background-color: #fff;
   font-size: 1rem;
-  width: 200px; /* Optional: Set a fixed width for the dropdown */
-  text-align: center; /* Center the text inside the dropdown */
+  width: 200px;
+  text-align: center;
 }
-
 
 .table-container {
   overflow-x: auto;
@@ -97,7 +97,7 @@ h2 {
 }
 
 .revenue-table th {
-  background-color: #165B40;
+  background-color: #24CC81;
   color: #fff;
   font-weight: bold;
 }
@@ -114,29 +114,55 @@ h2 {
   background-color: #f4f4f4;
 }
 
+/* Pay Remaining Button */
+.btn-pay-remaining {
+  background-color: #673AB7;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.btn-pay-remaining:hover {
+  background-color: #5E35B1;
+}
+
+.revenue-table td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .revenue-table {
-    font-size: 0.9rem;
+      font-size: 0.9rem;
   }
 
   .revenue-table th,
   .revenue-table td {
-    padding: 8px;
+      padding: 8px;
   }
 
   .table-container {
-    padding: 10px;
+      padding: 10px;
+  }
+
+  .btn-pay-remaining {
+      padding: 6px 10px;
+      font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .revenue-table {
-    font-size: 0.8rem;
+      font-size: 0.8rem;
   }
 
   .revenue-table th,
   .revenue-table td {
-    padding: 6px;
+      padding: 6px;
   }
 }

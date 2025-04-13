@@ -16,7 +16,7 @@
 
 /* Appointments Container */
 .appointments-container {
-  background: #165B40;
+  background: #24CC81;
   padding: 2.5rem;
   border-radius: 15px;
   box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.15);
@@ -50,7 +50,7 @@
   border-radius: 12px;
   font-size: 1.1rem;
   font-weight: bold;
-  color: #165B40;
+  color: #24CC81;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   cursor: pointer;
@@ -60,7 +60,7 @@
 
 /* Hover Effect */
 .slot-card:hover {
-  background: #24CC81;
+  background: #165B40;
   color: white;
   transform: translateY(-3px);
 }
@@ -91,7 +91,7 @@
 
 /* Reserve Button */
 .reserve-btn {
-  background: #165B40;
+  background: #1A9A63;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -102,7 +102,7 @@
 }
 
 .reserve-btn:hover {
-  background: #0F3E2A;
+  background: #24CC81;
   transform: scale(1.05);
 }
 

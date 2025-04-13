@@ -26,11 +26,10 @@ export interface Appointment {
   medicalRecordEntryId?: number;
   medicalRecordEntry?: any;
   feedbacks?: any[];
-  cash?: number;
-  visa?: number;
-  instapay?: number;
-  wallet?: number;
-  remaining?: number;
-  paid?: number;
-  total?: number;
+  paidCash?: number;
+  paidInstapay?: number;
+  paidWallet?: number;
+  paidVisa?: number;
+  remainingToPay?: number;
+  totalPrice?: number;
 }

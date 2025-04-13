@@ -100,7 +100,7 @@ export class SHomeComponent implements OnInit {
             this.pieChartData = [
               { name: 'Upcoming', value: response.data.upcominAppointmentsCount },
               { name: 'Cancelled', value: response.data.cancelledAppointmentsCount },
-              { name: 'Processed', value: response.data.completedAppointmentsCount },
+              { name: 'Proccessed', value: response.data.completedAppointmentsCount },
             ];
           } else {
             this.pieChartData = [];

@@ -2,13 +2,6 @@
 body {
   background-color: #F4F9F4; /* Light neutral background */
   font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-/* Navbar Spacer */
-.navbar-spacer {
-  height: 80px; /* Adjust based on your header height */
 }
 
 /* Main Content Layout */
@@ -16,7 +9,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 80px); /* Adjust based on your header height */
+  min-height: 100vh;
   padding: 20px;
 }
 
@@ -31,7 +24,7 @@ body {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background-color: #165B40; /* Navbar color */
+  background-color: #24CC81;
 }
 
 /* ====== Title Styling ====== */
@@ -50,6 +43,7 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 15px;
   padding: 10px;
+  
 }
 
 /* ====== Appointment Cards ====== */
@@ -72,7 +66,7 @@ body {
 
 /* Hover Effect */
 .day-card:hover {
-  background: #24CC81;
+  background: #165B40;
   color: white;
   transform: translateY(-5px);
 }

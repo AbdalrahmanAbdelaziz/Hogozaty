@@ -1,7 +1,7 @@
 <div class="bg-img">
   <div class="overlay"></div>
   <div class="cover-image">
-    <!-- <img src="www.jpg" alt="Cover Image" class="full-cover"> -->
+    <img src="www.jpg" alt="Cover Image" class="full-cover">
   </div>
   
   <app-p-header></app-p-header>
@@ -10,57 +10,95 @@
 
   <app-side-navbar></app-side-navbar>
 
-  <div class="content">
-    <div class="filter-form">
-      <form [formGroup]="locationForm">
-        <!-- Country Field -->
-        <div class="form-group">
-          <label for="countryId">Country</label>
-          <select id="countryId" formControlName="countryId" (change)="updateGovernorates(CountrySelector.value)" #CountrySelector>
-            <option [value]="null" disabled>Select Country</option>
-            <option *ngFor="let c of countries" [value]="c.id">{{ c.name_En }}</option>
-          </select>
-          <div *ngIf="formControls['countryId'].touched && formControls['countryId'].invalid" class="error">
-            <div *ngIf="formControls['countryId'].errors?.['required']">Country is required.</div>
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="filter-form">
+        <div class="form-header">
+          <h2>Find Your Doctor</h2>
+          <p>Select your preferences to find the perfect specialist</p>
+        </div>
+        <form [formGroup]="locationForm">
+          <!-- Country Field -->
+          <div class="form-group">
+            <label for="countryId" class="sr-only">Country</label>
+            <div class="input-container">
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              <select id="countryId" formControlName="countryId" 
+                      (change)="updateGovernorates(CountrySelector.value)" 
+                      #CountrySelector
+                      aria-label="Select country"
+                      aria-required="true">
+                <option [value]="null" disabled selected>Select Country</option>
+                <option *ngFor="let c of countries" [value]="c.id">{{ c.name_En }}</option>
+              </select>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="formControls['countryId'].touched && formControls['countryId'].invalid" class="error">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              <div *ngIf="formControls['countryId'].errors?.['required']">Country is required.</div>
+            </div>
           </div>
-        </div>
 
-        <!-- Governorate Field -->
-        <div class="form-group">
-          <label for="governorateId">Governorate</label>
-          <select id="governorateId" formControlName="governorateId" (change)="updateDistricts(GovSelector.value)" #GovSelector>
-            <option [value]="null" disabled>Select Governorate</option>
-            <option *ngFor="let g of governorates" [value]="g.id">{{ g.name_En }}</option>
-          </select>
-          <div *ngIf="formControls['governorateId'].touched && formControls['governorateId'].invalid" class="error">
-            <div *ngIf="formControls['governorateId'].errors?.['required']">Governorate is required.</div>
+          <!-- Governorate Field -->
+          <div class="form-group">
+            <label for="governorateId" class="sr-only">Governorate</label>
+            <div class="input-container">
+              <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+              <select id="governorateId" formControlName="governorateId" 
+                      (change)="updateDistricts(GovSelector.value)" 
+                      #GovSelector
+                      aria-label="Select governorate"
+                      aria-required="true">
+                <option [value]="null" disabled selected>Select Governorate</option>
+                <option *ngFor="let g of governorates" [value]="g.id">{{ g.name_En }}</option>
+              </select>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="formControls['governorateId'].touched && formControls['governorateId'].invalid" class="error">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              <div *ngIf="formControls['governorateId'].errors?.['required']">Governorate is required.</div>
+            </div>
           </div>
-        </div>
 
-        <!-- District Field -->
-        <div class="form-group">
-          <label for="districtId">District</label>
-          <select id="districtId" formControlName="districtId">
-            <option [value]="null" disabled>Select District</option>
-            <option *ngFor="let d of districts" [value]="d.id">{{ d.name_En }}</option>
-          </select>
-          <div *ngIf="formControls['districtId'].touched && formControls['districtId'].invalid" class="error">
-            <div *ngIf="formControls['districtId'].errors?.['required']">District is required.</div>
+          <!-- District Field -->
+          <div class="form-group">
+            <label for="districtId" class="sr-only">District</label>
+            <div class="input-container">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              <select id="districtId" formControlName="districtId"
+                      aria-label="Select district"
+                      aria-required="true">
+                <option [value]="null" disabled selected>Select District</option>
+                <option *ngFor="let d of districts" [value]="d.id">{{ d.name_En }}</option>
+              </select>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="formControls['districtId'].touched && formControls['districtId'].invalid" class="error">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              <div *ngIf="formControls['districtId'].errors?.['required']">District is required.</div>
+            </div>
           </div>
-        </div>
 
-        <!-- Specialization Field -->
-        <div class="form-group">
-          <label for="specializationId">Specialization</label>
-          <select id="specializationId" formControlName="specializationId">
-            <option [value]="null" disabled selected>Select Specialization</option>
-            <option *ngFor="let spec of specializations" [ngValue]="spec.id">{{ spec.name_En }}</option>
-          </select>
-        </div>
+          <!-- Specialization Field -->
+          <div class="form-group">
+            <label for="specializationId" class="sr-only">Specialization</label>
+            <div class="input-container">
+              <i class="fas fa-stethoscope" aria-hidden="true"></i>
+              <select id="specializationId" formControlName="specializationId"
+                      aria-label="Select specialization">
+                <option [value]="null" disabled selected>Select Specialization</option>
+                <option *ngFor="let spec of specializations" [ngValue]="spec.id">{{ spec.name_En }}</option>
+              </select>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </div>
 
-        <!-- Search Button -->
-        <button type="button" (click)="filterDoctors()">Find Doctors</button>
-      </form>
+          <!-- Search Button -->
+          <button type="button" (click)="filterDoctors()" aria-label="Search for doctors">
+            <i class="fas fa-search" aria-hidden="true"></i> Find Doctors
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

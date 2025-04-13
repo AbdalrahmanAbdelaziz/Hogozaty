@@ -167,9 +167,11 @@ filterDoctors(specialization: string): void {
     return Array(Math.floor(rating)).fill(0); 
   }
 
-  goToDoctorProfile(doctor: any): void {
-    this.router.navigate(['/view-doctor-profile', doctor.id, doctor.specializationId]);
-
+  goToDoctorProfile(doctor: Doctor): void {
+    this.router.navigate(
+      ['/view-doctor-profile', doctor.id, doctor.specializationId],
+      { queryParams: { clinicId: doctor.clinicId } }
+    );
   }
   
   

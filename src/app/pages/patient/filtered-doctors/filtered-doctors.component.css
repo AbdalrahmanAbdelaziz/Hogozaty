@@ -9,6 +9,10 @@ html, body {
   overflow-x: hidden;
 }
 
+.bg{
+  /* background-color: #165B40; */
+}
+
 /* Page Header */
 .page-header {
   text-align: center;
@@ -19,13 +23,13 @@ html, body {
 .page-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: white;
+  color: #24CC81;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .page-header p {
   font-size: 1.2rem;
-  color: #ffff;
+  color: #165B40;
 }
 
 /* Doctor Cards Container */
@@ -40,7 +44,7 @@ html, body {
 
 /* Individual Doctor Card */
 .doctor-card {
-  background: white;
+  background: #24CC81;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -77,13 +81,13 @@ html, body {
 .doctor-details h3 {
   font-size: 1.8rem;
   font-weight: bold;
-  color: #165B40;
+  color: white;
   margin-bottom: 12px;
 }
 
 .doctor-details p {
   font-size: 1rem;
-  color: #666;
+  color: #f8f9fa;
   margin-bottom: 8px;
 }
 
@@ -92,7 +96,7 @@ html, body {
 .doctor-details .price i,
 .doctor-details .rating i {
   margin-right: 6px;
-  color: #24CC81;
+  color: #165B40;
 }
 
 /* Price Styling */
@@ -118,7 +122,7 @@ html, body {
   font-size: 1.1rem;
   font-weight: bold;
   color: white;
-  background-color: #24CC81;
+  background-color: #165B40;
   border: none;
   border-radius: 8px;
   transition: background 0.3s ease;

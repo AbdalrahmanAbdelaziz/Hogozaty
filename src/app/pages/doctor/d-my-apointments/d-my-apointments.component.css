@@ -4,7 +4,7 @@ body {
   background: #f4f6f9;
   margin: 0;
   padding: 0;
-  color: #165B40;
+  color: #24CC81;
 }
 
 /* Appointment Container */
@@ -21,7 +21,7 @@ body {
 /* Title */
 .appointment-container h2 {
   text-align: center;
-  color: #165B40;
+  color: #24CC81;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 20px;
@@ -63,7 +63,7 @@ body {
 }
 
 .appointment-table thead {
-  background: #165B40;
+  background: #24CC81;
   color: white;
   font-size: 1rem;
 }
@@ -145,5 +145,76 @@ body {
   .btn {
       font-size: 0.85rem;
       padding: 8px 12px;
+  }
+}
+
+.empty-row {
+  height: 120px;
+}
+
+.empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #6B7280;
+  font-size: 1rem;
+  padding: 20px;
+}
+
+.empty-message svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .empty-message {
+    font-size: 0.9rem;
+  }
+  .empty-message svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .appointment-container {
+    padding: 20px;
+    margin-top: 80px;
+    padding-bottom: 100px; /* Added this line for bottom navbar space */
+  }
+
+  .dropdown-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .appointment-table th, .appointment-table td {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  .btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .empty-state {
+    padding: 20px;
+  }
+  
+  .empty-image {
+    width: 150px;
+  }
+  
+  .empty-state h3 {
+    font-size: 1.3rem;
+  }
+  
+  .empty-state p {
+    font-size: 1rem;
   }
 }

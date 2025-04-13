@@ -72,7 +72,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           this.appointments = (response.data || []).filter((appointment: any) => {
             return (
-              appointment.timeSlot.date === this.selectedDate &&
+              appointment.timeSlot?.date === this.selectedDate &&
               appointment.appointmentStatus_En === 'NextInQueue'
             );
           });
@@ -110,7 +110,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         this.appointments = (response.data || []).filter((appointment: any) => {
           return (
-            appointment.timeSlot.date === date &&
+            appointment.timeSlot?.date === date &&
             appointment.appointmentStatus_En === 'NextInQueue'
           );
         });

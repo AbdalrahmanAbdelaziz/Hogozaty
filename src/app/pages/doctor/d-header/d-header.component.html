@@ -1,24 +1,26 @@
 <div class="navbar">
-    <div class="logo-container">
-      <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image">
-    </div>
+  <div class="logo-container">
+    <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image" routerLink="/doctor-home">
+  </div>
+
     <ul class="nav-links">
-      <li>
-        <a routerLink="/doctor-home">
-          <i class="fas fa-home"></i> Home
-        </a>
-      </li>
+    <li>
+      <a routerLink="/doctor-home" title="Home">
+        <i class="fas fa-home"></i>
+        <span class="nav-text">Home</span>
+      </a>
+    </li>
 
       <li>
         <a routerLink="/d-daily-report">
-            <i class="fas fa-clipboard-list"></i> Daily Report
+            <i class="fas fa-clipboard-list"></i> Revenues
         </a>
       </li>
 
-      <li>
+     
         <li>
-            <a routerLink="/d-revenues">
-              <i class="fas fa-dollar-sign"></i> Today's revenue
+            <a routerLink="/d-revenues" title="Revenues">
+              <i class="fas fa-dollar-sign"></i>  Daybook
             </a>
         </li>
           
@@ -36,8 +38,6 @@
     </li>
     </ul>
 
-    <div class="menu-toggle" (click)="toggleMenu()">
-      <i class="fas fa-bars"></i>
-  </div>
+   
   </div>
   

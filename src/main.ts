@@ -9,12 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
-
-
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -40,6 +41,9 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(MatInputModule),
     importProvidersFrom(MatButtonModule),
     importProvidersFrom(MatDialogModule),
+    importProvidersFrom(MatCardModule),
+    importProvidersFrom(MatIconModule),
+    importProvidersFrom(MatGridListModule),
 
     // Forms
     importProvidersFrom(FormsModule),
@@ -49,7 +53,5 @@ bootstrapApplication(AppComponent, {
 
     // NgBootstrap
     importProvidersFrom(NgbModule),
-
-
   ],
 }).catch((err) => console.error(err));
