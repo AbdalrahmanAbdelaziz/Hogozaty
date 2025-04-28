@@ -1,13 +1,11 @@
-<div class="dashboard-container">
-  <app-d-header></app-d-header>
+<div class="dashboard-container" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">  <app-d-header></app-d-header>
 
   <div class="dashboard-layout">
-    <app-d-sidenavbar></app-d-sidenavbar>
 
     <main class="dashboard-content">
       <div class="dashboard-card">
         <div class="card-header">
-          <h2 class="card-title">Appointment Status</h2>
+          <h2 class="card-title">{{ 'dashboard.appointmentStatus' | transloco }}</h2>
           <div class="card-actions">
           </div>
         </div>
@@ -30,26 +28,33 @@
         <ng-template #noDataMessage>
           <div class="no-data-state">
             <i class="fas fa-calendar-times"></i>
-            <h3>No Appointments Today</h3>
-            <p>You currently have no scheduled appointments</p>
+            <h3>{{ 'dashboard.noAppointmentsTitle' | transloco }}</h3>
+            <p>{{ 'dashboard.noAppointmentsMessage' | transloco }}</p>
+            <button class="action-button" routerLink="/new-patient">
+              <i class="fas fa-plus"></i> {{ 'dashboard.createNewAppointment' | transloco }}
+            </button>
           </div>
         </ng-template>
+
         
         <!-- Quick Actions -->
-        <div class="quick-actions">
-          <button class="action-button" routerLink="/d-my-apointments">
-            <i class="fas fa-calendar-check"></i> My Appointments
-          </button>
-          <button class="action-button" routerLink="/d-service-settings">
-            <i class="fas fa-cog"></i> Service Settings
-          </button>
-          <button class="action-button" routerLink="/d-timeslot-management">
-            <i class="fas fa-calendar-alt"></i> Timeslot Management
-          </button>
-          <button class="action-button" routerLink="/d-patients">
-            <i class="fas fa-users"></i> Patients
-          </button> 
-        </div>
+       <div class="quick-actions">
+  <button class="action-button" routerLink="/d-my-apointments">
+    <i class="fas fa-arrow-right"></i> {{ 'quick_actions.next' | transloco }}
+  </button>          
+  <button class="action-button" routerLink="/d-list">
+    <i class="fas fa-calendar-check"></i> {{ 'quick_actions.my_appointments' | transloco }}
+  </button>
+  <button class="action-button" routerLink="/d-service-settings">
+    <i class="fas fa-cog"></i> {{ 'quick_actions.service_settings' | transloco }}
+  </button>
+  <button class="action-button" routerLink="/d-timeslot-management">
+    <i class="fas fa-calendar-alt"></i> {{ 'quick_actions.timeslot_management' | transloco }}
+  </button>
+  <button class="action-button" routerLink="/d-patients">
+    <i class="fas fa-users"></i> {{ 'quick_actions.patients' | transloco }}
+  </button> 
+</div>
       </div>
     </main>
   </div>

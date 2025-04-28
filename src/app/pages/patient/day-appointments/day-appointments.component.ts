@@ -7,10 +7,11 @@ import { DoctorService } from '../../../services/doctor.service';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { PHeaderComponent } from '../p-header/p-header.component';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-day-appointments',
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent,TranslocoModule],
   templateUrl: './day-appointments.component.html',
   styleUrl: './day-appointments.component.css'
 })
@@ -29,6 +30,7 @@ export class DayAppointmentsComponent implements OnInit {
     private doctorService: DoctorService,    
     private router: Router,
     private userService: UserService,
+    public translocoService: TranslocoService 
   ) {}
 
   ngOnInit(): void {

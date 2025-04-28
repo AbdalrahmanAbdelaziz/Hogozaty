@@ -295,3 +295,40 @@ select {
     color: #999;
     cursor: not-allowed;
   }
+
+  /* RTL Support */
+[dir="rtl"] {
+  .registration-card {
+    text-align: right;
+  }
+
+  .form-group label {
+    text-align: right;
+  }
+
+  .error-message {
+    text-align: right;
+  }
+
+  .form-actions {
+    flex-direction: row-reverse;
+  }
+
+  .form-actions .cancel-btn {
+    margin-right: 10px;
+    margin-left: 0;
+  }
+
+  .file-upload-label {
+    text-align: right;
+  }
+
+  .gallery-preview .preview-item {
+    flex-direction: row-reverse;
+  }
+
+  .gallery-preview .delete-btn {
+    margin-right: 8px;
+    margin-left: 0;
+  }
+}

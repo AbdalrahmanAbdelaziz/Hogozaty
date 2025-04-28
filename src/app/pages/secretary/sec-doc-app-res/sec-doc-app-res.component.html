@@ -1,7 +1,11 @@
-<!-- Conditional Header -->
-<ng-container *ngIf="patient?.data?.applicationRole_En === 'Patient'; else secretaryHeader">
-  <app-s-header></app-s-header>
+<ng-container *ngIf="patient?.data?.applicationRole_En === 'Patient'; else notPatient">
+  <app-p-header></app-p-header>
 </ng-container>
+<ng-template #notPatient>
+  <ng-container *ngIf="patient?.data?.applicationRole_En === 'Doctor'; else secretaryHeader">
+    <app-d-header></app-d-header>
+  </ng-container>
+</ng-template>
 <ng-template #secretaryHeader>
   <app-s-header></app-s-header>
 </ng-template>
@@ -16,14 +20,14 @@
   <app-s-sidenavbar></app-s-sidenavbar>
 </ng-template>
 
-<div class="content">
+<div class="content" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
   <div class="days-wrapper">
-    <h2 class="title">Select an Appointment Date</h2>
+    <h2 class="title">{{ 'appointments.selectDateTitle' | transloco }}</h2>
 
     <!-- Show when there are available dates -->
     <div *ngIf="availableDays.length > 0; else noAppointments" class="days-grid">
       <button *ngFor="let day of availableDays" (click)="goToDayAppointments(day)" class="day-card">
-        <span class="date">{{ day | date: 'dd MMM yyyy' }}</span>
+        <span class="date">{{ day | date: (translocoService.getActiveLang() === 'ar' ? 'dd MMM yyyy' : 'MMM dd, yyyy') }}</span>
         <span class="day-name">{{ day | date: 'EEEE' }}</span>
       </button>
     </div>
@@ -31,7 +35,7 @@
     <!-- Template for No Available Appointments -->
     <ng-template #noAppointments>
       <div class="no-appointments">
-        <p>No available appointments at the moment.</p>
+        <p>{{ 'appointments.noAppointmentsMessage' | transloco }}</p>
       </div>
     </ng-template>
   </div>

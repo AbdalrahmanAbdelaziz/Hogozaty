@@ -330,3 +330,36 @@ button:hover {
         font-size: 0.9em;
     }
 }
+
+/* Add these RTL-specific styles */
+[dir="rtl"] .right-button button:not(:last-child) {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .text-section {
+    text-align: right;
+}
+
+[dir="rtl"] .mission-container,
+[dir="rtl"] .volunteer-container {
+    direction: rtl;
+}
+
+/* Language switcher button styles */
+.navbar button.lang-switcher {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 5px 10px;
+    margin: 0 5px;
+}
+
+.navbar button.lang-switcher.active {
+    background: white;
+    color: #165B40;
+}

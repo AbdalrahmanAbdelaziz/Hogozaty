@@ -8,12 +8,13 @@ import { PatientService } from '../../../services/patient.service';
 import { SHeaderComponent } from '../s-header/s-header.component'; 
 import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { BASE_URL } from '../../../shared/constants/urls';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 
 
 @Component({
   selector: 'app-s-profile',
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, FormsModule, ReactiveFormsModule,],
+  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, FormsModule, ReactiveFormsModule,TranslocoModule],
   templateUrl: './s-profile.component.html',
   styleUrl: './s-profile.component.css'
 })
@@ -26,7 +27,8 @@ export class SProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private patientService: PatientService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

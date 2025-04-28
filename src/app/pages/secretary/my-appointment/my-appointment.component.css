@@ -112,15 +112,23 @@ body {
 }
 
 .appointment-table thead {
-  background: #165B40;
+  background: #24CC81;
   color: white;
   font-size: 1rem;
 }
 
-.appointment-table th, .appointment-table td {
+.appointment-table td {
   padding: 16px;
   text-align: center;
   border-bottom: 1px solid #ddd;
+  color: black;
+}
+
+.appointment-table th {
+  padding: 16px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  color: white;
 }
 
 .appointment-table tbody tr:hover {

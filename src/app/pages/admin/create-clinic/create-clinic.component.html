@@ -3,102 +3,106 @@
 <div class="registration-container">
   <div class="registration-card">
     <div class="card-header">
-      <h1>Create New Clinic</h1>
-      <p>Fill in the details to register a new clinic</p>
+      <h1>{{ 'clinic_form.register_title' | transloco }}</h1>
+      <p>{{ 'clinic_form.register_subtitle' | transloco }}</p>
     </div>
 
     <form [formGroup]="clinicForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="name">Clinic Name *</label>
+        <label for="name">{{ 'clinic_form.name' | transloco }} *</label>
         <input 
           type="text" 
           id="name" 
           formControlName="name" 
-          placeholder="Enter clinic name"
+          [placeholder]="'clinic_form.name_placeholder' | transloco"
           [class.invalid]="formControls['name'].invalid && formControls['name'].touched">
         <div class="error-message" *ngIf="formControls['name'].invalid && formControls['name'].touched">
-          Clinic name is required
+          {{ 'validation.name_required' | transloco }}
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="countryId">Country *</label>
+          <label for="countryId">{{ 'clinic_form.country' | transloco }} *</label>
           <select 
             id="countryId" 
             formControlName="countryId" 
             (change)="updateGovernorates($event)"
             [class.invalid]="formControls['countryId'].invalid && formControls['countryId'].touched">
-            <option value="">Select Country</option>
-            <option *ngFor="let country of countries" [value]="country.id">{{country.name_En}}</option>
+            <option value="">{{ 'clinic_form.select_country' | transloco }}</option>
+            <option *ngFor="let country of countries" [value]="country.id">
+              {{ getTranslatedName(country) }}
+            </option>
           </select>
           <div class="error-message" *ngIf="formControls['countryId'].invalid && formControls['countryId'].touched">
-            Country is required
+            {{ 'validation.country_required' | transloco }}
           </div>
         </div>
 
         <div class="form-group">
-          <label for="governorateId">Governorate *</label>
+          <label for="governorateId">{{ 'clinic_form.governorate' | transloco }} *</label>
           <select 
             id="governorateId" 
             formControlName="governorateId" 
             [disabled]="!formControls['countryId'].value"
             (change)="updateDistricts($event)"
             [class.invalid]="formControls['governorateId'].invalid && formControls['governorateId'].touched">
-            <option value="">Select Governorate</option>
-            <option *ngFor="let governorate of governorates" [value]="governorate.id">{{governorate.name_En}}</option>
+            <option value="">{{ 'clinic_form.select_governorate' | transloco }}</option>
+            <option *ngFor="let governorate of governorates" [value]="governorate.id">
+              {{ getTranslatedName(governorate) }}
+            </option>
           </select>
           <div class="error-message" *ngIf="formControls['governorateId'].invalid && formControls['governorateId'].touched">
-            Governorate is required
+            {{ 'validation.governorate_required' | transloco }}
           </div>
         </div>
 
         <div class="form-group">
-          <label for="districtId">District *</label>
+          <label for="districtId">{{ 'clinic_form.district' | transloco }} *</label>
           <select 
             id="districtId" 
             formControlName="districtId" 
             [disabled]="!formControls['governorateId'].value"
             [class.invalid]="formControls['districtId'].invalid && formControls['districtId'].touched">
-            <option value="">Select District</option>
-            <option *ngFor="let district of districts" [value]="district.id">{{district.name_En}}</option>
+            <option value="">{{ 'clinic_form.select_district' | transloco }}</option>
+            <option *ngFor="let district of districts" [value]="district.id">
+              {{ getTranslatedName(district) }}
+            </option>
           </select>
           <div class="error-message" *ngIf="formControls['districtId'].invalid && formControls['districtId'].touched">
-            District is required
+            {{ 'validation.district_required' | transloco }}
           </div>
         </div>
       </div>
 
-<!-- Phone Field -->
-<div class="form-group">
-    <label for="phone">Phone *</label>
-    <input 
-      type="tel" 
-      id="phone" 
-      formControlName="phone" 
-      placeholder="Enter phone number"
-      [class.invalid]="formControls['phone'].invalid && formControls['phone'].touched">
-    <div class="error-message" *ngIf="formControls['phone'].invalid && formControls['phone'].touched">
-      Phone number is required
-    </div>
-  </div>
-  
-  <!-- Email Field -->
-  <div class="form-group">
-    <label for="email">Email *</label>
-    <input 
-      type="email" 
-      id="email" 
-      formControlName="email" 
-      placeholder="Enter email"
-      [class.invalid]="formControls['email'].invalid && formControls['email'].touched">
-    <div class="error-message" *ngIf="formControls['email'].invalid && formControls['email'].touched">
-      Valid email is required
-    </div>
-  </div>
+      <div class="form-group">
+        <label for="phone">{{ 'clinic_form.phone' | transloco }} *</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          formControlName="phone" 
+          [placeholder]="'clinic_form.phone_placeholder' | transloco"
+          [class.invalid]="formControls['phone'].invalid && formControls['phone'].touched">
+        <div class="error-message" *ngIf="formControls['phone'].invalid && formControls['phone'].touched">
+          {{ 'validation.phone_required' | transloco }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">{{ 'clinic_form.email' | transloco }} *</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          [placeholder]="'clinic_form.email_placeholder' | transloco"
+          [class.invalid]="formControls['email'].invalid && formControls['email'].touched">
+        <div class="error-message" *ngIf="formControls['email'].invalid && formControls['email'].touched">
+          {{ 'validation.valid_email' | transloco }}
+        </div>
+      </div>
 
       <div class="form-group">
-        <label>Clinic Gallery (Multiple images allowed)</label>
+        <label>{{ 'clinic_form.gallery_label' | transloco }}</label>
         <div class="file-upload-wrapper">
           <input 
             type="file" 
@@ -108,7 +112,7 @@
             accept="image/*">
           <label for="gallery" class="file-upload-label">
             <span class="upload-icon">+</span>
-            Select Images
+            {{ 'clinic_form.select_images' | transloco }}
           </label>
         </div>
         <div class="gallery-preview" *ngIf="galleryFiles.length > 0">
@@ -124,10 +128,12 @@
           type="submit" 
           class="submit-btn"
           [disabled]="clinicForm.invalid || isLoading">
-          <span *ngIf="!isLoading">Create Clinic</span>
+          <span *ngIf="!isLoading">{{ 'clinic_form.create_button' | transloco }}</span>
           <span *ngIf="isLoading" class="loading-spinner"></span>
         </button>
-        <button type="button" class="cancel-btn" routerLink="/admin/clinics">Cancel</button>
+        <button type="button" class="cancel-btn" routerLink="/admin/clinics">
+          {{ 'common.cancel' | transloco }}
+        </button>
       </div>
     </form>
   </div>

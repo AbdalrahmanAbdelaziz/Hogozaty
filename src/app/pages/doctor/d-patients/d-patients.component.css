@@ -60,6 +60,7 @@
   border-collapse: collapse;
   min-width: 600px;
   margin: 0 auto;
+  color: black;
 }
 
 .patients-table th,
@@ -169,7 +170,6 @@
   }
 }
 
-
 @media screen and (max-width: 768px) {
   /* Hide table and show cards */
   .desktop-table {
@@ -189,4 +189,17 @@
     padding: 10px;
     font-size: 0.95rem;
   }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  overflow: hidden;
 }

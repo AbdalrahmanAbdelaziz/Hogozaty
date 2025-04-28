@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { PatientService } from '../../../services/patient.service';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { UserService } from '../../../services/user.service';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-new-patient',
@@ -16,7 +17,8 @@ import { UserService } from '../../../services/user.service';
     RouterModule,
     FormsModule,
     SHeaderComponent,
-    SSidenavbarComponent
+    SSidenavbarComponent,
+    TranslocoModule
   ],
   templateUrl: './new-patient.component.html',
   styleUrl: './new-patient.component.css'
@@ -29,7 +31,8 @@ export class NewPatientComponent implements OnInit {
   constructor(
     private patientService: PatientService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {}

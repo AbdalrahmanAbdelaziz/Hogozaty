@@ -1,37 +1,47 @@
-<div class="navbar">
+<div class="navbar" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
   <div class="logo-container">
-    <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image" routerLink="/secretary-home">
+    <img src="vv_w.png" alt="" class="logo-image" routerLink="/secretary-home" />
+  </div>
+
+  <div class="top-nav-items">
+    <button class="lang-switcher" (click)="switchLanguage('en')" [class.active]="currentLang === 'en'">EN</button>
+    <button class="lang-switcher" (click)="switchLanguage('ar')" [class.active]="currentLang === 'ar'">عربي</button>
+    <a class="dark-mode-toggle" (click)="toggleDarkMode()" [title]="'header.darkModeToggle' | transloco">
+      <i class="fas" [class.fa-moon]="!isDarkMode" [class.fa-sun]="isDarkMode"></i>
+    </a>
   </div>
 
   <ul class="nav-links">
     <li>
-      <a routerLink="/secretary-home" title="Home">
+      <a routerLink="/secretary-home" [title]="'header.home' | transloco">
         <i class="fas fa-home"></i>
-        <span class="nav-text">Home</span>
+        <span class="nav-text">{{ 'header.home' | transloco }}</span>
       </a>
     </li>
+    
     <li>
-      <a routerLink="/my-appointment" title="Appointments">
+      <a routerLink="/my-appointment" [title]="'header.appointments' | transloco">
         <i class="fas fa-calendar-check"></i>
-        <span class="nav-text">Appointments</span>
+        <span class="nav-text">{{ 'header.appointments' | transloco }}</span>
       </a>
     </li>
     <li>
-      <a routerLink="/revenues" title="Revenues">
+      <a routerLink="/revenues" [title]="'header.daybook' | transloco">
         <i class="fas fa-dollar-sign"></i>
-        <span class="nav-text">Daybook</span>
+        <span class="nav-text">{{ 'header.daybook' | transloco }}</span>
       </a>
     </li>
     <li class="menu-container">
-      <a routerLink="/s-profile" title="Profile">
+      <a routerLink="/s-profile" [title]="'header.profile' | transloco">
         <i class="fas fa-user"></i>
         <span class="nav-text">{{ patient?.data?.firstName | titlecase }}</span>
       </a>
     </li>
+
     <li>
-      <a (click)="logout()" title="Logout">
+      <a (click)="logout()" [title]="'header.logout' | transloco">
         <i class="fas fa-sign-out-alt"></i>
-        <span class="nav-text">Logout</span>
+        <span class="nav-text">{{ 'header.logout' | transloco }}</span>
       </a>
     </li>
   </ul>

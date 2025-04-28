@@ -28,6 +28,8 @@ export interface Doctor {
     applicationRole_En: string;
     applicationRole_Ar: string;
     applicationRole_ID: number;
+    specialization_En?: string;  // Add these
+    specialization_Ar?: string;
     
   }
   

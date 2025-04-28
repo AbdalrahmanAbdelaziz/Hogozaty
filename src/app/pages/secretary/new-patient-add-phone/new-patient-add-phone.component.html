@@ -1,25 +1,28 @@
 <app-s-header></app-s-header>
 <app-s-sidenavbar></app-s-sidenavbar>
 
-<div class="container">
-  <h2>Book an Appointment</h2>
+<div class="container" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
+  <h2>{{ 'booking.title' | transloco }}</h2>
 
   <form (ngSubmit)="submitAppointment()">
     <div class="form-group">
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName" required placeholder="Enter your first name">
+      <label for="firstName">{{ 'booking.firstNameLabel' | transloco }}:</label>
+      <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName" required 
+             [placeholder]="'booking.firstNamePlaceholder' | transloco">
     </div>
 
     <div class="form-group">
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName" required placeholder="Enter your last name">
+      <label for="lastName">{{ 'booking.lastNameLabel' | transloco }}:</label>
+      <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName" required 
+             [placeholder]="'booking.lastNamePlaceholder' | transloco">
     </div>
 
     <div class="form-group">
-      <label for="phoneNumber">Phone Number:</label>
-      <input type="text" id="phoneNumber" [(ngModel)]="phoneNumber" name="phoneNumber" required placeholder="Enter your phone number">
+      <label for="phoneNumber">{{ 'booking.phoneLabel' | transloco }}:</label>
+      <input type="text" id="phoneNumber" [(ngModel)]="phoneNumber" name="phoneNumber" required 
+             [placeholder]="'booking.phonePlaceholder' | transloco">
     </div>
 
-    <button type="submit">Book Appointment</button>
+    <button type="submit">{{ 'booking.submitButton' | transloco }}</button>
   </form>
 </div>

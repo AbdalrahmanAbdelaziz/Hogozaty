@@ -15,10 +15,11 @@ import { catchError, forkJoin, map, of } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { BASE_URL } from '../../../shared/constants/urls';
 import { APIResponse } from '../../../shared/models/api-response.dto';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-filtered-doctors',
-   imports: [CommonModule, RouterModule, PHeaderComponent, ReactiveFormsModule, FormsModule, SideNavbarComponent],
+   imports: [CommonModule, RouterModule, PHeaderComponent, ReactiveFormsModule, FormsModule, SideNavbarComponent, TranslocoModule],
   templateUrl: './filtered-doctors.component.html',
   styleUrl: './filtered-doctors.component.css'
 })
@@ -37,8 +38,9 @@ export class FilteredDoctorsComponent implements OnInit {
     specializations: { id: number; name: string }[] = [];
     selectedSpecialization: string = '';
     appointments: any[] = [];
-    doctor!: Doctor; // Add this in the class
-    notes: string = ''; // Stores user input for notes
+    doctor!: Doctor; 
+    notes: string = '';
+     
 
   constructor(
     private userService: UserService,
@@ -47,7 +49,8 @@ export class FilteredDoctorsComponent implements OnInit {
     private doctorService: DoctorService,
     private specializationService: SpecializationService,
     private clinicService: ClinicService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -120,13 +123,17 @@ export class FilteredDoctorsComponent implements OnInit {
 
 
 
-  loadSpecializationNames(): void {
-    this.specializationService.getAllSpecializations().subscribe(specializations => {
-      specializations.forEach(spec => {
-        this.specializationNames[spec.id] = spec.name_En;
+    loadSpecializationNames(): void {
+      this.specializationService.getAllSpecializations().subscribe(response => {
+        if (response.succeeded && response.data) {
+          response.data.forEach(spec => {
+            this.specializationNames[spec.id] = spec.name_En;
+          });
+        } else {
+          console.error('Failed to load specializations:', response.message);
+        }
       });
-    });
-  }
+    }
 
   getSpecializationName(id: number): void {
     this.specializationService.getSpecializationById(id).subscribe(name => {

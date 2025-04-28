@@ -8,16 +8,16 @@ import { Router, RouterModule } from '@angular/router';
 import { Lookup } from '../../shared/models/lookup.model';
 import { LookupsService } from '../../services/lookups.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, TranslocoModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-
   registerForm!: FormGroup;
   private fb = inject(FormBuilder);
   private authService = inject(AuthenticationService);
@@ -25,16 +25,26 @@ export class RegisterComponent implements OnInit {
   private lookupService = inject(LookupsService);
   private _router = inject(Router);
   private toastr = inject(ToastrService);
+  private translocoService = inject(TranslocoService);
 
   public selectedPicture: File | null = null;
   genders: Lookup[] = [];
   countries: Lookup[] = [];
   governorates: Lookup[] = [];
   districts: Lookup[] = [];
+  currentLang: string = 'en';
 
   ngOnInit(): void {
     this.initForm();
     this.loadLookups();
+    this.currentLang = this.translocoService.getActiveLang();
+  }
+
+  switchLanguage(lang: string) {
+    this.currentLang = lang;
+    this.translocoService.setActiveLang(lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }
 
   private initForm(): void {
@@ -44,27 +54,27 @@ export class RegisterComponent implements OnInit {
       username: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       phoneNumber: ['', [Validators.required]],
-      email: [''], // Optional
-      dateOfBirth: [''], // Optional
-      genderId: [null], // Optional
-      countryId: [null], // Optional
-      governorateId: [null], // Optional
-      districtId: [null], // Optional
-      profilePicture: [null], // Optional
-      emergencyContactName: [''], // Optional
-      emergencyContactPhone: [''], // Optional
-      bloodType: [''], // Optional
+      email: [''],
+      dateOfBirth: [''],
+      genderId: [null],
+      countryId: [null],
+      governorateId: [null],
+      districtId: [null],
+      profilePicture: [null],
+      emergencyContactName: [''],
+      emergencyContactPhone: [''],
+      bloodType: ['']
     });
   }
 
   private loadLookups(): void {
     this.lookupService.loadGenders().subscribe(
       (res: APIResponse<Lookup[]>) => this.genders = res.data,
-      () => this.toastr.error("Failed to load genders")
+      () => this.toastr.error(this.translocoService.translate('register.errors.loadGenders'))
     );
     this.lookupService.loadCountries().subscribe(
       (res: APIResponse<Lookup[]>) => this.countries = res.data,
-      () => this.toastr.error("Failed to load countries")
+      () => this.toastr.error(this.translocoService.translate('register.errors.loadCountries'))
     );
   }
 
@@ -93,7 +103,10 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     if (this.registerForm.invalid) {
-      this.toastr.warning("Please complete all required fields.", "Incomplete Data");
+      this.toastr.warning(
+        this.translocoService.translate('register.formErrors.incompleteFields'),
+        this.translocoService.translate('register.formErrors.warning')
+      );
       this.registerForm.markAllAsTouched();
       return;
     }
@@ -120,11 +133,11 @@ export class RegisterComponent implements OnInit {
 
     this.authService.addNewPatient(formData).subscribe({
       next: () => {
-        this.toastr.success("Registration successful! Please login.");
+        this.toastr.success(this.translocoService.translate('register.success.message'));
         this._router.navigate(['/login']);
       },
       error: (err) => {
-        this.toastr.error("Failed to register. Please try again.");
+        this.toastr.error(this.translocoService.translate('register.errors.registrationFailed'));
       },
     });
   }

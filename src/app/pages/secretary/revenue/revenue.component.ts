@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../services/user.service';
 import { Appointment } from '../../../shared/models/appointment.model';
 import { CheckoutModalComponent } from '../checkout-modal/checkout-modal.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-revenue',
@@ -20,7 +21,8 @@ import { CheckoutModalComponent } from '../checkout-modal/checkout-modal.compone
     FormsModule, 
     SHeaderComponent, 
     SSidenavbarComponent,
-    CheckoutModalComponent
+    CheckoutModalComponent,
+    TranslocoModule
   ],
   templateUrl: './revenue.component.html',
   styleUrls: ['./revenue.component.css'],
@@ -32,12 +34,13 @@ export class RevenueComponent implements OnInit {
   doctorId!: number;
   userRole: string | null = null;
   isCheckoutModalVisible: boolean = false;
-  selectedAppointmentId: number = 0; // Initialize with default value
+  selectedAppointmentId: number = 0; 
 
   constructor(
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

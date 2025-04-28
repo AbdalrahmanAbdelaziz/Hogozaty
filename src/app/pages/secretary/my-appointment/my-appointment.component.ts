@@ -12,6 +12,7 @@ import { CheckoutModalComponent } from '../checkout-modal/checkout-modal.compone
 import { Observable, interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Appointment } from '../../../shared/models/appointment.model';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-my-appointment',
@@ -24,6 +25,7 @@ import { Appointment } from '../../../shared/models/appointment.model';
     SSidenavbarComponent,
     ConfirmationModalComponent,
     CheckoutModalComponent,
+    TranslocoModule
   ],
   templateUrl: './my-appointment.component.html',
   styleUrls: ['./my-appointment.component.css'],
@@ -45,7 +47,8 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private userService: UserService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +58,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
       this.fetchAvailableDays();
       this.startPolling();
     } else {
-      this.toastr.error('No doctor ID found for the secretary.', 'Error');
+      this.toastr.error(this.getTranslation('errors.noDoctorId'), 'Error');
     }
   }
 
@@ -82,7 +85,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (error) => {
-          this.toastr.error('Failed to fetch appointments', 'Error');
+          this.toastr.error(this.getTranslation('errors.fetchAppointments'), 'Error');
         },
       });
   }
@@ -103,7 +106,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        this.toastr.error('Failed to fetch available days', 'Error');
+        this.toastr.error(this.getTranslation('errors.fetchAvailableDays'), 'Error');
       },
     });
   }
@@ -121,7 +124,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.toastr.error('Failed to fetch appointments', 'Error');
+        this.toastr.error(this.getTranslation('errors.fetchAppointments'), 'Error');
       },
     });
   }
@@ -134,11 +137,11 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
   markAsArrived(appointmentId: number): void {
     this.makeAppointmentArrived(appointmentId).subscribe({
       next: () => {
-        this.toastr.success('Appointment status updated to Arrived');
+        this.toastr.success(this.getTranslation('appointments.statusArrived'));
         this.fetchAppointmentsForDate(this.selectedDate);
       },
       error: (err) => {
-        this.toastr.error('Failed to update appointment status');
+        this.toastr.error(this.getTranslation('appointments.failedStatusUpdate'));
       },
     });
   }
@@ -146,11 +149,11 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
   markAsNextInQueue(appointmentId: number): void {
     this.makeAppointmentNextInQueue(appointmentId).subscribe({
       next: () => {
-        this.toastr.success('Appointment status updated to Next in Queue');
+        this.toastr.success(this.getTranslation('appointments.statusNextInQueue'));
         this.fetchAppointmentsForDate(this.selectedDate);
       },
       error: (err) => {
-        this.toastr.error('Failed to update appointment status');
+        this.toastr.error(this.getTranslation('appointments.failedStatusUpdate'));
       },
     });
   }
@@ -162,7 +165,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
   markAsProcessed(appointmentId: number): void {
     this.makeAppointmentProcessed(appointmentId).subscribe({
       next: () => {
-        this.toastr.success('Appointment status updated to Processed');
+        this.toastr.success(this.getTranslation('appointments.statusProcessed'));
         
         // Find and update the appointment in the current list
         const processedAppointment = this.appointments.find(appt => appt.id === appointmentId);
@@ -178,7 +181,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
               this.cdr.detectChanges();
             },
             error: (err) => {
-              this.toastr.error('Failed to fetch updated appointment data');
+              this.toastr.error(this.getTranslation('appointments.failedFetchUpdatedData'));
             }
           });
         }
@@ -187,7 +190,7 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
         this.fetchAppointmentsForDate(this.selectedDate);
       },
       error: (err) => {
-        this.toastr.error('Failed to update appointment status');
+        this.toastr.error(this.getTranslation('appointments.failedStatusUpdate'));
       },
     });
   }
@@ -212,19 +215,17 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
     if (this.selectedAppointmentId) {
       this.appointmentService.cancelAppointment(this.selectedAppointmentId).subscribe({
         next: () => {
-          this.toastr.success('Appointment cancelled successfully!');
+          this.toastr.success(this.getTranslation('appointments.cancelSuccess'));
           this.appointments = this.appointments.filter((appt) => appt.id !== this.selectedAppointmentId);
           this.closeCancelModal();
         },
         error: (err) => {
-          this.toastr.error('Failed to cancel appointment. Please try again.');
+          this.toastr.error(this.getTranslation('appointments.failedCancel'));
           this.closeCancelModal();
         },
       });
     }
   }
-
-
 
   closeCheckoutModal(): void {
     this.isCheckoutModalVisible = false;
@@ -233,30 +234,30 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
   }
 
   getRemainingToPay(appointment: Appointment): number {
-      return appointment.remainingToPay ?? 0;
+    return appointment.remainingToPay ?? 0;
+  }
+
+  // Check if there's remaining payment
+  hasRemainingPayment(appointment: Appointment): boolean {
+    return (appointment.remainingToPay ?? 0) > 0;
+  }
+
+  openCheckoutModal(appointment: Appointment): void {
+    if (appointment.id) {
+      this.selectedAppointmentId = appointment.id;
+      this.isCheckoutModalVisible = true;
+    } else {
+      this.toastr.error(this.getTranslation('appointments.invalidAppointment'), 'Error');
     }
-  
-    // Check if there's remaining payment
-    hasRemainingPayment(appointment: Appointment): boolean {
-      return (appointment.remainingToPay ?? 0) > 0;
-    }
-  
-    openCheckoutModal(appointment: Appointment): void {
-      if (appointment.id) {
-        this.selectedAppointmentId = appointment.id;
-        this.isCheckoutModalVisible = true;
-      } else {
-        this.toastr.error('Invalid appointment selected', 'Error');
-      }
-    }
+  }
 
   getAppointmentReceipt(appointmentId: number): void {
     this.appointmentService.getAppointmentReceipt(appointmentId).subscribe({
       next: (response: any) => {
-        this.toastr.success('Receipt fetched successfully');
+        this.toastr.success(this.getTranslation('appointments.receiptFetched'));
       },
       error: (error) => {
-        this.toastr.error('Failed to fetch receipt');
+        this.toastr.error(this.getTranslation('appointments.failedReceiptFetch'));
       },
     });
   }
@@ -275,5 +276,9 @@ export class MyAppointmentComponent implements OnInit, OnDestroy {
 
   makeAppointmentProcessed(appointmentId: number): Observable<any> {
     return this.appointmentService.makeAppointmentProcessed(appointmentId);
+  }
+
+  private getTranslation(key: string): string {
+    return this.translocoService.translate(key);
   }
 }

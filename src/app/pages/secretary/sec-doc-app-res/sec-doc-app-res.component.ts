@@ -9,11 +9,13 @@ import { PHeaderComponent } from '../../patient/p-header/p-header.component';
 import { SideNavbarComponent } from '../../patient/side-navbar/side-navbar.component';
 import { SHeaderComponent } from '../s-header/s-header.component';
 import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
+import { DHeaderComponent } from '../../doctor/d-header/d-header.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 
 @Component({
   selector: 'app-sec-doc-app-res',
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, DHeaderComponent, PHeaderComponent, TranslocoModule],
   templateUrl: './sec-doc-app-res.component.html',
   styleUrl: './sec-doc-app-res.component.css'
 })
@@ -29,7 +31,8 @@ export class SecDocAppResComponent implements OnInit {
     private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

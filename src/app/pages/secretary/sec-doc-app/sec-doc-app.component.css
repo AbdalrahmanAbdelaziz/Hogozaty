@@ -151,3 +151,28 @@ body {
     font-size: 0.8rem;
   }
 }
+/* RTL specific styles */
+[dir="rtl"] .days-wrapper {
+  /* text-align: right; */
+}
+
+[dir="rtl"] .days-grid {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .day-card {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+/* Date formatting for Arabic */
+[dir="rtl"] .date {
+  font-family: 'Tajawal', sans-serif; /* Use an Arabic-friendly font */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  [dir="rtl"] .days-grid {
+    justify-content: center;
+  }
+}

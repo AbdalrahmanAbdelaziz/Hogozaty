@@ -17,26 +17,26 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 
+// Transloco imports
+import { TranslocoHttpLoader } from './app/services/transloco-loader';
+import { 
+  provideTransloco,
+  TranslocoModule
+} from '@ngneat/transloco';
+import { provideTranslocoLocale } from '@ngneat/transloco-locale';
+import { getBrowserLang } from '@ngneat/transloco';
+
 bootstrapApplication(AppComponent, {
   providers: [
-    // Router
     provideRouter(routes),
-
-    // HttpClient
     provideHttpClient(),
-
-    // Animations
     provideAnimations(),
-
-    // Toastr (for notifications)
     importProvidersFrom(
       ToastrModule.forRoot({
         positionClass: 'toast-bottom-right',
         timeOut: 3000,
       })
     ),
-
-    // Angular Material Modules
     importProvidersFrom(MatFormFieldModule),
     importProvidersFrom(MatInputModule),
     importProvidersFrom(MatButtonModule),
@@ -44,14 +44,26 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(MatCardModule),
     importProvidersFrom(MatIconModule),
     importProvidersFrom(MatGridListModule),
-
-    // Forms
     importProvidersFrom(FormsModule),
-
-    // NgxCharts
     importProvidersFrom(NgxChartsModule),
-
-    // NgBootstrap
     importProvidersFrom(NgbModule),
+    
+    // Transloco providers
+    provideTransloco({
+      config: {
+        availableLangs: ['en', 'ar'],
+        defaultLang: 'en',
+        reRenderOnLangChange: true,
+        prodMode: false,
+      },
+      loader: TranslocoHttpLoader
+    }),
+    provideTranslocoLocale({
+      langToLocaleMapping: {
+        en: 'en-US',
+        ar: 'ar-EG'
+      }
+    }),
+    importProvidersFrom(TranslocoModule)
   ],
 }).catch((err) => console.error(err));

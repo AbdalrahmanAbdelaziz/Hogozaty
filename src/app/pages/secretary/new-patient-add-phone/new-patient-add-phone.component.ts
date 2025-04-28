@@ -6,11 +6,12 @@ import { SHeaderComponent } from '../s-header/s-header.component';
 import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-new-patient-add-phone',
   standalone: true,
-  imports: [CommonModule, FormsModule, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, FormsModule, SHeaderComponent, SSidenavbarComponent, TranslocoModule],
   templateUrl: './new-patient-add-phone.component.html',
   styleUrl: './new-patient-add-phone.component.css'
 })
@@ -24,7 +25,8 @@ export class NewPatientAddPhoneComponent implements OnInit {
     private authService: AuthenticationService,
     private router: Router,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -70,7 +72,6 @@ export class NewPatientAddPhoneComponent implements OnInit {
           ]);
         } else {
           this.toastr.error('Failed to retrieve patient ID from the response.');
-          console.error('Response does not contain patient ID:', response);
         }
       },
       (error) => {

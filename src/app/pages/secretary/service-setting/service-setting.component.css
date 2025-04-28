@@ -50,6 +50,7 @@ table th, table td {
 
 table tbody tr {
   border-bottom: 1px solid #ddd;
+  color: black;
 }
 
 table tbody tr:last-child {

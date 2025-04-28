@@ -24,7 +24,7 @@ body {
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background-color: #165B40;
+  background-color: #24CC81;
 }
 
 /* ====== Title Styling ====== */
@@ -66,7 +66,7 @@ body {
 
 /* Hover Effect */
 .day-card:hover {
-  background: #24CC81;
+  background: #165B40;
   color: white;
   transform: translateY(-5px);
 }
@@ -149,5 +149,30 @@ body {
 
   .day-name {
     font-size: 0.8rem;
+  }
+}
+
+/* RTL specific styles */
+[dir="rtl"] .days-wrapper {
+  /* text-align: right; */
+}
+
+[dir="rtl"] .days-grid {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .day-card {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+/* Date formatting for Arabic */
+[dir="rtl"] .date {
+  font-family: 'Tajawal', sans-serif; /* Use an Arabic-friendly font */
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .days-grid {
+    justify-content: center;
   }
 }

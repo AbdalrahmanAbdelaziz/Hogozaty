@@ -3,26 +3,36 @@ import { RouterModule } from '@angular/router';
 import { DarkModeService } from '../../services/dark-mode.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-info',
-  imports: [RouterModule, CommonModule, FormsModule],
+  standalone: true,
+  imports: [RouterModule, CommonModule, FormsModule, TranslocoModule],
   templateUrl: './info.component.html',
   styleUrl: './info.component.css'
 })
-export class InfoComponent implements OnInit{
+export class InfoComponent implements OnInit {
   isDarkMode = false;
+  currentLang: string = 'en';
 
-
-
-
-  constructor(private el: ElementRef) {}
+  constructor(
+    private el: ElementRef,
+    private translocoService: TranslocoService
+  ) {}
 
   ngOnInit(): void {
     this.showSectionsImmediately();
     this.checkScroll();
+    this.currentLang = this.translocoService.getActiveLang();
   }
-  
+
+  switchLanguage(lang: string) {
+    this.currentLang = lang;
+    this.translocoService.setActiveLang(lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
@@ -45,36 +55,4 @@ export class InfoComponent implements OnInit{
       section.classList.add('show');
     });
   }
-
- 
-
 }
-
-  // sections: HTMLElement[] = [];
-
-  // constructor() {}
-
-  // ngOnInit(): void {
-  //   // Collect all sections you want to animate
-  //   this.sections = Array.from(document.querySelectorAll('.section'));
-  //   this.checkSectionVisibility();
-  // }
-
-  // @HostListener('window:scroll', [])
-  // onScroll(): void {
-  //   this.checkSectionVisibility();
-  // }
-
-  // checkSectionVisibility(): void {
-  //   const windowHeight = window.innerHeight;
-  //   this.sections.forEach((section) => {
-  //     const sectionTop = section.getBoundingClientRect().top;
-
-  //     if (sectionTop <= windowHeight * 0.75) {
-  //       section.classList.add('show');
-  //     } else {
-  //       section.classList.remove('show');
-  //     }
-  //   });
-  // }
-// }

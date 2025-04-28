@@ -27,10 +27,7 @@ export class PatientService {
     return this.http.get<APIResponse<Patient>>(`${this.apiUrl}/api/Patient/getPatientById/${patientId}`);
   }
 
-  getMedicalRecordsByPatient(patientId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/patient/${patientId}`);
-  }
-
+ 
   updatePatientProfile(patientId: number, formData: FormData): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/api/Patient/updatePatientProfile/${patientId}`, formData);
   }
@@ -41,10 +38,27 @@ export class PatientService {
     return this.http.get(`${this.apiUrl}/api/Patient/getPatientsOfDoctor/${doctorId}`);
   }
 
-  // Upload document for a patient
-  uploadDocument(patientId: number, file: File): Observable<any> {
+
+  getVisitHistory(patientId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/patient/${patientId}`);
+  }
+  
+  uploadFile(file: File, appointmentId: number): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(`${this.apiUrl}/api/patients/${patientId}/documents`, formData);
+    formData.append('appointmentId', appointmentId.toString());
+    
+    return this.http.post(`${this.apiUrl}/upload`, formData);
   }
+
+  submitDiagnosis(visitDetails: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}/patient/`);
+  }
+
+  getMedicalRecordsByPatient(patientId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/patient/${patientId}`);
+  }
+
+
+
 }

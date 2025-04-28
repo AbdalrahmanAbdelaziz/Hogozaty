@@ -1,41 +1,57 @@
-<div class="navbar">
+<div class="navbar" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
+
   <div class="logo-container">
-    <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image" routerLink="/doctor-home">
+    <img src="vv_w.png" alt="" class="logo-image" routerLink="/doctor-home" />
+  </div>
+
+
+
+  <div class="top-nav-items">
+    <button class="lang-switcher" (click)="switchLanguage('en')" [class.active]="currentLang === 'en'">EN</button>
+    <button class="lang-switcher" (click)="switchLanguage('ar')" [class.active]="currentLang === 'ar'">عربي</button>
+    <a class="dark-mode-toggle" (click)="toggleDarkMode()" [title]="'header.darkModeToggle' | transloco">
+      <i class="fas" [class.fa-moon]="!isDarkMode" [class.fa-sun]="isDarkMode"></i>
+    </a>
   </div>
 
     <ul class="nav-links">
-    <li>
-      <a routerLink="/doctor-home" title="Home">
-        <i class="fas fa-home"></i>
-        <span class="nav-text">Home</span>
-      </a>
-    </li>
-
       <li>
-        <a routerLink="/d-daily-report">
-            <i class="fas fa-clipboard-list"></i> Revenues
+        <a routerLink="/doctor-home" [title]="'header.home' | transloco">
+          <i class="fas fa-home"></i>
+          <span class="nav-text">{{ 'header.home' | transloco }}</span>
         </a>
       </li>
 
-     
-        <li>
-            <a routerLink="/d-revenues" title="Revenues">
-              <i class="fas fa-dollar-sign"></i>  Daybook
-            </a>
-        </li>
+      <li>
+        <a routerLink="/d-daily-report" [title]="'header.revenues' | transloco">
+          <i class="fas fa-clipboard-list"></i>
+          <span class="nav-text">{{ 'header.revenues' | transloco }}</span>
+        </a>
+      </li>
+
+     <li>
+      <a routerLink="/d-revenues" [title]="'header.daybook' | transloco">
+        <i class="fas fa-dollar-sign"></i>
+        <span class="nav-text">{{ 'header.daybook' | transloco }}</span>
+      </a>
+    </li>
           
 
       <li class="menu-container">
-        <a routerLink="/d-profile">
-          <i class="fas fa-user"></i> {{ patient.data.firstName | titlecase }}
+        <a routerLink="/d-profile" [title]="'header.profile' | transloco">
+          <i class="fas fa-user"></i>
+          <span class="nav-text">{{ patient?.data?.firstName | titlecase }}</span>
         </a>
       </li>
 
+
       <li>
-        <a (click)="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
+        <a (click)="logout()" [title]="'header.logout' | transloco">
+          <i class="fas fa-sign-out-alt"></i>
+          <span class="nav-text">{{ 'header.logout' | transloco }}</span>
         </a>
-    </li>
+      </li>
+      
     </ul>
 
    

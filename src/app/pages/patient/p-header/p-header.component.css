@@ -40,6 +40,34 @@ body {
     transform: scale(1.05);
 }
 
+/* Top navbar items */
+.top-nav-items {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 10px;
+}
+
+.dark-mode-toggle:hover {
+    color: #1A9A63;
+    transform: scale(1.1);
+}
+
+.dark-mode-toggle i {
+    color: #24CC81;
+    transition: color 0.3s ease;
+}
+
 /* Navigation Links */
 .nav-links {
     display: flex;
@@ -128,8 +156,108 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .navbar {
+        padding: calc(5px + env(safe-area-inset-top)) 15px 5px 15px;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .logo-container {
+        margin-right: 0;
+    }
+
+    .logo-image {
+        height: 45px;
+        width: 110px;
+    }
+
+    /* Hide dark mode toggle in bottom nav */
+    .nav-links .dark-mode-toggle {
+        display: none;
+    }
+
+    /* Show dark mode toggle in top nav */
+    .top-nav-items {
+        display: flex;
+        gap: 15px;
+    }
+
+    .nav-links {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #165B40;
+        display: flex;
+        justify-content: space-around;
+        padding: calc(8px + env(safe-area-inset-bottom)) 0 8px 0;
+        margin: 0;
+        gap: 0;
+        z-index: 1000;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .nav-links a {
+        padding: 8px;
+        min-width: auto;
+    }
+
+    .nav-text {
+        font-size: 0.8rem;
+        margin-top: 3px;
+    }
+
+    .nav-links a i {
+        font-size: 1.2rem;
+    }
+
+    body {
+        padding-bottom: calc(70px + env(safe-area-inset-bottom));
+    }
+
+    /* Adjust language switcher for tablet */
+    .lang-switcher {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+
+    /* Hide dropdown menu on tablet */
+    .menu-container:hover .menu {
+        display: none;
+    }
+}
+
+/* Adjustments for smaller tablets (600px - 768px) */
+@media screen and (max-width: 768px) and (min-width: 600px) {
+    .nav-text {
+        font-size: 0.75rem;
+    }
+
+    .nav-links a i {
+        font-size: 1.1rem;
+    }
+}
+
+/* Adjustments for portrait tablets (768px - 900px) */
+@media screen and (max-width: 900px) and (orientation: portrait) {
+    .nav-links {
+        padding: calc(10px + env(safe-area-inset-bottom)) 0 10px 0;
+    }
+    
+    .nav-text {
+        font-size: 0.85rem;
+    }
+}
+
 /* Mobile Bottom Navbar */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 600px) {
     .navbar {
         padding: calc(5px + env(safe-area-inset-top)) 10px 5px 10px;
         justify-content: space-between;
@@ -143,6 +271,16 @@ body {
     .logo-image {
         height: 40px;
         width: 100px;
+    }
+
+    /* Hide dark mode toggle in bottom nav */
+    .nav-links .dark-mode-toggle {
+        display: none;
+    }
+
+    /* Show dark mode toggle in top nav */
+    .top-nav-items {
+        display: flex;
     }
 
     .nav-links {
@@ -191,5 +329,100 @@ body {
 
     .nav-links a i {
         font-size: 1rem;
+    }
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --card-bg: #1e1e1e;
+    --primary-color: #24CC81;
+    --navbar-bg: #0d3524;
+    --icon-color: #24CC81;
+    --hover-color: #1A9A63;
+}
+  
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --card-bg: #f5f5f5;
+    --primary-color: #165B40;
+    --navbar-bg: #165B40;
+    --icon-color: #24CC81;
+    --hover-color: #1A9A63;
+}
+  
+/* Apply dark mode variables */
+body.dark-mode {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+  
+/* Update navbar colors for dark mode */
+.dark-mode .navbar {
+    background-color: var(--navbar-bg);
+}
+  
+.dark-mode .nav-links a {
+    color: var(--text-color);
+}
+  
+.dark-mode .nav-links a:hover {
+    color: var(--hover-color);
+}
+  
+.dark-mode .nav-links a i {
+    color: var(--icon-color);
+}
+  
+/* Dark mode toggle animation */
+.dark-mode-toggle i.fa-moon,
+.dark-mode-toggle i.fa-sun {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+  
+.dark-mode-toggle:hover i.fa-moon,
+.dark-mode-toggle:hover i.fa-sun {
+    transform: rotate(20deg);
+    color: var(--hover-color);
+}
+
+/* Language Switcher Styles */
+.lang-switcher {
+    background: transparent;
+    color: white;
+    border: 1px solid #24CC81;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+  
+.lang-switcher.active {
+    background: #24CC81;
+    color: white;
+}
+  
+/* RTL Specific Styles */
+[dir="rtl"] .logo-container {
+    margin-right: 0;
+    margin-left: auto;
+}
+  
+[dir="rtl"] .top-nav-items {
+    margin-left: 0;
+    margin-right: auto;
+}
+  
+[dir="rtl"] .nav-links {
+    padding-right: 0;
+}
+  
+@media screen and (max-width: 768px) {
+    [dir="rtl"] .nav-links {
+        padding-right: 0;
     }
 }

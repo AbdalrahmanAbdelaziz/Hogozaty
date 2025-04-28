@@ -110,14 +110,14 @@ html, body {
 }
 
 .form-header h2 {
-  color: #ffffff;
+  /* color: #ffffff; */
   margin: 0;
   font-size: 28px;
   font-weight: 700;
 }
 
 .form-header p {
-  color: #e2e8f0;
+  /* color: #e2e8f0; */
   margin: 8px 0 0;
   font-size: 15px;
   font-weight: 400;
@@ -165,7 +165,7 @@ select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  color: var(--text);
+  /* color: var(--text); */
   box-shadow: var(--shadow);
 }
 
@@ -281,4 +281,68 @@ button i {
   button {
     padding: 13px;
   }
+}
+
+/* Add to your root or body CSS */
+[dir="rtl"] .filter-form {
+  text-align: right;
+}
+
+[dir="rtl"] .input-container i:first-child {
+  left: auto;
+  right: 15px;
+}
+
+[dir="rtl"] .input-container i:last-child {
+  right: auto;
+  left: 15px;
+}
+
+.filter-form {
+  overflow: hidden; /* Prevents text overflow */
+}
+
+select option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:root {
+  --arabic-font: 'Tahoma', 'Arial', sans-serif;
+}
+
+[dir="rtl"] body {
+  font-family: var(--arabic-font);
+}
+
+/* RTL-specific styles */
+[dir="rtl"] .input-container {
+  direction: rtl;
+}
+
+[dir="rtl"] .input-container i:first-child {
+  right: 15px;
+  left: auto;
+}
+
+[dir="rtl"] .input-container i:last-child {
+  left: 15px;
+  right: auto;
+}
+
+[dir="rtl"] select {
+  padding: 15px 45px 15px 20px;
+  text-align: right;
+}
+
+/* General select styling that works for both LTR and RTL */
+select {
+  background-position: left 15px center;
+  padding-left: 45px;
+  padding-right: 35px;
+}
+
+[dir="rtl"] select {
+  background-position: right 15px center;
 }

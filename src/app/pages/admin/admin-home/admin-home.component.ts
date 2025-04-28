@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog } from '@angular/material/dialog';
 import { UserTypeModalComponent } from '../user-type-modal/user-type-modal.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-admin-home',
@@ -18,7 +19,8 @@ import { UserTypeModalComponent } from '../user-type-modal/user-type-modal.compo
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatGridListModule
+    MatGridListModule,
+    TranslocoModule
   ],
   templateUrl: './admin-home.component.html',
   styleUrls: ['./admin-home.component.css']
@@ -30,64 +32,68 @@ export class AdminHomeComponent {
 
   cards = [
     { 
-      title: 'Users', 
+      title: 'admin_dashboard.cards.users.title', 
       icon: 'people', 
-      description: 'Manage all system users', 
-      route: '/admin/users',
+      description: 'admin_dashboard.cards.users.description', 
+      route: '/users',
       color: 'linear-gradient(135deg, #3f51b5 0%, #2196f3 100%)'
     },
     { 
-      title: 'New User', 
+      title: 'admin_dashboard.cards.new_user.title', 
       icon: 'person_add', 
-      description: 'Create a new user', 
+      description: 'admin_dashboard.cards.new_user.description', 
       action: 'openUserTypeModal', 
       color: 'linear-gradient(135deg, #2196f3 0%, #00bcd4 100%)'
     },
     { 
-      title: 'Clinics', 
+      title: 'admin_dashboard.cards.clinics.title', 
       icon: 'local_hospital', 
-      description: 'View and manage all clinic', 
+      description: 'admin_dashboard.cards.clinics.description', 
       route: '/clinics',
       color: 'linear-gradient(135deg, #4caf50 0%, #8bc34a 100%)'
     },
     { 
-      title: 'New Clinic', 
+      title: 'admin_dashboard.cards.new_clinic.title', 
       icon: 'add_business', 
-      description: 'Register a new clinic', 
+      description: 'admin_dashboard.cards.new_clinic.description', 
       route: '/create_clinic',
       color: 'linear-gradient(135deg, #8bc34a 0%, #cddc39 100%)'
     },
     { 
-      title: 'Specializations', 
+      title: 'admin_dashboard.cards.specializations.title', 
       icon: 'medical_services', 
-      description: 'Manage all medical specializations', 
-      route: '/admin/specializations',
+      description: 'admin_dashboard.cards.specializations.description', 
+      route: '/specializations',
       color: 'linear-gradient(135deg, #ff9800 0%, #ffc107 100%)'
     },
     { 
-      title: 'New Specialization', 
+      title: 'admin_dashboard.cards.new_specialization.title', 
       icon: 'add_circle', 
-      description: 'Add new medical specialization', 
-      route: '/admin/new-specialization',
+      description: 'admin_dashboard.cards.new_specialization.description', 
+      route: '/new-specialization',
       color: 'linear-gradient(135deg, #ffc107 0%, #ffeb3b 100%)'
     },
     { 
-      title: 'Services', 
+      title: 'admin_dashboard.cards.services.title', 
       icon: 'miscellaneous_services', 
-      description: 'Manage all healthcare services', 
-      route: '/admin/services',
+      description: 'admin_dashboard.cards.services.description', 
+      route: '/services',
       color: 'linear-gradient(135deg, #9c27b0 0%, #e91e63 100%)'
     },
     { 
-      title: 'New Service', 
+      title: 'admin_dashboard.cards.new_service.title', 
       icon: 'post_add', 
-      description: 'Add new healthcare service', 
-      route: '/admin/new-service',
+      description: 'admin_dashboard.cards.new_service.description', 
+      route: '/new-service',
       color: 'linear-gradient(135deg, #e91e63 0%, #f44336 100%)'
     }
   ];
 
-  constructor(private router: Router,  private dialog: MatDialog) {}
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    public translocoService: TranslocoService
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event?: any) {
@@ -134,7 +140,6 @@ export class AdminHomeComponent {
   private actionMap: { [key: string]: () => void } = {
     openUserTypeModal: () => this.openUserTypeModal()
   };
-  
 
   cardAction(card: any): void {
     if (card.action && this.actionMap[card.action]) {
@@ -143,5 +148,4 @@ export class AdminHomeComponent {
       this.navigateTo(card.route);
     }
   }
-  
 }

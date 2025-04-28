@@ -7,11 +7,12 @@ import { LoginResponse } from '../../../shared/models/login-response';
 import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { SHeaderComponent } from '../s-header/s-header.component';
 import { PatientService } from '../../../services/patient.service';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-sec-doc-app',
   standalone: true,
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent,TranslocoModule],
   templateUrl: './sec-doc-app.component.html',
   styleUrl: './sec-doc-app.component.css'
 })
@@ -27,7 +28,8 @@ export class SecDocAppComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

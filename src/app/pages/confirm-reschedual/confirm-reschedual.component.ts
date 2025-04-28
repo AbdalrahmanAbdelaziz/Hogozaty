@@ -18,10 +18,11 @@ import { PHeaderComponent } from '../patient/p-header/p-header.component';
 import { SideNavbarComponent } from '../patient/side-navbar/side-navbar.component';
 import { SHeaderComponent } from "../secretary/s-header/s-header.component";
 import { SSidenavbarComponent } from "../secretary/s-sidenavbar/s-sidenavbar.component";
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-confirm-reschedual',
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, FormsModule, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, FormsModule, SHeaderComponent, SSidenavbarComponent, TranslocoModule],
   templateUrl: './confirm-reschedual.component.html',
   styleUrl: './confirm-reschedual.component.css'
 })
@@ -43,7 +44,8 @@ export class ConfirmReschedualComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private appointmentService: AppointmentService,
     private clinicService: ClinicService,
-    private toastr: ToastrService // Inject ToastrService
+    private toastr: ToastrService,
+     public translocoService: TranslocoService 
   ) {}
 
   ngOnInit(): void {
@@ -141,14 +143,14 @@ export class ConfirmReschedualComponent implements OnInit {
 
     console.log("Reschedule Data:", rescheduleData); // Log the payload
 
-    this.appointmentService.rescheduleAppointment(rescheduleData).subscribe(
-      response => {
-        this.toastr.success("Your appointment has been rescheduled successfully!");
-        this.router.navigate(['/patient-home']);  
+    this.appointmentService.rescheduleAppointment(rescheduleData).subscribe({
+      next: () => {
+        this.toastr.success(this.translocoService.translate('reschedule.successMessage'));
+        this.router.navigate(['/patient-home']);
       },
-      error => {
-        this.toastr.error("An error occurred while rescheduling. Please try again.");
+      error: () => {
+        this.toastr.error(this.translocoService.translate('reschedule.errorMessage'));
       }
-    );
+    });
   }
 }

@@ -9,6 +9,7 @@ import { AppointmentService } from '../../../services/appointment.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { DoctorService } from '../../../services/doctor.service';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-d-daily-report',
@@ -19,6 +20,7 @@ import { DoctorService } from '../../../services/doctor.service';
     FormsModule,
     DHeaderComponent,
     DSidenavbarComponent,
+    TranslocoModule
   ],
   templateUrl: './d-daily-report.component.html',
   styleUrls: ['./d-daily-report.component.css']
@@ -42,6 +44,7 @@ export class DDailyReportComponent implements OnInit {
     private doctorService: DoctorService,
     private userService: UserService,
     private toastr: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

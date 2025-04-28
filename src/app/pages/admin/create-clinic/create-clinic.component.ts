@@ -8,6 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Lookup } from '../../../shared/models/lookup.model';
 import { LookupsService } from '../../../services/lookups.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-create-clinic',
@@ -16,7 +17,8 @@ import { ToastrService } from 'ngx-toastr';
     CommonModule,
     AdminHeaderComponent,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    TranslocoModule
   ],
   templateUrl: './create-clinic.component.html',
   styleUrls: ['./create-clinic.component.css']
@@ -28,14 +30,17 @@ export class CreateClinicComponent implements OnInit {
   private lookupService = inject(LookupsService);
   private _router = inject(Router);
   private toastr = inject(ToastrService);
+  private translocoService = inject(TranslocoService);
 
   galleryFiles: File[] = [];
   countries: Lookup[] = [];
   governorates: Lookup[] = [];
   districts: Lookup[] = [];
   isLoading = false;
+  currentLanguage: string = 'en';
 
   ngOnInit(): void {
+    this.currentLanguage = this.translocoService.getActiveLang();
     this.initForm();
     this.loadLookups();
   }
@@ -55,8 +60,12 @@ export class CreateClinicComponent implements OnInit {
   private loadLookups(): void {
     this.lookupService.loadCountries().subscribe(
       (res: APIResponse<Lookup[]>) => this.countries = res.data,
-      () => this.toastr.error("Failed to load countries")
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_countries'))
     );
+  }
+
+  getTranslatedName(item: Lookup): string {
+    return this.currentLanguage === 'ar' ? item.name_Ar : item.name_En;
   }
 
   onGalleryChange(event: Event): void {
@@ -84,7 +93,8 @@ export class CreateClinicComponent implements OnInit {
         this.governorates = res.data;
         this.districts = [];
         this.clinicForm.patchValue({ governorateId: '', districtId: '' });
-      }
+      },
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_governorates'))
     );
   }
 
@@ -98,13 +108,17 @@ export class CreateClinicComponent implements OnInit {
       return;
     }
     this.lookupService.loadDistrictsOfGovernorate(Number(governorateId)).subscribe(
-      (res: APIResponse<Lookup[]>) => this.districts = res.data
+      (res: APIResponse<Lookup[]>) => this.districts = res.data,
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_districts'))
     );
   }
 
   onSubmit(): void {
     if (this.clinicForm.invalid) {
-      this.toastr.warning("Please complete all required fields.", "Incomplete Data");
+      this.toastr.warning(
+        this.translocoService.translate('clinic_form.incomplete_fields_message'),
+        this.translocoService.translate('clinic_form.incomplete_fields_title')
+      );
       this.clinicForm.markAllAsTouched();
       return;
     }
@@ -124,11 +138,11 @@ export class CreateClinicComponent implements OnInit {
 
     this.adminService.createClinic(formData).subscribe({
       next: () => {
-        this.toastr.success("Clinic created successfully!");
+        this.toastr.success(this.translocoService.translate('clinic_form.create_success'));
         this._router.navigate(['/admin/clinics']);
       },
       error: (err) => {
-        this.toastr.error("Failed to create clinic. Please try again.");
+        this.toastr.error(this.translocoService.translate('clinic_form.create_error'));
         console.error(err);
         this.isLoading = false;
       },

@@ -9,10 +9,11 @@ import { PHeaderComponent } from '../patient/p-header/p-header.component';
 import { SideNavbarComponent } from '../patient/side-navbar/side-navbar.component';
 import { SHeaderComponent } from "../secretary/s-header/s-header.component";
 import { SSidenavbarComponent } from "../secretary/s-sidenavbar/s-sidenavbar.component";
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-day-appointments-reschedual',
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, SHeaderComponent, SSidenavbarComponent, TranslocoModule],
   templateUrl: './day-appointments-reschedual.component.html',
   styleUrl: './day-appointments-reschedual.component.css'
 })
@@ -23,7 +24,8 @@ export class DayAppointmentsReschedualComponent implements OnInit {
   docId!: number;
   clinicId: number = 0;
   specializationId: number = 0;
-  appointmentId!: number; // Add this to store the appointment ID for rescheduling
+  appointmentId!: number; 
+
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +33,8 @@ export class DayAppointmentsReschedualComponent implements OnInit {
     private doctorService: DoctorService,
     private router: Router,
     private userService: UserService,
+    public translocoService: TranslocoService 
+    
   ) {}
 
   ngOnInit(): void {

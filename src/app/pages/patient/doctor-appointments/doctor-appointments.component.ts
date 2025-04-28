@@ -6,10 +6,11 @@ import { PHeaderComponent } from '../p-header/p-header.component';
 import { UserService } from '../../../services/user.service';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-doctor-appointments',
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, TranslocoModule ],
   templateUrl: './doctor-appointments.component.html',
   styleUrl: './doctor-appointments.component.css'
 })
@@ -25,7 +26,8 @@ export class DoctorAppointmentsComponent implements OnInit {
     private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

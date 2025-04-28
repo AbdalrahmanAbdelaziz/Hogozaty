@@ -8,10 +8,11 @@ import { UserService } from '../../../services/user.service';
 import { Appointment } from '../../../shared/models/appointment.model';
 import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-d-revenue',
-  imports: [CommonModule, RouterModule, FormsModule, DHeaderComponent, DSidenavbarComponent],
+  imports: [CommonModule, RouterModule, FormsModule, DHeaderComponent, DSidenavbarComponent, TranslocoModule],
   templateUrl: './d-revenue.component.html',
   styleUrl: './d-revenue.component.css'
 })
@@ -25,7 +26,8 @@ export class DRevenueComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private toastr: ToastrService,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

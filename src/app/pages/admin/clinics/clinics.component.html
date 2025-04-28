@@ -2,56 +2,64 @@
 
 <div class="clinics-container">
   <div class="clinics-header">
-    <h1>Clinics Management</h1>
+    <h1>{{ 'clinics.management' | transloco }}</h1>
     
     <div class="controls-container">
       <div class="search-filter-container">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>Search Clinics</mat-label>
-          <input matInput [(ngModel)]="searchTerm" (input)="filterClinics()" placeholder="Search by name, email or phone">
+        <!-- <mat-form-field appearance="outline" class="search-field">
+          <mat-label>{{ 'clinics.search_label' | transloco }}</mat-label>
+          <div class="form-section">
+            <label for="clinic-search">{{ 'clinics.search_placeholder' | transloco }}</label>
+            
+            <input
+              id="clinic-search"
+              matInput
+              [(ngModel)]="searchTerm"
+              (input)="filterClinics()"
+              [placeholder]="'clinics.search_placeholder' | transloco"
+              [attr.title]="'clinics.search_placeholder' | transloco">
+          </div>
+          
           <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+        </mat-form-field> -->
 
-        <div class="filter-group">
+        <!-- <div class="filter-group">
           <mat-form-field appearance="outline">
-            <mat-label>Country</mat-label>
+            <mat-label>{{ 'clinics.country_label' | transloco }}</mat-label>
             <mat-select [(ngModel)]="selectedCountry" (selectionChange)="filterClinics()">
-              <mat-option value="">All Countries</mat-option>
+              <mat-option value="">{{ 'clinics.all_countries' | transloco }}</mat-option>
               <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Governorate</mat-label>
+            <mat-label>{{ 'clinics.governorate_label' | transloco }}</mat-label>
             <mat-select [(ngModel)]="selectedGovernorate" (selectionChange)="filterClinics()">
-              <mat-option value="">All Governorates</mat-option>
+              <mat-option value="">{{ 'clinics.all_governorates' | transloco }}</mat-option>
               <mat-option *ngFor="let governorate of governorates" [value]="governorate">{{governorate}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <button mat-stroked-button (click)="resetFilters()" class="reset-btn">
             <mat-icon>refresh</mat-icon>
-            Reset Filters
+            {{ 'clinics.reset_filters' | transloco }}
           </button>
         </div>
       </div>
-
-      <!-- <button mat-raised-button color="primary" routerLink="/admin/new-clinic" class="add-btn">
-        <mat-icon>add</mat-icon>
-        Add New Clinic
-      </button> -->
     </div>
-  </div>
+  </div> -->
+
+  
 
   <div *ngIf="isLoading" class="loading-spinner">
     <mat-spinner diameter="50"></mat-spinner>
-    <p>Loading clinics...</p>
+    <p>{{ 'clinics.loading' | transloco }}</p>
   </div>
 
   <div *ngIf="!isLoading && filteredClinics.length === 0" class="no-results">
     <mat-icon>search_off</mat-icon>
-    <h3>No clinics found</h3>
-    <p>Try adjusting your search or filters</p>
+    <h3>{{ 'clinics.no_results_title' | transloco }}</h3>
+    <p>{{ 'clinics.no_results_message' | transloco }}</p>
   </div>
 
   <div class="clinics-grid">
@@ -60,7 +68,7 @@
         <h2>{{clinic.name}}</h2>
         <span class="location-badge">
           <mat-icon>location_on</mat-icon>
-          {{clinic.district_En}}, {{clinic.governorate_En}}
+          {{ clinic | localizedField:'district' }}, {{ clinic | localizedField:'governorate' }}
         </span>
       </div>
 
@@ -76,16 +84,18 @@
           </div>
           <div class="info-item">
             <mat-icon>public</mat-icon>
-            <span>{{clinic.country_En}}</span>
+            <span>{{ clinic | localizedField:'country' }}</span>
           </div>
+
         </div>
 
         <div class="gallery-preview" *ngIf="clinic.clinicGallery?.length > 0">
           <div class="preview-image" *ngFor="let image of clinic.clinicGallery.slice(0, 3)">
-            <img [src]="getImageUrl(image)" alt="Clinic image">
+            <img [src]="getImageUrl(image)" alt="" class="clinic-image">
+          
           </div>
           <div class="image-count" *ngIf="clinic.clinicGallery.length > 3">
-            +{{clinic.clinicGallery.length - 3}} more
+            +{{clinic.clinicGallery.length - 3}} {{ 'clinics.more_images' | transloco }}
           </div>
         </div>
       </div>
@@ -93,11 +103,11 @@
       <div class="card-actions">
         <button mat-button color="primary" [routerLink]="['/admin/clinics', clinic.id]">
           <mat-icon>visibility</mat-icon>
-          View Details
+          {{ 'clinics.view_details' | transloco }}
         </button>
         <button mat-button color="accent" [routerLink]="['/admin/clinics/edit', clinic.id]">
           <mat-icon>edit</mat-icon>
-          Edit
+          {{ 'clinics.edit' | transloco }}
         </button>
       </div>
     </mat-card>

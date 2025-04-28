@@ -147,4 +147,28 @@
       width: 100%;
     }
   }
+
+  /* RTL Support */
+[dir="rtl"] {
+  .registration-card {
+    text-align: right;
+  }
+
+  .form-group label {
+    text-align: right;
+  }
+
+  .error-message {
+    text-align: right;
+  }
+
+  .form-actions {
+    flex-direction: row-reverse;
+  }
+
+  .form-actions button.cancel {
+    margin-right: 10px;
+    margin-left: 0;
+  }
+}
   

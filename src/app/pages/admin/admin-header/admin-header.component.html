@@ -1,27 +1,40 @@
-<div class="navbar">
-    <div class="logo-container">
-      <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image" routerLink="/admin-home">
+<div class="navbar" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
+  <div class="logo-container">
+    <img src="vv_w.png" alt="" class="logo-image" routerLink="/admin-home" />
     </div>
+
+    <div class="top-nav-items">
+      <button class="lang-switcher" (click)="switchLanguage('en')" [class.active]="currentLang === 'en'">EN</button>
+      <button class="lang-switcher" (click)="switchLanguage('ar')" [class.active]="currentLang === 'ar'">عربي</button>
+      <a class="dark-mode-toggle" (click)="toggleDarkMode()" [title]="'header.darkModeToggle' | transloco">
+        <i class="fas" [class.fa-moon]="!isDarkMode" [class.fa-sun]="isDarkMode"></i>
+      </a>
+    </div>
+
   
     <ul class="nav-links">
-      <li>
-        <a routerLink="/admin-home" title="Home">
+     <li>
+        <a routerLink="/admin-home" [title]="'header.home' | transloco">
           <i class="fas fa-home"></i>
-          <span class="nav-text">Home</span>
+          <span class="nav-text">{{ 'header.home' | transloco }}</span>
         </a>
       </li>
       
       <li class="menu-container">
-        <a routerLink="/complete-data" title="Profile">
+        <a routerLink="/complete-data" [title]="'header.profile' | transloco">
           <i class="fas fa-user"></i>
           <span class="nav-text">{{ patient?.data?.firstName | titlecase }}</span>
         </a>
       </li>
+
+     
+      
       <li>
-        <a (click)="logout()" title="Logout">
+        <a (click)="logout()" [title]="'header.logout' | transloco">
           <i class="fas fa-sign-out-alt"></i>
-          <span class="nav-text">Logout</span>
+          <span class="nav-text">{{ 'header.logout' | transloco }}</span>
         </a>
       </li>
+      
     </ul>
   </div>

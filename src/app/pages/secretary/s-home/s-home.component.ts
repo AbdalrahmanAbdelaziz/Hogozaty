@@ -9,6 +9,7 @@ import { LoginResponse } from '../../../shared/models/login-response';
 import { UserService } from '../../../services/user.service';
 import { Observable, take } from 'rxjs';
 import { AppointmentStats } from '../../../shared/models/appointment-stats.model';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-s-home',
@@ -19,6 +20,7 @@ import { AppointmentStats } from '../../../shared/models/appointment-stats.model
     SHeaderComponent,
     SSidenavbarComponent,
     NgxChartsModule,
+    TranslocoModule
   ],
   templateUrl: './s-home.component.html',
   styleUrls: ['./s-home.component.css'],
@@ -38,11 +40,18 @@ export class SHomeComponent implements OnInit {
 
   constructor(
     private appointmentService: AppointmentService,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
     this.loadUserDetails();
+    // Subscribe to language changes to update chart labels
+    this.translocoService.langChanges$.subscribe(() => {
+      if (this.doctorId) {
+        this.loadAppointmentData();
+      }
+    });
   }
 
   loadUserDetails(): void {
@@ -98,9 +107,18 @@ export class SHomeComponent implements OnInit {
 
           if (hasData) {
             this.pieChartData = [
-              { name: 'Upcoming', value: response.data.upcominAppointmentsCount },
-              { name: 'Cancelled', value: response.data.cancelledAppointmentsCount },
-              { name: 'Proccessed', value: response.data.completedAppointmentsCount },
+              { 
+                name: this.translocoService.translate('dashboard.appointmentStatuses.upcoming'), 
+                value: response.data.upcominAppointmentsCount 
+              },
+              { 
+                name: this.translocoService.translate('dashboard.appointmentStatuses.cancelled'), 
+                value: response.data.cancelledAppointmentsCount 
+              },
+              { 
+                name: this.translocoService.translate('dashboard.appointmentStatuses.processed'), 
+                value: response.data.completedAppointmentsCount 
+              },
             ];
           } else {
             this.pieChartData = [];

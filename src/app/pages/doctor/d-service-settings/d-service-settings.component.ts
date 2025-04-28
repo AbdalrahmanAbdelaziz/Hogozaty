@@ -8,6 +8,7 @@ import { ServiceOfDoctor } from '../../../services/doctorService.service';
 import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
 import { ToastrService } from 'ngx-toastr';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-d-service-settings',
@@ -16,7 +17,8 @@ import { ToastrService } from 'ngx-toastr';
     RouterModule,
     DHeaderComponent,
     DSidenavbarComponent,
-    FormsModule
+    FormsModule,
+    TranslocoModule
   ],
   templateUrl: './d-service-settings.component.html',
   styleUrl: './d-service-settings.component.css'
@@ -30,7 +32,8 @@ export class DServiceSettingsComponent implements OnInit {
     private serivicesOfDoctor: ServiceOfDoctor,
     private doctorService: DoctorService, 
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -48,35 +51,27 @@ export class DServiceSettingsComponent implements OnInit {
 
   openServiceModal() {
     const user = this.userService.getUser();
-    console.log('User Object:', user); // Debugging: Log the entire user object
-  
-    if (!user) {
-      console.error('User is not logged in.');
-      this.toastr.error('You must be logged in to add services.', 'Error');
-      return;
-    }
-  
-    if (!user.data.specializationId) {
+    if (user && user.data.specializationId) {
+      this.serivicesOfDoctor.getServicesBySpecializationId(user.data.specializationId).subscribe(
+        (response) => {
+          this.availableServices = response.data.map((service: any) => ({
+            ...service,
+            price: null,
+            doctorAvgDurationForServiceInMinutes: null
+          }));
+          this.isModalOpen = true;
+        },
+        (error) => {
+          console.error('Error fetching available services:', error);
+          this.toastr.error(this.translocoService.translate('error.fetch_services_failed'), 'Error');
+        }
+      );
+    } else {
       console.error('Specialization ID is missing in user data.');
-      this.toastr.error('Your account is missing specialization information. Please contact support.', 'Error');
-      return;
+      this.toastr.error(this.translocoService.translate('error.specialization_missing'), 'Error');
     }
-  
-    this.serivicesOfDoctor.getServicesBySpecializationId(user.data.specializationId).subscribe(
-      (response) => {
-        this.availableServices = response.data.map((service: any) => ({
-          ...service,
-          price: null,
-          doctorAvgDurationForServiceInMinutes: null
-        }));
-        this.isModalOpen = true;
-      },
-      (error) => {
-        console.error('Error fetching available services:', error);
-        this.toastr.error('Failed to fetch available services.', 'Error');
-      }
-    );
   }
+
 
   closeServiceModal() {
     this.isModalOpen = false;
@@ -84,7 +79,7 @@ export class DServiceSettingsComponent implements OnInit {
 
   validateAndAddService(service: any) {
     if (!service.price || !service.doctorAvgDurationForServiceInMinutes) {
-      this.toastr.warning('Please fill all fields.', 'Warning');
+      this.toastr.warning(this.translocoService.translate('warning.fill_all_fields'), 'Warning');
       return;
     }
     this.addService(service);
@@ -92,9 +87,9 @@ export class DServiceSettingsComponent implements OnInit {
 
   addService(service: any) {
     const user = this.userService.getUser();
-    if (!user || !user.data.doctorId || !user.data.specializationId) {
-      console.error('Doctor ID or Specialization ID is missing in user data.');
-      this.toastr.error('Doctor ID or Specialization ID is missing.', 'Error');
+    if (!user || !user.data.doctorId) {
+      console.error('Doctor ID is missing in user data.');
+      this.toastr.error(this.translocoService.translate('error.specialization_missing'), 'Error');
       return;
     }
 
@@ -103,22 +98,22 @@ export class DServiceSettingsComponent implements OnInit {
       doctorAvgDurationForServiceInMinutes: service.doctorAvgDurationForServiceInMinutes || 0,
       specializationServiceId: service.id,
       doctorId: user.data.doctorId,
-      specializationId: user.data.specializationId // Add specializationId to the request body
+      specializationId: user.data.specializationId 
     };
 
     this.serivicesOfDoctor.assignServiceToDoctor(requestBody).subscribe(
       (response) => {
         if (response.message === 'This service is already assigned to you.') {
-          this.toastr.warning(response.message, 'Warning');
+          this.toastr.warning(this.translocoService.translate('info.already_assigned'), 'Info');
         } else {
-          this.toastr.success('Service added successfully.', 'Success');
+          this.toastr.success(this.translocoService.translate('success.service_added'), 'Success');
           this.loadDoctorServices();
           this.closeServiceModal();
         }
       },
       (error) => {
         console.error('Error assigning service to doctor:', error);
-        this.toastr.info('This service is already assigned to you.', 'Info');
+        this.toastr.info(this.translocoService.translate('info.already_assigned'), 'Info');
       }
     );
   }

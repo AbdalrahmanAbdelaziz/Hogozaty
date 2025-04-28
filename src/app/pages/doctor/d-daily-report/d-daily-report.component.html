@@ -4,11 +4,11 @@
 <!-- Main Content Wrapper -->
 <div class="main-content">
   <div class="container">
-    <h2>Daily Report</h2>
+    <h2>{{ 'revenue.title' | transloco }}</h2>
 
     <!-- Dropdown for date selection -->
     <div class="dropdown-container">
-      <label for="dateDropdown">Select Date:</label>
+      <label for="dateDropdown">{{ 'daily_report.select_date' | transloco }}:</label>
       <select
         id="dateDropdown"
         [(ngModel)]="selectedDate"
@@ -25,15 +25,15 @@
       <table class="revenue-table">
         <thead>
           <tr>
-            <th rowspan="2">Total</th>
-            <th colspan="4">Paid</th>
-            <th rowspan="2">Remaining</th>
+            <th rowspan="2">{{ 'daily_report.total' | transloco }}</th>
+            <th colspan="4">{{ 'daily_report.paid' | transloco }}</th>
+            <th rowspan="2">{{ 'daily_report.remaining' | transloco }}</th>
           </tr>
           <tr>
-            <th>Cash</th>
-            <th>Visa</th>
-            <th>Wallet</th>
-            <th>Instapay</th>
+            <th>{{ 'daily_report.cash' | transloco }}</th>
+            <th>{{ 'daily_report.visa' | transloco }}</th>
+            <th>{{ 'daily_report.wallet' | transloco }}</th>
+            <th>{{ 'daily_report.instapay' | transloco }}</th>
           </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
             <td colspan="6" class="no-data">
               <div class="no-data-message">
                 <i class="fas fa-calendar-times"></i>
-                <p>No revenue data found for the selected date.</p>
+                <p>{{ 'daily_report.no_data' | transloco }}</p>
               </div>
             </td>
           </tr>

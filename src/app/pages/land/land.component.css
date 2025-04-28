@@ -214,3 +214,21 @@ html, body {
         font-size: 0.8em;
     }
 }
+
+[dir="rtl"] .right-button button:not(:last-child) {
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .hero-text {
+    direction: rtl;
+}
+
+.navbar button.lang-switcher.active {
+    color: #24CC81;
+    border-bottom: 2px solid #24CC81;
+}

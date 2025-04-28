@@ -169,3 +169,25 @@ button:disabled {
     height: 100px;
   }
 }
+
+/* Add this to your complete-data.component.css */
+:host-context([dir="rtl"]) .profile-container {
+  text-align: right;
+  direction: rtl;
+}
+
+:host-context([dir="rtl"]) .form-group input,
+:host-context([dir="rtl"]) .form-group select {
+  text-align: right;
+}
+
+:host-context([dir="rtl"]) .profile-picture-container {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Adjust the file upload button for RTL */
+:host-context([dir="rtl"]) .upload-label {
+  margin-right: 0;
+  margin-left: 10px;
+}

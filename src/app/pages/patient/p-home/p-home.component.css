@@ -5,7 +5,7 @@
   gap: 20px;
   padding-top: 100px;
   min-height: 100vh;
-  background-color: #f5f7fa;
+  /* background-color: #f5f7fa; */
 }
 
 /* Modal Overlay */
@@ -108,13 +108,13 @@
 .history-card .doctor-info h3 {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #24CC81;
+  color: white;
   margin: 0;
 }
 
 .history-card .doctor-info p {
   font-size: 1rem;
-  color: #555;
+  color: #eee;
   margin: 3px 0;
 }
 
@@ -207,7 +207,7 @@
   margin-left: 10px;
   flex-grow: 1;
   padding: 20px;
-  background: #ffffff;
+  /* background: #ffffff; */
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
@@ -218,9 +218,9 @@
   margin: auto;
   padding: 25px;
   text-align: center;
-  background: #24CC81;
+  /* background: #24CC81; */
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 40px;
   position: relative;
 }
@@ -228,14 +228,14 @@
 .appointment-container h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: white;
+  /* color: #24CC81; */
   margin-bottom: 2rem;
 }
 
 /* No Appointments Message */
 .no-appointments {
   font-size: 1.2rem;
-  color: white;
+  /* color: #24CC81; */
   margin-top: 2rem;
   padding: 20px;
   background: rgba(255, 255, 255, 0.1);
@@ -251,7 +251,7 @@
 
 .no-appointments a:hover {
   text-decoration: underline;
-  color: white;
+  color: #1A9A63;
 }
 
 /* Appointment Grid */
@@ -264,7 +264,7 @@
 
 /* Appointment Card */
 .appointment-card {
-  background: #ffffff;
+  background: #24CC81;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -287,7 +287,7 @@
   gap: 15px;
   padding: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: #f9f9f9;
+  background: #165B40;
 }
 
 .card-header img {
@@ -307,7 +307,7 @@
 .doctor-info h3 {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #24CC81;
+  color: white;
   margin: 0 0 5px 0;
   display: flex;
   align-items: center;
@@ -321,7 +321,7 @@
 
 .doctor-info p {
   font-size: 0.95rem;
-  color: #555;
+  color: #fff;
   margin: 3px 0;
   display: flex;
   align-items: center;
@@ -335,7 +335,7 @@
 
 .clinic {
   font-size: 0.9rem;
-  color: #24CC81;
+  color: white;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -352,7 +352,7 @@
 .card-body {
   padding: 20px;
   font-size: 1rem;
-  color: #555;
+  color: white;
   text-align: left;
 }
 
@@ -433,7 +433,7 @@
   text-align: center;
   display: flex;
   gap: 10px;
-  background: #f9f9f9;
+  background: #165B40;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -694,4 +694,42 @@
 
 .rated-message i {
   font-size: 1.2rem;
+}
+
+/* RTL Specific Styles */
+[dir="rtl"] .card-body p strong {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+[dir="rtl"] .doctor-info {
+  text-align: right;
+}
+
+[dir="rtl"] .modal-header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .modal-footer {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .form-group textarea {
+  text-align: right;
+}
+
+[dir="rtl"] .history-btn::before,
+[dir="rtl"] .cancel-btn::before,
+[dir="rtl"] .reschedule-btn::before {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+[dir="rtl"] .doctor-info h3::before,
+[dir="rtl"] .doctor-info p::before,
+[dir="rtl"] .clinic::before,
+[dir="rtl"] .card-body p:nth-child(1)::before,
+[dir="rtl"] .card-body p:nth-child(2)::before {
+  margin-right: 0;
+  margin-left: 8px;
 }

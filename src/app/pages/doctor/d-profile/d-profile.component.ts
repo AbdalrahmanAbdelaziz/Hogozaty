@@ -9,9 +9,10 @@ import { PatientService } from '../../../services/patient.service';
 import { BASE_URL } from '../../../shared/constants/urls';
 import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 @Component({
   selector: 'app-d-profile',
-  imports: [CommonModule, RouterModule, DHeaderComponent, DSidenavbarComponent, FormsModule, ReactiveFormsModule,],
+  imports: [CommonModule, RouterModule, DHeaderComponent, DSidenavbarComponent, FormsModule, ReactiveFormsModule,TranslocoModule],
   templateUrl: './d-profile.component.html',
   styleUrl: './d-profile.component.css'
 })
@@ -24,7 +25,8 @@ export class DProfileComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private patientService: PatientService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

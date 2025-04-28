@@ -4,14 +4,14 @@
 
 <app-s-sidenavbar></app-s-sidenavbar>
 
-<div class="content">
+<div class="content" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
   <div class="days-wrapper">
-    <h2 class="title">Select an Appointment Date</h2>
+    <h2 class="title">{{ 'appointments.selectDateTitle' | transloco }}</h2>
 
     <!-- Show when there are available dates -->
     <div *ngIf="availableDays.length > 0; else noAppointments" class="days-grid">
       <button *ngFor="let day of availableDays" (click)="goToDayAppointments(day)" class="day-card">
-        <span class="date">{{ day | date: 'dd MMM yyyy' }}</span>
+        <span class="date">{{ day | date: (translocoService.getActiveLang() === 'ar' ? 'dd MMM yyyy' : 'MMM dd, yyyy') }}</span>
         <span class="day-name">{{ day | date: 'EEEE' }}</span>
       </button>
     </div>
@@ -19,7 +19,7 @@
     <!-- Template for No Available Appointments -->
     <ng-template #noAppointments>
       <div class="no-appointments">
-        <p>No available appointments at the moment.</p>
+        <p>{{ 'appointments.noAppointmentsMessage' | transloco }}</p>
       </div>
     </ng-template>
   </div>

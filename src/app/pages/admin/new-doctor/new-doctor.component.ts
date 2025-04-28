@@ -8,11 +8,18 @@ import { Lookup } from '../../../shared/models/lookup.model';
 import { LookupsService } from '../../../services/lookups.service';
 import { ToastrService } from 'ngx-toastr';
 import { AdminHeaderComponent } from "../admin-header/admin-header.component";
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-new-doctor',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, AdminHeaderComponent],
+  imports: [
+    RouterModule, 
+    CommonModule, 
+    ReactiveFormsModule, 
+    AdminHeaderComponent,
+    TranslocoModule
+  ],
   templateUrl: './new-doctor.component.html',
   styleUrls: ['./new-doctor.component.css']
 })
@@ -23,13 +30,16 @@ export class NewDoctorComponent implements OnInit {
   private lookupService = inject(LookupsService);
   private _router = inject(Router);
   private toastr = inject(ToastrService);
+  private translocoService = inject(TranslocoService);
 
   selectedPicture: File | null = null;
   genders: Lookup[] = [];
   clinics: any[] = [];
   specializations: Lookup[] = [];
+  currentLanguage: string = 'en';
 
   ngOnInit(): void {
+    this.currentLanguage = this.translocoService.getActiveLang();
     this.initForm();
     this.loadLookups();
   }
@@ -55,17 +65,17 @@ export class NewDoctorComponent implements OnInit {
   private loadLookups(): void {
     this.lookupService.loadGenders().subscribe(
       (res: APIResponse<Lookup[]>) => this.genders = res.data,
-      () => this.toastr.error("Failed to load genders")
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_genders'))
     );
 
     this.adminService.getAllClinics().subscribe(
       (res: APIResponse<any[]>) => this.clinics = res.data,
-      () => this.toastr.error("Failed to load clinics")
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_clinics'))
     );
 
     this.adminService.getAllSpecializations().subscribe(
       (res: APIResponse<Lookup[]>) => this.specializations = res.data,
-      () => this.toastr.error("Failed to load specializations")
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_specializations'))
     );
   }
 
@@ -82,7 +92,10 @@ export class NewDoctorComponent implements OnInit {
 
   onSubmit(): void {
     if (this.doctorForm.invalid) {
-      this.toastr.warning("Please complete all required fields.", "Incomplete Data");
+      this.toastr.warning(
+        this.translocoService.translate('doctor_form.incomplete_fields_message'),
+        this.translocoService.translate('doctor_form.incomplete_fields_title')
+      );
       this.doctorForm.markAllAsTouched();
       return;
     }
@@ -102,11 +115,11 @@ export class NewDoctorComponent implements OnInit {
 
     this.adminService.createDoctor(formData).subscribe({
       next: () => {
-        this.toastr.success("Doctor created successfully!");
+        this.toastr.success(this.translocoService.translate('doctor_form.create_success'));
         this._router.navigate(['/admin/users']);
       },
       error: (err) => {
-        this.toastr.error("Failed to create doctor. Please try again.");
+        this.toastr.error(this.translocoService.translate('doctor_form.create_error'));
         console.error(err);
       }
     });
@@ -114,5 +127,9 @@ export class NewDoctorComponent implements OnInit {
 
   get formControls() {
     return this.doctorForm.controls;
+  }
+
+  getTranslatedName(item: any): string {
+    return this.currentLanguage === 'ar' ? item.name_Ar : item.name_En;
   }
 }

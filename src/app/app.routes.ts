@@ -7,7 +7,6 @@ import { DHomeComponent } from './pages/doctor/d-home/d-home.component';
 import { SHomeComponent } from './pages/secretary/s-home/s-home.component';
 import { PHomeComponent } from './pages/patient/p-home/p-home.component';
 import { ChooseAppointmentComponent } from './pages/patient/choose-appointment/choose-appointment.component';
-import { SelectSpecializationComponent } from './pages/patient/select-specialization/select-specialization.component';
 import { ViewDoctorProfileComponent } from './pages/patient/view-doctor-profile/view-doctor-profile.component';
 import { ConfirmBookingComponent } from './pages/patient/confirm-booking/confirm-booking.component';
 import { DoctorAppointmentsComponent } from './pages/patient/doctor-appointments/doctor-appointments.component';
@@ -47,20 +46,29 @@ import { NewDoctorComponent } from './pages/admin/new-doctor/new-doctor.componen
 import { NewSecretaryComponent } from './pages/admin/new-secretary/new-secretary.component';
 import { ClinicsComponent } from './pages/admin/clinics/clinics.component';
 import { CreateClinicComponent } from './pages/admin/create-clinic/create-clinic.component';
+import { AppointmentsListComponent } from './pages/doctor/appointments-list/appointments-list.component';
+import { SpecializationsComponent } from './pages/admin/specializations/specializations.component';
+import { NewSpecializationComponent } from './pages/admin/new-specialization/new-specialization.component';
+import { ServicesComponent } from './pages/admin/services/services.component';
+import { NewServiceComponent } from './pages/admin/new-service/new-service.component';
+import { UsersComponent } from './pages/admin/users/users.component';
+import { EachDoctorComponent } from './pages/admin/each-doctor/each-doctor.component';
 
 
 
 
 export const routes: Routes = [
-    { path: '', component:LandComponent},
-    { path: 'info', component:InfoComponent},
-    { path: 'login', component:LoginComponent},
-    { path: 'register', component:RegisterComponent},
+  
+  { path: '', redirectTo: '/land', pathMatch: 'full' },
+  { path: 'land', component: LandComponent },
+  { path: 'info', component: InfoComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
     { path: 'doctor-home', component: DHomeComponent},
     { path: 'secretary-home', component:SHomeComponent},
     { path: 'patient-home', component: PHomeComponent},
     { path: 'choose-appointment', component: ChooseAppointmentComponent},
-    { path: 'select-specialization/:specialization', component: SelectSpecializationComponent },
     { path: 'view-doctor-profile/:id/:specializationId', component: ViewDoctorProfileComponent },
     { path: 'doctor-appointments/:docId/:specializationId', component: DoctorAppointmentsComponent },
     {path: 'appointments/:doctorId/:specializationId/:date', component: DayAppointmentsComponent},
@@ -95,6 +103,7 @@ export const routes: Routes = [
     { path: 'd-service-settings', component: DServiceSettingsComponent},
     { path: 'd-daily-report', component: DDailyReportComponent},
     { path: 'd-patients', component: DPatientsComponent},
+    { path: 'd-list', component: AppointmentsListComponent},
 
 
     { path: 'doctor-appointments', component: DoctorAppointmentsComponent },
@@ -116,8 +125,14 @@ export const routes: Routes = [
   { path: 'new-secretary', component: NewSecretaryComponent },
   { path: 'clinics', component: ClinicsComponent},
   { path: 'create_clinic' , component: CreateClinicComponent},
+  { path: 'specializations', component: SpecializationsComponent},
+  { path: 'new-specialization', component: NewSpecializationComponent},
+  { path: 'services', component: ServicesComponent},
+  { path: 'new-service', component: NewServiceComponent},
+  { path: 'users', component: UsersComponent},
+  {path: 'each-doctor', component: EachDoctorComponent},
 
 
 
-    // { path: '**', redirectTo:'', pathMatch: 'full'},
+    
 ];

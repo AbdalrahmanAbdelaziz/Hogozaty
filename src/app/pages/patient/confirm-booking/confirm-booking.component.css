@@ -218,3 +218,30 @@ body {
     font-size: 0.9rem;
   }
 }
+
+/* RTL Styles */
+[dir="rtl"] .booking-container {
+  /* text-align: right; */
+}
+
+[dir="rtl"] .doctor-card,
+[dir="rtl"] .info-card {
+  /* text-align: right; */
+}
+
+[dir="rtl"] .notes-container textarea {
+  text-align: right;
+}
+
+/* Responsive adjustments for RTL */
+@media (max-width: 768px) {
+  [dir="rtl"] .booking-container {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  [dir="rtl"] .booking-container {
+    padding: 15px 10px;
+  }
+}

@@ -5,7 +5,7 @@
   gap: 20px;
   padding-top: 100px;
   min-height: 100vh;
-  background-color: #f5f7fa;
+  /* background-color: #f5f7fa; */
 }
 
 /* Most Chosen Doctors Section - UPDATED to match design */
@@ -13,7 +13,7 @@
   max-width: 1200px;
   margin: 40px auto;
   padding: 30px;
-  background: #24CC81;
+  /* background: #24CC81; */
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -23,7 +23,6 @@
 .most-chosen-doctors h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: white;
   margin-bottom: 30px;
   position: relative;
   display: inline-block;
@@ -37,7 +36,7 @@
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: #165B40;
+  background: #24CC81;
   border-radius: 2px;
 }
 
@@ -51,13 +50,13 @@
 }
 
 .specialization-tags span {
-  background: #f0f0f0;
+  background: #24CC81;
   padding: 10px 20px;
   border-radius: 30px;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #555;
+  color: #111;
   transition: all 0.3s ease;
   border: 2px solid transparent;
 }
@@ -81,7 +80,7 @@
 
 /* Doctor Card */
 .doctor-card {
-  background: #ffffff;
+  background: #24CC81;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -104,7 +103,7 @@
   height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #24CC81
+  border: 3px solid #165B40
   ;
   margin-bottom: 15px;
   transition: transform 0.3s ease;
@@ -121,7 +120,7 @@
 .doctor-info h3 {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #24CC81;
+  color: white; 
   margin: 0 0 10px 0;
   display: flex;
   align-items: center;
@@ -136,11 +135,11 @@
 
 .doctor-info p {
   font-size: 0.95rem;
-  color: #555;
   margin: 8px 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
 }
 
 .doctor-info p::before {
@@ -166,14 +165,14 @@
 
 .star-rating i {
   font-size: 1rem;
-  color: #FFD700; /* Gold color for stars */
+  color: #FFD700; 
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
 }
 
 .rating-number {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #555;
+  color: #FFD700;
   margin-left: 5px;
 }
 
@@ -250,3 +249,4 @@
 .specialization-tags span:hover {
   animation: pulse 0.5s ease;
 }
+

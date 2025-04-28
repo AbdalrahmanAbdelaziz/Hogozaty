@@ -151,3 +151,29 @@ body {
     font-size: 0.8rem;
   }
 }
+
+/* RTL Styles */
+[dir="rtl"] .days-wrapper {
+  /* text-align: right; */
+}
+
+[dir="rtl"] .days-grid {
+  direction: ltr; /* Keep dates in LTR format even in RTL */
+}
+
+[dir="rtl"] .day-card {
+  direction: ltr; 
+}
+
+/* Responsive adjustments for RTL */
+@media (max-width: 768px) {
+  [dir="rtl"] .days-wrapper {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  [dir="rtl"] .days-wrapper {
+    padding: 1.5rem 1rem;
+  }
+}

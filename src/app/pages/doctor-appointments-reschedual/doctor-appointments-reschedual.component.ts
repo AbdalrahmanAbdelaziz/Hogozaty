@@ -8,10 +8,11 @@ import { LoginResponse } from '../../shared/models/login-response';
 import { SideNavbarComponent } from '../patient/side-navbar/side-navbar.component';
 import { SHeaderComponent } from "../secretary/s-header/s-header.component";
 import { SSidenavbarComponent } from "../secretary/s-sidenavbar/s-sidenavbar.component";
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-doctor-appointments-reschedual',
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, SHeaderComponent, SSidenavbarComponent, TranslocoModule],
   templateUrl: './doctor-appointments-reschedual.component.html',
   styleUrl: './doctor-appointments-reschedual.component.css'
 })
@@ -27,7 +28,9 @@ export class DoctorAppointmentsReschedualComponent implements OnInit {
     private appointmentService: AppointmentService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
+    
   ) {}
 
   ngOnInit(): void {

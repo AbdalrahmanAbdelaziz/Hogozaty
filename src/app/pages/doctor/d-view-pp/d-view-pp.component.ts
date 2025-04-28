@@ -9,11 +9,14 @@ import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
 import { ServiceOfDoctor } from '../../../services/doctorService.service';
 import { UserService } from '../../../services/user.service';
+import { forkJoin } from 'rxjs';
+import { FileSizePipe } from '../../../services/file-size.pipe';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-d-view-pp',
   standalone: true,
-  imports: [CommonModule, FormsModule, DHeaderComponent, DSidenavbarComponent],
+  imports: [CommonModule, FormsModule, DHeaderComponent, DSidenavbarComponent, FileSizePipe, TranslocoModule],
   templateUrl: './d-view-pp.component.html',
   styleUrls: ['./d-view-pp.component.css']
 })
@@ -28,6 +31,16 @@ export class DViewPpComponent implements OnInit {
   selectedServices: any[] = [];
   totalAmount: number = 0;
   totalDiscount: number = 0;
+  visitHistory: any[] = [];
+  filteredVisitHistory: any[] = [];
+  historySearchTerm: string = '';
+  historySortBy: string = 'dateDesc';
+  expandedVisits: { [key: number]: boolean } = {};
+  currentDiagnosis: string = '';
+  currentPrescription: string = '';
+  uploadedFiles: any[] = [];
+  isDragOver: boolean = false;
+  isSubmitting: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +49,8 @@ export class DViewPpComponent implements OnInit {
     private patientService: PatientService,
     private toastr: ToastrService,
     private servicesOfDoctor: ServiceOfDoctor,
-    private userService: UserService
+    private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -45,10 +59,17 @@ export class DViewPpComponent implements OnInit {
       if (this.appointmentId) {
         this.loadAppointmentDetails();
       } else {
-        this.toastr.error('No appointment ID provided');
+        this.showTranslatedToastr('error', 'no_appointment_id', 'No appointment ID provided');
         this.router.navigate(['/doctor-home']);
       }
     });
+  }
+
+  private showTranslatedToastr(type: 'success' | 'error' | 'info' | 'warning', key: string, defaultMessage: string): void {
+    const message = this.translocoService.translate(`toastr.${key}`) || defaultMessage;
+    const title = this.translocoService.translate(`toastr.${type}`) || 
+                 type.charAt(0).toUpperCase() + type.slice(1);
+    this.toastr[type](message, title);
   }
 
   loadDoctorServices() {
@@ -64,7 +85,7 @@ export class DViewPpComponent implements OnInit {
           }));
         },
         error: (err) => {
-          this.toastr.error('Failed to load doctor services');
+          this.showTranslatedToastr('error', 'load_services_error', 'Failed to load doctor services');
         }
       });
     }
@@ -95,7 +116,7 @@ export class DViewPpComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        this.toastr.error('Failed to load appointment details');
+        this.showTranslatedToastr('error', 'load_appointment_error', 'Failed to load appointment details');
       }
     });
   }
@@ -106,7 +127,7 @@ export class DViewPpComponent implements OnInit {
         this.patientDetails = patient.data;
       },
       error: (err) => {
-        this.toastr.error('Failed to load patient details');
+        this.showTranslatedToastr('error', 'load_patient_error', 'Failed to load patient details');
       }
     });
   }
@@ -115,11 +136,172 @@ export class DViewPpComponent implements OnInit {
     this.patientService.getMedicalRecordsByPatient(patientId).subscribe({
       next: (records) => {
         this.medicalHistory = records.data || [];
+        this.loadVisitHistory(patientId);
         this.isLoading = false;
       },
       error: (err) => {
         this.isLoading = false;
-        // this.toastr.error('Failed to load medical history');
+        this.showTranslatedToastr('error', 'load_medical_history_error', 'Failed to load medical history');
+      }
+    });
+  }
+
+  loadVisitHistory(patientId: number): void {
+    this.patientService.getVisitHistory(patientId).subscribe({
+      next: (response) => {
+        this.visitHistory = response.data.map((visit: any) => ({
+          ...visit,
+          date: visit.date || visit.createdAt,
+          services: visit.services || [],
+          attachments: visit.attachments || []
+        }));
+        this.filteredVisitHistory = [...this.visitHistory];
+        this.sortHistory();
+      },
+      error: (err) => {
+        this.showTranslatedToastr('error', 'load_visit_history_error', 'Failed to load visit history');
+      }
+    });
+  }
+
+  filterHistory(): void {
+    if (!this.historySearchTerm) {
+      this.filteredVisitHistory = [...this.visitHistory];
+      return;
+    }
+  
+    const term = this.historySearchTerm.toLowerCase();
+    this.filteredVisitHistory = this.visitHistory.filter(visit => {
+      return (
+        (visit.diagnosis && visit.diagnosis.toLowerCase().includes(term)) ||
+        (visit.doctorName && visit.doctorName.toLowerCase().includes(term)) ||
+        (visit.services && visit.services.some((service: any) => 
+          service.name.toLowerCase().includes(term)))
+      );
+    });
+  
+    this.sortHistory();
+  }
+
+  sortHistory(): void {
+    if (this.historySortBy === 'dateDesc') {
+      this.filteredVisitHistory.sort((a, b) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else {
+      this.filteredVisitHistory.sort((a, b) => 
+        new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
+  }
+
+  toggleVisitDetails(visitId: number): void {
+    this.expandedVisits[visitId] = !this.expandedVisits[visitId];
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+    
+    if (event.dataTransfer?.files) {
+      this.handleFiles(event.dataTransfer.files);
+    }
+  }
+
+  onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.handleFiles(input.files);
+    }
+  }
+
+  handleFiles(files: FileList): void {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size > 5 * 1024 * 1024) {
+        this.showTranslatedToastr('warning', 'file_too_large', `File ${file.name} is too large (max 5MB)`);
+        continue;
+      }
+      
+      if (!['image/jpeg', 'image/png', 'application/pdf', 'text/plain'].includes(file.type)) {
+        this.showTranslatedToastr('warning', 'unsupported_file_type', `File type not supported: ${file.name}`);
+        continue;
+      }
+
+      this.uploadedFiles.push({
+        file: file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        url: URL.createObjectURL(file)
+      });
+    }
+  }
+
+  removeFile(index: number): void {
+    this.uploadedFiles.splice(index, 1);
+  }
+
+  saveDraft(): void {
+    this.showTranslatedToastr('info', 'draft_saved', 'Draft saved locally');
+  }
+
+  submitVisitDetails(): void {
+    if (!this.currentDiagnosis && this.uploadedFiles.length === 0) {
+      this.showTranslatedToastr('warning', 'missing_diagnosis', 'Please add at least a diagnosis or upload files');
+      return;
+    }
+
+    this.isSubmitting = true;
+    
+    const uploadObservables = this.uploadedFiles.map(file => 
+      this.patientService.uploadFile(file.file, this.appointmentId)
+    );
+
+    const visitDetails = {
+      appointmentId: this.appointmentId,
+      diagnosis: this.currentDiagnosis,
+      prescription: this.currentPrescription,
+      files: this.uploadedFiles.map(f => f.name)
+    };
+
+    if (uploadObservables.length > 0) {
+      forkJoin(uploadObservables).subscribe({
+        next: () => {
+          this.submitDiagnosis(visitDetails);
+        },
+        error: (err) => {
+          this.isSubmitting = false;
+          this.showTranslatedToastr('error', 'upload_error', 'Error uploading files');
+        }
+      });
+    } else {
+      this.submitDiagnosis(visitDetails);
+    }
+  }
+
+  private submitDiagnosis(visitDetails: any): void {
+    this.patientService.submitDiagnosis(visitDetails).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.showTranslatedToastr('success', 'diagnosis_submitted', 'Visit details submitted successfully');
+        this.loadVisitHistory(this.patientDetails.id);
+        this.changeTab('history');
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.showTranslatedToastr('error', 'diagnosis_error', 'Error submitting diagnosis');
       }
     });
   }
@@ -132,10 +314,10 @@ export class DViewPpComponent implements OnInit {
   }
 
   formatDate(dateString: string): string {
-    if (!dateString) return 'Not specified';
+    if (!dateString) return this.translocoService.translate('patient_profile.not_specified');
     
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString(this.translocoService.getActiveLang(), {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -143,7 +325,6 @@ export class DViewPpComponent implements OnInit {
   }
 
   validateDiscount(service: any): void {
-    // Ensure discount is between 0-100
     if (service.discountPercentage > 100) {
       service.discountPercentage = 100;
     } else if (service.discountPercentage < 0) {
@@ -151,12 +332,10 @@ export class DViewPpComponent implements OnInit {
     }
     service.discountApplied = service.discountPercentage > 0;
     
-    // Ensure originalPrice is set
     if (!service.originalPrice) {
       service.originalPrice = service.price;
     }
     
-    // Update the price with discount applied
     if (service.discountApplied) {
       const discountAmount = service.originalPrice * (service.discountPercentage / 100);
       service.price = service.originalPrice - discountAmount;
@@ -165,18 +344,13 @@ export class DViewPpComponent implements OnInit {
     }
   }
 
-
-
   addService(service: any): void {
     if (this.selectedServices.some(s => s.id === service.id)) {
-      this.toastr.warning('Service already added');
+      this.showTranslatedToastr('warning', 'service_exists', 'Service already added');
       return;
     }
   
-    // Round the price to nearest integer
     const roundedPrice = Math.round(service.price);
-    
-    // Create a copy of the service with the discounted price
     const serviceToAdd = {
       ...service,
       singleServicePriceForAppointment: roundedPrice
@@ -185,13 +359,12 @@ export class DViewPpComponent implements OnInit {
     this.appointmentService.addServiceToAppointment(
       service.id, 
       this.appointmentId, 
-      roundedPrice // Send the rounded price
+      roundedPrice
     ).subscribe({
       next: (response) => {
         this.selectedServices.push(serviceToAdd);
         this.calculateTotal();
-        this.toastr.success('Service added successfully');
-        // Reset discount for the service in the available services list
+        this.showTranslatedToastr('success', 'service_added', 'Service added successfully');
         const originalService = this.doctorServices.find(s => s.id === service.id);
         if (originalService) {
           originalService.discountPercentage = 0;
@@ -200,26 +373,10 @@ export class DViewPpComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.toastr.error('Failed to add service', 'Error');
-        console.error('Error adding service:', err);
+        this.showTranslatedToastr('error', 'add_service_error', 'Failed to add service');
       }
     });
   }
-
-
-  // removeService(serviceId: number): void {
-  //   this.appointmentService.removeServiceFromAppointment(serviceId, this.appointmentId)
-  //     .subscribe({
-  //       next: () => {
-  //         this.selectedServices = this.selectedServices.filter(s => s.id !== serviceId);
-  //         this.calculateTotal();
-  //         this.toastr.info('Service removed');
-  //       },
-  //       error: (err) => {
-  //         this.toastr.error('Failed to remove service');
-  //       }
-  //     });
-  // }
 
   calculateTotal(): void {
     this.totalAmount = this.selectedServices.reduce((total, service) => {
@@ -227,19 +384,17 @@ export class DViewPpComponent implements OnInit {
     }, 0);
   }
 
-
   completeVisit(): void {
-    this.toastr.success('Patient processed successfully', '', {
-    });
+    this.showTranslatedToastr('success', 'visit_completed', 'Patient processed successfully');
     this.router.navigate(['/doctor-home']);
   }
   
   isServiceSelected(serviceId: number): boolean {
     return this.selectedServices.some(service => service.id === serviceId);
   }
+
+  get isArabic(): boolean {
+    return this.translocoService.getActiveLang() === 'ar';
   }
-
-
-
-
-
+  
+}

@@ -1,57 +1,74 @@
 /* Container Layout */
 .container {
   max-width: 600px;
-  margin: 100px auto; /* Centering the form */
+  margin: 100px auto;
   padding: 40px;
-  background: #24CC81; 
+  background: #24CC81;
   border-radius: 16px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Form Title */
 .container h2 {
   font-size: 2.2rem;
-  font-weight: 600; /* Semi-bold */
-  color: #ffffff; 
+  font-weight: 600;
+  color: #ffffff;
   margin-bottom: 30px;
-  letter-spacing: -0.5px; /* Slightly tighter letter spacing */
+  letter-spacing: -0.5px;
 }
 
-/* Input Fields */
+/* Form Group */
+.form-group {
+  margin-bottom: 20px;
+  text-align: start;
+}
+
+/* Input Labels */
 label {
   display: block;
-  text-align: left;
   font-size: 1rem;
   color: #ffffff;
   margin-bottom: 8px;
-  font-weight: 500; /* Medium weight */
+  font-weight: 500;
 }
 
+/* Input Fields */
 input,
 select {
   width: 100%;
   padding: 12px;
-  border: 1px solid #dfe6e9; /* Light gray border */
+  border: 1px solid #dfe6e9;
   border-radius: 8px;
   font-size: 1rem;
-  background: #ffffff; /* Pure white */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   outline: none;
   transition: all 0.3s ease;
-  margin-bottom: 20px; /* Space between fields */
+}
+
+input:hover,
+select:hover {
+  border-color: #24CC81;
 }
 
 input:focus,
 select:focus {
-  border-color: #165B40; /* Bright blue for focus */
-  box-shadow: 0 0 8px rgba(52, 219, 88, 0.3); /* Glow effect */
+  border-color: #165B40;
+  box-shadow: 0 0 8px rgba(52, 219, 88, 0.3);
+}
+
+/* Placeholder Styling */
+input::placeholder {
+  color: #95a5a6;
+  opacity: 1;
 }
 
 /* Submit Button */
 button {
-  background: #165B40; /* Bright blue */
+  background: #165B40;
   color: white;
   border: none;
   padding: 14px 20px;
@@ -62,34 +79,68 @@ button {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
   width: 100%;
-  font-weight: 600; /* Semi-bold */
+  font-weight: 600;
 }
 
 button:hover {
-  background: #1A9A63; /* Darker blue on hover */
-  transform: translateY(-2px); /* Slight lift */
+  background: #1A9A63;
+  transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 button:active {
-  transform: translateY(0); /* Reset lift on click */
+  transform: translateY(0);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Toast Messages */
 .toast-success {
-  background-color: #27ae60 !important; /* Green */
+  background-color: #27ae60 !important;
   color: white !important;
 }
 
 .toast-error {
-  background-color: #e74c3c !important; /* Red */
+  background-color: #e74c3c !important;
   color: white !important;
 }
 
 .toast-warning {
-  background-color: #f39c12 !important; /* Orange */
+  background-color: #f39c12 !important;
   color: black !important;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] .container {
+  text-align: center;
+}
+
+[dir="rtl"] .form-group {
+  text-align: right;
+}
+
+[dir="rtl"] .form-group input {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-group label {
+  text-align: right;
+}
+
+[dir="rtl"] button {
+  float: none;
 }
 
 /* Responsive Design */
@@ -107,38 +158,8 @@ button:active {
     font-size: 1rem;
     padding: 12px 18px;
   }
-}
 
-/* Additional Enhancements */
-.container {
-  animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  [dir="rtl"] .form-group label {
+    text-align: right;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Hover Effects for Inputs */
-input:hover,
-select:hover {
-  border-color: #24CC81; /* Bright blue on hover */
-}
-
-/* Placeholder Styling */
-input::placeholder {
-  color: #95a5a6; /* Light gray */
-  opacity: 1; /* Ensure full opacity */
-}
-
-/* Focus State for Labels */
-input:focus + label,
-select:focus + label {
-  color: #24CC81; /* Bright blue for focused labels */
 }

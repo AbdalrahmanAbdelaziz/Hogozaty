@@ -5,8 +5,10 @@
   align-items: center;
   min-height: 100vh;
   padding: 2rem 3rem;
-  background: #f5f7fa;
+  /* background: #f5f7fa; */
 }
+
+
 
 /* Profile Card */
 .profile-card {
@@ -123,12 +125,12 @@ button:hover {
 
 /* Feedback Card */
 .feedback-card {
-  background: white;
+  background: #24CC81;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
-  border-left: 5px solid #24CC81;
+  border-left: 5px solid #165B40;
 }
 
 .feedback-card:hover {
@@ -167,7 +169,7 @@ button:hover {
 
 .patient-name {
   font-weight: 600;
-  color: #165B40;
+  color: white;
   font-size: 1.1rem;
 }
 
@@ -188,12 +190,12 @@ button:hover {
 
 /* Comment Styling */
 .feedback-comment {
-  background: #f8f9fb;
+  background: #1A9A63;
   padding: 1.2rem 1.5rem;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
-  color: #333;
+  color: #ffffff;
   line-height: 1.7;
   font-size: 1rem;
   margin-top: 1rem;
@@ -375,11 +377,11 @@ button:hover {
 }
 
 .tabs button:hover {
-  color: #165B40;
+  color: #24CC81;
 }
 
 .tabs button.active {
-  color: #165B40;
+  color: #24CC81;
 }
 
 .tabs button.active::after {
@@ -408,12 +410,14 @@ button:hover {
 
 .clinic-info-card {
   flex: 1;
-  background: white;
+  background: #24CC81;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   padding: 2rem;
+  
 }
+
 
 .clinic-header {
   display: flex;
@@ -425,7 +429,7 @@ button:hover {
 
 .clinic-title h3 {
   font-size: 1.8rem;
-  color: #165B40;
+  color: white;
   margin: 0 0 0.5rem 0;
   font-weight: 700;
 }
@@ -461,7 +465,7 @@ button:hover {
 
 .contact-item i {
   font-size: 1.2rem;
-  color: #24CC81;
+  color: #165B40;
   width: 30px;
   height: 30px;
   background: rgba(36, 204, 129, 0.1);
@@ -474,13 +478,13 @@ button:hover {
 .contact-label {
   display: block;
   font-size: 0.85rem;
-  color: #888;
+  color: #333;
   margin-bottom: 0.2rem;
 }
 
 .contact-value {
   font-size: 1rem;
-  color: #333;
+  color: #fff;
   font-weight: 500;
 }
 
@@ -490,7 +494,7 @@ button:hover {
 
 .section-subtitle {
   font-size: 1.3rem;
-  color: #165B40;
+  color: white;
   margin: 0 0 1.5rem 0;
   display: flex;
   align-items: center;
@@ -499,7 +503,7 @@ button:hover {
 }
 
 .section-subtitle i {
-  color: #24CC81;
+  color: #165B40;
   font-size: 1.1rem;
 }
 
@@ -950,4 +954,66 @@ button:hover {
 .clinic-map h3 {
   color: #165B40;
   margin-bottom: 1rem;
+}
+
+/* RTL Styles */
+[dir="rtl"] .profile-card {
+  text-align: right;
+}
+
+[dir="rtl"] .details {
+  padding-left: 0;
+  padding-right: 3rem;
+}
+
+[dir="rtl"] .info-group p,
+[dir="rtl"] .bio {
+  text-align: right;
+}
+
+[dir="rtl"] .feedback-header {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .patient-avatar {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .feedback-comment {
+  text-align: right;
+}
+
+[dir="rtl"] .contact-item {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .location-item {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .section-subtitle {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .lightbox-nav.prev {
+  right: -70px;
+  left: auto;
+}
+
+[dir="rtl"] .lightbox-nav.next {
+  left: -70px;
+  right: auto;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .lightbox-nav.prev {
+    right: 10px;
+    left: auto;
+  }
+  
+  [dir="rtl"] .lightbox-nav.next {
+    left: 10px;
+    right: auto;
+  }
 }

@@ -15,10 +15,12 @@ import { APIResponse } from '../../../shared/models/api-response.dto';
 import { Doctor } from '../../../shared/models/doctor.model';
 import { DoctorService } from '../../../services/doctor.service';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
+import { SpecializationResponse } from '../../../shared/models/specialization.model';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-choose-appointment',
-  imports: [CommonModule, RouterModule, PHeaderComponent, ReactiveFormsModule, FormsModule, SideNavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, ReactiveFormsModule, FormsModule, SideNavbarComponent, TranslocoModule ],
   templateUrl: './choose-appointment.component.html',
   styleUrl: './choose-appointment.component.css'
 })
@@ -39,7 +41,7 @@ export class ChooseAppointmentComponent implements OnInit{
 
     doctors: Doctor[] = [];
     
- constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private specializationService: SpecializationService, private doctorService: DoctorService){}
+ constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute, private specializationService: SpecializationService, private doctorService: DoctorService, public translocoService: TranslocoService){}
 
 
     countries: Lookup[] = [];
@@ -65,11 +67,16 @@ export class ChooseAppointmentComponent implements OnInit{
       });
     });
 
-    this.specializationService.getAllSpecializations().subscribe(specializations => {
-      this.specializationNames = {};
-      specializations.forEach(spec => {
-        this.specializationNames[spec.id] = spec.name_En; // Store specializationId -> specializationName mapping
-      });
+    this.specializationService.getAllSpecializations().subscribe({
+      next: (response: SpecializationResponse) => {
+        if (response.succeeded) {
+          this.specializationNames = {};
+          response.data.forEach(spec => {
+            this.specializationNames[spec.id] = spec.name_En;
+          });
+        }
+      },
+      error: (error) => console.error('Error loading specialization names:', error)
     });
 
     this.getSpecializations();
@@ -89,16 +96,21 @@ export class ChooseAppointmentComponent implements OnInit{
   
       private loadLookups(): void {
         this.lookupService.loadCountries().subscribe(
-            (res: APIResponse<Lookup[]>) => this.countries = res.data,
-            () => this.toastrService.error("Failed to load countries", "Error")
+          (res: APIResponse<Lookup[]>) => this.countries = res.data,
+          () => this.toastrService.error("Failed to load countries", "Error")
         );
-    
-        this.specializationService.getAllSpecializations().subscribe(
-            (res: Specialization[]) => this.specializations = res,
-            () => this.toastrService.error("Failed to load specializations", "Error")
-        );
-    }
-    
+      
+        this.specializationService.getAllSpecializations().subscribe({
+          next: (response: SpecializationResponse) => {
+            if (response.succeeded) {
+              this.specializations = response.data;
+            } else {
+              this.toastrService.error("Failed to load specializations", "Error");
+            }
+          },
+          error: () => this.toastrService.error("Failed to load specializations", "Error")
+        });
+      }
 
     updateGovernorates(countryId: string) {
       this.lookupService.loadGovernoratesOfCountry(Number.parseInt(countryId)).subscribe(
@@ -178,15 +190,19 @@ get formControls() {
   
 
 getSpecializations(): void {
-  this.specializationService.getAllSpecializations().subscribe(
-    (response: Specialization[]) => { // Ensure it's an array
-      this.specializations = response;
-      this.filteredSpecializations = response;
+  this.specializationService.getAllSpecializations().subscribe({
+    next: (response: SpecializationResponse) => {
+      if (response.succeeded) {
+        this.specializations = response.data;
+        this.filteredSpecializations = response.data;
+      } else {
+        console.error('Failed to fetch specializations:', response.message);
+      }
     },
-    (error) => {
+    error: (error) => {
       console.error('Error fetching specializations:', error);
     }
-  );
+  });
 }
 
 

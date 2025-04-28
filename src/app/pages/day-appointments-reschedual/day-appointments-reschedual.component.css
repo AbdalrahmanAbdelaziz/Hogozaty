@@ -168,3 +168,33 @@
     padding: 8px 12px;
   }
 }
+
+/* RTL Styles */
+[dir="rtl"] .appointments-container {
+  /* text-align: right; */
+}
+
+[dir="rtl"] .slots-grid {
+  direction: ltr; /* Keep time format in LTR */
+}
+
+[dir="rtl"] .slot-card {
+  direction: ltr; /* Keep time format consistent */
+}
+
+[dir="rtl"] .time-range {
+  text-align: center;
+}
+
+/* Responsive adjustments for RTL */
+@media (max-width: 768px) {
+  [dir="rtl"] .appointments-container {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  [dir="rtl"] .appointments-container {
+    padding: 1.5rem;
+  }
+}

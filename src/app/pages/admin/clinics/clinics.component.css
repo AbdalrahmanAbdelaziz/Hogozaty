@@ -253,3 +253,54 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* Add to your component's CSS file */
+[dir="rtl"] .filter-group {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .card-actions {
+  direction: ltr; /* Keep buttons LTR even in RTL */
+  justify-content: flex-end;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+
+.clinics-container {
+  padding: 20px;
+}
+
+[dir="rtl"] .filter-group {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .card-actions {
+  direction: ltr;
+  justify-content: flex-end;
+}
+
+.language-switcher {
+  margin-left: 15px;
+}
+
+[dir="rtl"] .language-switcher {
+  margin-left: 0;
+  margin-right: 15px;
+}
+
+.language-switcher button.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+

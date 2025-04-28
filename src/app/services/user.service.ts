@@ -7,6 +7,8 @@ import { BASE_URL, LOGIN_URL } from '../shared/constants/urls';
 import { LoginResponse } from '../shared/models/login-response';
 import { APIResponse } from '../shared/models/api-response.dto';
 import { ResetPassword } from '../shared/models/ResetPassword';
+import { TranslocoService } from '@ngneat/transloco'; 
+
 
 const USER_KEY = 'User';
 
@@ -19,7 +21,7 @@ export class UserService {
   );
   public userObservable = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient, private toaster: ToastrService) {}
+  constructor(private http: HttpClient, private toaster: ToastrService,  private translocoService: TranslocoService) {}
 
   login(userLogin: UserLogin): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(LOGIN_URL, userLogin).pipe(
@@ -27,20 +29,41 @@ export class UserService {
         next: (response) => {
           this.setUserToLocalStorage(response);
           this.userSubject.next(response);
-          this.toaster.success(`Welcome ${response.data.firstName}!`);
+          this.toaster.success(
+            this.translocoService.translate('auth.welcome', { name: response.data.firstName })
+          );
+          if (!localStorage.getItem('darkMode')) {
+            localStorage.setItem('darkMode', 'false');
+          }
         },
         error: () => {
-          this.toaster.error('Login Failed');
+          this.toaster.error(
+            this.translocoService.translate('auth.loginFailed')
+          );
         },
       })
     );
   }
 
-  logout() {
-    this.userSubject.next(null);
-    localStorage.removeItem(USER_KEY);
-    localStorage.removeItem('doctorId');
+  setDarkModePreference(isDarkMode: boolean): void {
+    localStorage.setItem('darkMode', isDarkMode.toString());
   }
+
+  getDarkModePreference(): boolean {
+    const savedMode = localStorage.getItem('darkMode');
+    return savedMode ? savedMode === 'true' : false; // Default to false if not set
+  }
+
+// In user.service.ts
+logout() {
+  this.userSubject.next(null);
+  // Clear all user-related data but keep other preferences if needed
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem('userRole');
+  localStorage.removeItem('doctorId');
+  // Explicitly remove dark mode preference to return to default
+  localStorage.removeItem('darkMode');
+}
 
   getUserRole(): string | null {
     return localStorage.getItem('userRole');
@@ -86,19 +109,27 @@ export class UserService {
   forgetPassword(email: string): Observable<any> {
     return this.http.post<any>('http://localhost:8585/api/users/forgot-password', { email }).pipe(
       tap({
-        next: () => this.toaster.success('Password reset link sent!'),
-        error: () => this.toaster.error('Failed to send reset link.')
+        next: () => this.toaster.success(
+          this.translocoService.translate('auth.resetLinkSent')
+        ),
+        error: () => this.toaster.error(
+          this.translocoService.translate('auth.resetLinkFailed')
+        )
       })
     );
-    
+  }
+
+  resetPassword(payload: ResetPassword): Observable<any> {
+    return this.http.post<any>('http://localhost:8585/api/users/forgot-password', payload).pipe(
+      tap({
+        next: () => this.toaster.success(
+          this.translocoService.translate('auth.resetSuccess')
+        ),
+        error: () => this.toaster.error(
+          this.translocoService.translate('auth.resetFailed')
+        )
+      })
+    );
+  }
 }
 
-resetPassword(payload: ResetPassword): Observable<any> {
-  return this.http.post<any>('http://localhost:8585/api/users/forgot-password', payload).pipe(
-      tap({
-          next: () => this.toaster.success('Password reset successfully.'),
-          error: () => this.toaster.error('Failed to reset password.')
-      })
-  );
-}
-}

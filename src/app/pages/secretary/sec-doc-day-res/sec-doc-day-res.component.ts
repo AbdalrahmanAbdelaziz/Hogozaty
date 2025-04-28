@@ -11,10 +11,22 @@ import { SHeaderComponent } from '../s-header/s-header.component';
 import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmRescheduleModalComponent } from '../confirm-reschedule-modal/confirm-reschedule-modal.component';
+import { DHeaderComponent } from '../../doctor/d-header/d-header.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-sec-doc-day-res',
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, ConfirmRescheduleModalComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    SHeaderComponent,
+    SSidenavbarComponent,
+    ConfirmRescheduleModalComponent,
+    PHeaderComponent,
+    DHeaderComponent,
+    TranslocoModule
+  ],
   templateUrl: './sec-doc-day-res.component.html',
   styleUrls: ['./sec-doc-day-res.component.css']
 })
@@ -35,7 +47,8 @@ export class SecDocDayResComponent implements OnInit {
     private doctorService: DoctorService,
     private router: Router,
     private userService: UserService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -54,27 +67,30 @@ export class SecDocDayResComponent implements OnInit {
       this.loadDoctorDetails();
       this.loadTimeSlots();
     } else {
-      console.error('Date or Doctor ID is missing from route parameters.');
+      this.showTranslatedToastr('error', 'missing_parameters', 'Date or Doctor ID is missing from route parameters.');
     }
   }
 
-  loadDoctorDetails(): void {
-    console.log('Fetching doctor details with doctorId:', this.docId);
+  private showTranslatedToastr(type: 'success' | 'error' | 'info' | 'warning', key: string, defaultMessage: string): void {
+    const message = this.translocoService.translate(`toastr.${key}`) || defaultMessage;
+    const title = this.translocoService.translate(`toastr.${type}`) || 
+                 type.charAt(0).toUpperCase() + type.slice(1);
+    this.toastr[type](message, title);
+  }
 
+  loadDoctorDetails(): void {
     this.doctorService.getDoctorsBySpecialization(this.docId).subscribe(
       (doctors) => {
         if (doctors && doctors.length > 0) {
           const doctor = doctors[0];
           this.clinicId = doctor.clinicId;
           this.specializationId = doctor.specializationId;
-          console.log('Updated Clinic ID:', this.clinicId);
-          console.log('Updated Specialization ID:', this.specializationId);
         } else {
-          console.warn('No doctor found with the given specialization ID.');
+          // this.showTranslatedToastr('warning', 'no_doctor_found', 'No doctor found with the given specialization ID.');
         }
       },
       (error) => {
-        console.error('Error fetching doctor details:', error);
+        this.showTranslatedToastr('error', 'doctor_details_error', 'Error fetching doctor details');
       }
     );
   }
@@ -83,6 +99,9 @@ export class SecDocDayResComponent implements OnInit {
     this.appointmentService.getTimeSlotsByDate(this.selectedDate, this.docId).subscribe(
       (response) => {
         this.timeSlots = response.data || [];
+      },
+      (error) => {
+        this.showTranslatedToastr('error', 'timeslots_error', 'Error loading available time slots');
       }
     );
   }
@@ -99,27 +118,28 @@ export class SecDocDayResComponent implements OnInit {
 
   confirmReschedule(): void {
     if (!this.selectedTimeSlot || !this.appointmentId) {
-      this.toastr.error("Missing required rescheduling information.", "Rescheduling Failed");
+      this.showTranslatedToastr('error', 'missing_reschedule_info', 'Missing required rescheduling information');
       return;
     }
-
+  
     const rescheduleData = {
       appointmentId: this.appointmentId,
       newTimeSlotId: this.selectedTimeSlot.id
     };
-
-    console.log("Reschedule Data:", rescheduleData);
-
+  
     this.appointmentService.rescheduleAppointment(rescheduleData).subscribe(
       response => {
-        this.toastr.success("Your appointment has been rescheduled successfully!");
-        // this.router.navigate(['/appointments']);
+        this.showTranslatedToastr('success', 'reschedule_success', 'Your appointment has been rescheduled successfully!');
+        
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       error => {
-        this.toastr.error("An error occurred while rescheduling. Please try again.");
+        this.showTranslatedToastr('error', 'reschedule_error', 'An error occurred while rescheduling');
       }
     );
-
+  
     this.closeModal();
   }
 }

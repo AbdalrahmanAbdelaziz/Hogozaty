@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-confirm-reschedule-modal',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslocoModule],
   templateUrl: './confirm-reschedule-modal.component.html',
   styleUrls: ['./confirm-reschedule-modal.component.css'],
   animations: [
@@ -29,7 +30,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ConfirmRescheduleModalComponent {
+export class ConfirmRescheduleModalComponent implements OnInit{
+  constructor(public translocoService: TranslocoService){}
+
+  ngOnInit(): void {
+      
+  }
   @Input() isVisible: boolean = false;
   @Output() confirmed = new EventEmitter<void>();
   @Output() canceled = new EventEmitter<void>();

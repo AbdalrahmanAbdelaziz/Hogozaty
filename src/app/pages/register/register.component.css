@@ -244,3 +244,43 @@ button[type="submit"]:hover {
     font-size: 14px;
   }
 }
+
+/* Add to existing CSS */
+[dir="rtl"] .form-group {
+  text-align: right;
+}
+
+[dir="rtl"] .error {
+  text-align: right;
+}
+
+[dir="rtl"] .register-container a {
+  text-align: right;
+}
+
+.lang-switcher {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.lang-switcher button {
+  background: transparent;
+  color: #24CC81;
+  border: 1px solid #24CC81;
+  padding: 5px 15px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.lang-switcher button.active {
+  background: #24CC81;
+  color: white;
+}
+
+[dir="rtl"] .form-group input,
+[dir="rtl"] .form-group select {
+  text-align: right;
+}

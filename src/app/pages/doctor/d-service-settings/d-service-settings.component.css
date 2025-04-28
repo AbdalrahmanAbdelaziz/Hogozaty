@@ -17,13 +17,6 @@ body {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Add this to your existing CSS */
-@media screen and (max-width: 768px) {
-  .container {
-    padding-bottom: 100px; /* Enough space for fixed bottom navbar */
-  }
-}
-
 h2 {
   font-size: 26px;
   color: #24CC81;
@@ -57,6 +50,7 @@ table th, table td {
 
 table tbody tr {
   border-bottom: 1px solid #ddd;
+  color: black;
 }
 
 table tbody tr:last-child {
@@ -419,3 +413,18 @@ table tbody tr:hover {
   }
 }
 
+/* Truncate pipe style */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: inline-block;
+}
+
+/* Add this to your existing CSS */
+@media screen and (max-width: 768px) {
+  .container {
+    padding-bottom: 100px; /* Enough space for fixed bottom navbar */
+  }
+}

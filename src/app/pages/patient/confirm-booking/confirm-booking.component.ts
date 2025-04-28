@@ -17,10 +17,11 @@ import { FormsModule } from '@angular/forms';
 import { APIResponse } from '../../../shared/models/api-response.dto';
 import { BASE_URL } from '../../../shared/constants/urls';
 import { ToastrService } from 'ngx-toastr';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-confirm-booking',
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, FormsModule],
+  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, FormsModule, TranslocoModule ],
   templateUrl: './confirm-booking.component.html',
   styleUrl: './confirm-booking.component.css'
 })
@@ -50,7 +51,9 @@ export class ConfirmBookingComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private appointmentService: AppointmentService,
     private clinicService: ClinicService,
-    private toastr: ToastrService // ✅ Inject ToastrService
+    private toastr: ToastrService ,
+    public translocoService: TranslocoService 
+
   ) {}
 
   ngOnInit(): void {
@@ -120,35 +123,43 @@ export class ConfirmBookingComponent implements OnInit {
   );
 }
 
-  confirmBooking(): void {
-    if (!this.selectedDoctor || !this.selectedTimeSlot || !this.clinic || !this.patient) {
-      this.toastr.error("Missing required booking information.", "Booking Failed");
-      return;
-    }
-
-    if (!this.selectedTimeSlot.id || !this.clinic.id || !this.selectedDoctor.id || !this.patient.data.id) {
-      this.toastr.error("Invalid appointment details. Please try again.", "Booking Failed");
-      return;
-    }
-
-    const bookingData: Appointment = {
-      notes: this.notes,
-      timeSlotId: this.selectedTimeSlot.id,
-      clinicId: this.clinic.id,
-      doctorId: this.selectedDoctor.id,
-      patientID: this.patient.data.id
-    };
-
-    console.log("Booking Data:", bookingData); // Log the payload
-
-    this.appointmentService.createAppointment(bookingData).subscribe(
-      response => {
-        this.toastr.success("Your appointment has been booked successfully!");
-        this.router.navigate(['/patient-home']);
-      },
-      error => {
-        this.toastr.error("An error occurred while booking. Please try again.");
-      }
+confirmBooking(): void {
+  if (!this.selectedDoctor || !this.selectedTimeSlot || !this.clinic || !this.patient) {
+    this.toastr.error(
+      this.translocoService.translate('booking.missingInfoError'), 
+      this.translocoService.translate('booking.errorTitle')
     );
+    return;
   }
+
+  if (!this.selectedTimeSlot.id || !this.clinic.id || !this.selectedDoctor.id || !this.patient.data.id) {
+    this.toastr.error(
+      this.translocoService.translate('booking.invalidDetailsError'), 
+      this.translocoService.translate('booking.errorTitle')
+    );
+    return;
+  }
+
+  const bookingData: Appointment = {
+    notes: this.notes,
+    timeSlotId: this.selectedTimeSlot.id,
+    clinicId: this.clinic.id,
+    doctorId: this.selectedDoctor.id,
+    patientID: this.patient.data.id
+  };
+
+  this.appointmentService.createAppointment(bookingData).subscribe(
+    response => {
+      this.toastr.success(
+        this.translocoService.translate('booking.successMessage')
+      );
+      this.router.navigate(['/patient-home']);
+    },
+    error => {
+      this.toastr.error(
+        this.translocoService.translate('booking.errorMessage')
+      );
+    }
+  );
+}
 }

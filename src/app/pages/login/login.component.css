@@ -248,3 +248,41 @@ body, html {
     font-size: 14px;
   }
 }
+
+/* Add to existing CSS */
+[dir="rtl"] .field span {
+  left: auto;
+  right: 15px;
+}
+
+[dir="rtl"] .field input {
+  padding: 16px 50px 16px 14px;
+}
+
+[dir="rtl"] .error {
+  text-align: right;
+}
+
+.lang-switcher {
+  margin-bottom: 20px;
+}
+
+.lang-switcher button {
+  background: transparent;
+  color: #24CC81;
+  border: 1px solid #24CC81;
+  padding: 5px 15px;
+  margin: 0 5px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.lang-switcher button.active {
+  background: #24CC81;
+  color: white;
+}
+
+[dir="rtl"] .signup,
+[dir="rtl"] .forgot-password {
+  text-align: right;
+}

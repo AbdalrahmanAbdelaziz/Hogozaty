@@ -7,10 +7,11 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule for search b
 import { ToastrService } from 'ngx-toastr';
 import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-d-patients',
-  imports: [CommonModule, RouterModule, DHeaderComponent, DSidenavbarComponent, FormsModule],
+  imports: [CommonModule, RouterModule, DHeaderComponent, DSidenavbarComponent, FormsModule, TranslocoModule],
   templateUrl: './d-patients.component.html',
   styleUrl: './d-patients.component.css'
 })
@@ -21,9 +22,10 @@ export class DPatientsComponent implements OnInit {
   userId: number | null = null; // User ID fetched from the login response
 
   constructor(
-    private patientService: PatientService, // Inject PatientService
-    private userService: UserService, // Inject UserService
-    private toastr: ToastrService // Inject ToastrService
+    private patientService: PatientService, 
+    private userService: UserService, 
+    private toastr: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

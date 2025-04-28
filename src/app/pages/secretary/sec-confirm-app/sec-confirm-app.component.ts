@@ -19,11 +19,12 @@ import { ToastrService } from 'ngx-toastr';
 import { SHeaderComponent } from '../s-header/s-header.component';
 import { PatientService } from '../../../services/patient.service'; // Import PatientService
 import { Patient } from '../../../shared/models/patient';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-sec-confirm-app',
   standalone: true,
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, FormsModule],
+  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, FormsModule, TranslocoModule],
   templateUrl: './sec-confirm-app.component.html',
   styleUrl: './sec-confirm-app.component.css'
 })
@@ -54,8 +55,9 @@ export class SecConfirmAppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private appointmentService: AppointmentService,
     private clinicService: ClinicService,
-    private toastr: ToastrService, // ✅ Inject ToastrService
-    private patientService: PatientService // Inject PatientService
+    private toastr: ToastrService, 
+    private patientService: PatientService ,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -163,12 +165,17 @@ export class SecConfirmAppComponent implements OnInit {
 
     this.appointmentService.createAppointment(bookingData).subscribe(
       response => {
-        this.toastr.success("Your appointment has been booked successfully!");
-        // this.router.navigate(['/patient-home']);
+        this.toastr.success(
+          this.translocoService.translate('booking.successMessage')
+        );
+        this.router.navigate(['/secretary-home']);
       },
       error => {
-        this.toastr.error("An error occurred while booking. Please try again.");
+        this.toastr.error(
+          this.translocoService.translate('booking.errorMessage')
+        );
       }
     );
   }
 }
+

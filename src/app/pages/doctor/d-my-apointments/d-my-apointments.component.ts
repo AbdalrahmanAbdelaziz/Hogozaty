@@ -10,6 +10,7 @@ import { DHeaderComponent } from '../d-header/d-header.component';
 import { DSidenavbarComponent } from '../d-sidenavbar/d-sidenavbar.component';
 import { Observable, interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-d-my-apointments',
@@ -21,6 +22,7 @@ import { switchMap } from 'rxjs/operators';
     DHeaderComponent,
     DSidenavbarComponent,
     ConfirmationModalComponent,
+    TranslocoModule
   ],
   templateUrl: './d-my-apointments.component.html',
   styleUrls: ['./d-my-apointments.component.css']
@@ -43,7 +45,8 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private userService: UserService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +56,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
       this.fetchAvailableDays();
       this.startPolling();
     } else {
-      this.toastr.error('No user ID found for the doctor.', 'Error');
+      this.showTranslatedToastr('error', 'no_doctor_id', 'No user ID found for the doctor.');
     }
   }
 
@@ -61,6 +64,12 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
     if (this.pollingSubscription) {
       this.pollingSubscription.unsubscribe();
     }
+  }
+
+  private showTranslatedToastr(type: 'success' | 'error' | 'info' | 'warning', key: string, defaultMessage: string): void {
+    const message = this.translocoService.translate(`toastr.${key}`) || defaultMessage;
+    const title = this.translocoService.translate(`toastr.${type}`) || type.charAt(0).toUpperCase() + type.slice(1);
+    this.toastr[type](message, title);
   }
 
   startPolling(): void {
@@ -79,7 +88,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         },
         error: (error) => {
-          this.toastr.error('Failed to fetch appointments', 'Error');
+          this.showTranslatedToastr('error', 'fetch_appointments_failed', 'Failed to fetch appointments');
         },
       });
   }
@@ -90,7 +99,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
     this.appointmentService.getAvailableDays(this.userId, numberOfRequiredDays).subscribe({
       next: (response: any) => {
         this.availableDays = (response.data.workingDays || []).map((date: string) => {
-          const dayOfWeek = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+          const dayOfWeek = new Date(date).toLocaleDateString(this.translocoService.getActiveLang(), { weekday: 'long' });
           return { date, dayOfWeek };
         });
 
@@ -100,7 +109,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
         }
       },
       error: (error) => {
-        this.toastr.error('Failed to fetch available days', 'Error');
+        this.showTranslatedToastr('error', 'fetch_days_failed', 'Failed to fetch available days');
       },
     });
   }
@@ -117,7 +126,7 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.toastr.error('Failed to fetch appointments', 'Error');
+        this.showTranslatedToastr('error', 'fetch_appointments_failed', 'Failed to fetch appointments');
       },
     });
   }
@@ -130,13 +139,13 @@ export class DMyApointmentsComponent implements OnInit, OnDestroy {
   markAsInProgress(appointmentId: number): void {
     this.makeAppointmentInProgress(appointmentId).subscribe({
       next: () => {
-        this.toastr.success('Appointment status updated to In Progress');
+        this.showTranslatedToastr('success', 'status_updated', 'Appointment status updated to In Progress');
         this.router.navigate(['/d-view-pp'], { 
           queryParams: { appointmentId: appointmentId } 
         });
       },
       error: (err) => {
-        this.toastr.error('Failed to update appointment status');
+        this.showTranslatedToastr('error', 'status_update_failed', 'Failed to update appointment status');
       },
     });
   }

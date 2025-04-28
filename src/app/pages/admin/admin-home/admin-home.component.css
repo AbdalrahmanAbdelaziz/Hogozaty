@@ -46,14 +46,14 @@
   .dashboard-title {
     font-size: 2.5rem;
     font-weight: 600;
-    color: #24CC81;
+    /* color: #24CC81; */
     margin-bottom: 8px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .dashboard-subtitle {
     font-size: 1.1rem;
-    color: #165B40;
+    /* color: #165B40; */
     margin-bottom: 0;
     font-weight: 400;
     max-width: 700px;
@@ -317,4 +317,65 @@
       padding-bottom: 100px; /* Enough space for fixed bottom navbar */
     }
   }
+
+  /* Add RTL specific styles */
+[dir="rtl"] {
+  /* Dashboard header text alignment */
+  .dashboard-header {
+    text-align: right;
+  }
+
+  /* Card icon positioning */
+  .card-icon {
+    margin-left: 8px;
+    margin-right: 0;
+  }
+
+  /* Card title margin adjustment */
+  mat-card-title {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  /* Action button icon positioning */
+  .action-button mat-icon {
+    margin-left: 0;
+    margin-right: 8px;
+    transform: rotate(180deg); /* Flip the arrow direction */
+  }
+
+  /* Grid layout adjustments */
+  mat-grid-list {
+    direction: ltr; /* Keep grid direction LTR even in RTL */
+  }
+
+  /* Card content alignment */
+  mat-card-content {
+    text-align: right;
+  }
+
+  /* Button text alignment */
+  .action-button span {
+    direction: rtl;
+  }
+}
+
+/* Add these media queries for RTL responsiveness */
+@media (max-width: 600px) {
+  [dir="rtl"] {
+    .dashboard-header {
+      text-align: right;
+    }
+    
+    .action-button {
+      flex-direction: row-reverse;
+    }
+  }
+}
+
+/* Ensure body direction changes with language */
+body[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
   

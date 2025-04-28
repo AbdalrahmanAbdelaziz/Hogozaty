@@ -6,11 +6,12 @@ import { UserService } from '../../../services/user.service';
 import { DoctorService } from '../../../services/doctor.service';
 import { SSidenavbarComponent } from '../s-sidenavbar/s-sidenavbar.component';
 import { SHeaderComponent } from '../s-header/s-header.component';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-sec-day-app',
   standalone: true,
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent],
+  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, TranslocoModule],
   templateUrl: './sec-day-app.component.html',
   styleUrl: './sec-day-app.component.css'
 })
@@ -27,6 +28,7 @@ export class SecDayAppComponent implements OnInit {
     private doctorService: DoctorService,
     private router: Router,
     private userService: UserService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

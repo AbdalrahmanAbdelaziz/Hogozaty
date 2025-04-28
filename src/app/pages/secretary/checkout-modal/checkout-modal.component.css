@@ -501,3 +501,254 @@
       display: none !important;
     }
   }
+
+  /* Add these styles to your existing CSS */
+
+.payment-details-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.payment-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.payment-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.payment-info-item .label {
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.payment-info-item .value {
+  color: #343a40;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .payment-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.payment-details-section {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.payment-details .section-title {
+  color: #24CC81;
+  font-size: 16px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.payment-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.payment-info-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.payment-info-item .label {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.payment-info-item .value {
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* Add to your existing CSS */
+.receipt-footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid #eee;
+  color: #555;
+  font-size: 14px;
+}
+
+.footer-content {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.thank-you-message {
+  margin-bottom: 30px;
+}
+
+.thank-you-message p:first-child {
+  font-size: 16px;
+  font-weight: 500;
+  color: #24CC81;
+  margin-bottom: 8px;
+}
+
+.thank-you-message p:last-child {
+  font-style: italic;
+}
+
+.footer-spacer {
+  height: 30px;
+  border-bottom: 1px dashed #ddd;
+  margin: 20px 0;
+}
+
+.clinic-info {
+  font-size: 13px;
+  color: #777;
+}
+
+.clinic-info p:first-child {
+  margin-bottom: 5px;
+}
+
+/* Add to your existing CSS */
+.receipt-content {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 25px;
+  box-sizing: border-box;
+  background: white;
+}
+
+.receipt-footer {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid #eee;
+}
+
+.footer-content {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.thank-you-message {
+  margin-bottom: 25px;
+}
+
+.thank-you-message p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.thank-you-message p:first-child {
+  font-size: 16px;
+  font-weight: 600;
+  color: #24CC81;
+}
+
+.appreciation {
+  font-style: italic;
+  color: #666;
+}
+
+.footer-spacer {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ddd, transparent);
+  margin: 20px 0;
+}
+
+.clinic-info {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.5;
+}
+
+/* Ensure tables don't overflow */
+.services-table {
+  width: 100%;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+/* PDF-specific adjustments */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .receipt-content {
+    padding-bottom: 50mm; /* Ensure space for footer */
+  }
+  
+  .receipt-footer {
+    position: fixed;
+    bottom: 20mm;
+    width: 100%;
+  }
+}
+
+/* PDF-specific styles */
+.receipt-content {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 25px;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  background: white;
+}
+
+.payment-details-section {
+  margin: 25px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border-left: 4px solid #24CC81;
+}
+
+.receipt-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Ensure all content is visible */
+.services-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.services-table td, .services-table th {
+  word-break: break-word;
+  padding: 8px 12px;
+}
+
+/* Print-specific styles */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+  
+  .receipt-content {
+    padding-bottom: 50mm; /* Ensure footer space */
+  }
+}

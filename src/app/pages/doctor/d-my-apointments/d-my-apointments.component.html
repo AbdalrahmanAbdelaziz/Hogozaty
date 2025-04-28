@@ -2,9 +2,9 @@
 <app-d-sidenavbar></app-d-sidenavbar>
 
 <div class="appointment-container">
-  <h2>Doctor's Appointments</h2>
+  <h2>{{ 'appointments.doctor_appointments' | transloco }}</h2>
   <div class="dropdown-container">
-    <label for="dateDropdown">Select Date:</label>
+    <label for="dateDropdown">{{ 'appointments.select_date' | transloco }}:</label>
     <select id="dateDropdown" [(ngModel)]="selectedDate" (change)="onDateSelect($event)">
       <option *ngFor="let day of availableDays" [value]="day.date">
         {{ day.date }} ({{ day.dayOfWeek }})
@@ -15,9 +15,9 @@
   <table class="appointment-table">
     <thead>
       <tr>
-        <th>Patient Name</th>
-        <th>Time Slot</th>
-        <th>Actions</th>
+        <th>{{ 'appointments.patient_name' | transloco }}</th>
+        <th>{{ 'appointments.time_slot' | transloco }}</th>
+        <th>{{ 'appointments.actions' | transloco }}</th>
       </tr>
     </thead>
     <tbody>
@@ -26,7 +26,9 @@
           <td>{{ appointment.patientName }}</td>
           <td>{{ appointment.timeSlot.startTime }} - {{ appointment.timeSlot.endTime }}</td>
           <td class="actions">
-            <button class="btn btn-progress" (click)="markAsInProgress(appointment.id)">In Progress</button>
+            <button class="btn btn-progress" (click)="markAsInProgress(appointment.id)">
+              {{ 'appointments.in_progress' | transloco }}
+            </button>
           </td>
         </tr>
       </ng-container>
@@ -42,7 +44,7 @@
                 <path d="M8 3V7" stroke="#165B40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M3 11H21" stroke="#165B40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <span>There Is No Next Patient.  </span>
+              <span>{{ 'appointments.no_patients' | transloco }}</span>
             </div>
           </td>
         </tr>

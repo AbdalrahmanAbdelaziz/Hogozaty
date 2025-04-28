@@ -1,57 +1,67 @@
-<div class="bg-img">
+<div class="bg-img" [dir]="currentLang === 'ar' ? 'rtl' : 'ltr'">
   <div class="overlay"></div>
   <div class="cover-image">
-    <img src="www.jpg" alt="Cover Image" class="full-cover">
-  </div>
-  <!-- <header class="navbar">
-    <div class="logo-container">
-        <img src="vv_w.png" alt="HOGOZATY Logo" class="logo-image">
+    <img src="www.jpg" alt="" role="presentation" class="full-cover">
     </div>
-
-    <div class="right-button">
-        <button routerLink="/login">Login</button>
-        <button routerLink="/register">Register</button>
-    </div>
-  </header> -->
 
   <div class="navbar-spacer"></div>
 
   <div class="content">
-    <img src="vv_b.png" alt="Logo" class="logo" routerLink="/" />
+    <img src="vv_b.png" alt="" class="logo" routerLink="/" />
+    
+    <!-- <div class="lang-switcher">
+      <button (click)="switchLanguage('en')" [class.active]="currentLang === 'en'">EN</button>
+      <button (click)="switchLanguage('ar')" [class.active]="currentLang === 'ar'">عربي</button>
+    </div> -->
+    
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
       <div class="field">
         <span class="fa fa-user"></span>
-        <input type="text" formControlName="EmailOrUsernameOrPhone" placeholder="Email or Username or Phone" required />
+        <label for="emailUsernamePhone" class="sr-only">
+          {{ 'login.form.emailLabel' | transloco }}
+        </label>
+        <input
+          id="emailUsernamePhone"
+          type="text"
+          formControlName="EmailOrUsernameOrPhone"
+          [placeholder]="'login.form.emailPlaceholder' | transloco"
+          [attr.aria-label]="'login.form.emailLabel' | transloco"
+          required
+        />
         <div *ngIf="isSubmitted && fc['EmailOrUsernameOrPhone'].invalid" class="error">
-          Email is required and should be valid.
+          {{ 'login.formErrors.emailRequired' | transloco }}
         </div>
       </div>
-
       <div class="field space">
         <span class="fa fa-lock"></span>
+        <label for="passwordInput" class="sr-only">
+          {{ 'login.form.passwordLabel' | transloco }}
+        </label>
         <input
+          id="passwordInput"
           type="password"
           formControlName="password"
-          class="pass-key"  
-          placeholder="Password"
+          class="pass-key"
+          [placeholder]="'login.form.passwordPlaceholder' | transloco"
           required
         />
         <div *ngIf="isSubmitted && fc['password'].invalid" class="error">
-          Password is required.
+          {{ 'login.formErrors.passwordRequired' | transloco }}
         </div>
       </div>
 
       <div class="field">
-        <input type="submit" value="LOGIN" />
+        <input type="submit" [value]="'login.buttons.login' | transloco" />
       </div>
 
       <div class="forgot-password">
-        <a routerLink="/forget-password">Forgot Password?</a>
+        <a routerLink="/forget-password">{{ 'login.links.forgotPassword' | transloco }}</a>
       </div>
     </form>
 
     <div class="signup">
-      Don't have an account? <a routerLink="/register">Sign Up Now</a>
+      {{ 'login.messages.noAccount' | transloco }} 
+      <a routerLink="/register">{{ 'login.links.signUp' | transloco }}</a>
     </div>
   </div>
 </div>

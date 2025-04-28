@@ -1,13 +1,12 @@
-<div class="dashboard-container">
+<div class="dashboard-container" [dir]="translocoService.getActiveLang() === 'ar' ? 'rtl' : 'ltr'">
   <app-s-header></app-s-header>
 
   <div class="dashboard-layout">
-    <app-s-sidenavbar></app-s-sidenavbar>
 
     <main class="dashboard-content">
       <div class="dashboard-card">
         <div class="card-header">
-          <h2 class="card-title">Appointment Status</h2>
+          <h2 class="card-title">{{ 'dashboard.appointmentStatus' | transloco }}</h2>
           <div class="card-actions">
           </div>
         </div>
@@ -30,10 +29,10 @@
         <ng-template #noDataMessage>
           <div class="no-data-state">
             <i class="fas fa-calendar-times"></i>
-            <h3>No Appointments Today</h3>
-            <p>You currently have no scheduled appointments</p>
+            <h3>{{ 'dashboard.noAppointmentsTitle' | transloco }}</h3>
+            <p>{{ 'dashboard.noAppointmentsMessage' | transloco }}</p>
             <button class="action-button" routerLink="/new-patient">
-              <i class="fas fa-plus"></i> Create New Appointment
+              <i class="fas fa-plus"></i> {{ 'dashboard.createNewAppointment' | transloco }}
             </button>
           </div>
         </ng-template>
@@ -41,19 +40,19 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
           <button class="action-button" routerLink="/new-patient">
-            <i class="fas fa-phone"></i> Phone Reserve
+            <i class="fas fa-phone"></i> {{ 'dashboard.phoneReserve' | transloco }}
           </button>
           <button class="action-button" routerLink="/walkin-reserve">
-            <i class="fas fa-user-clock"></i> Walk-in Reserve
+            <i class="fas fa-user-clock"></i> {{ 'dashboard.walkinReserve' | transloco }}
           </button>
           <button class="action-button" routerLink="/service-settings">
-            <i class="fas fa-cog"></i> Service Settings
+            <i class="fas fa-cog"></i> {{ 'dashboard.serviceSettings' | transloco }}
           </button>
           <button class="action-button" routerLink="/timeslot-management">
-            <i class="fas fa-calendar-alt"></i> Timeslot Management
+            <i class="fas fa-calendar-alt"></i> {{ 'dashboard.timeslotManagement' | transloco }}
           </button>
           <button class="action-button" routerLink="/patients">
-            <i class="fas fa-users"></i> Patients
+            <i class="fas fa-users"></i> {{ 'dashboard.patients' | transloco }}
           </button> 
         </div>
       </div>

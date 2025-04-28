@@ -18,6 +18,8 @@ import { BASE_URL } from '../../../shared/constants/urls';
 import { ToastrService } from 'ngx-toastr';
 import { FeedbackService } from '../../../services/feedback.service';
 import { FormsModule } from '@angular/forms';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
+
 
 @Component({  
   selector: 'app-p-home',
@@ -28,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     MostChosenDoctorsComponent, 
     RouterModule, 
     SideNavbarComponent,
-    FormsModule
+    FormsModule,
+    TranslocoModule
   ],
   templateUrl: './p-home.component.html',
   styleUrls: ['./p-home.component.css']
@@ -70,7 +73,8 @@ export class PHomeComponent implements OnInit, OnDestroy {
     private appointmentService: AppointmentService,
     private clinicService: ClinicService,
     private toastr: ToastrService,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -119,6 +123,8 @@ export class PHomeComponent implements OnInit, OnDestroy {
     localStorage.setItem('lastLoginTime', now.toString());
   }
 
+  
+
   startPolling(): void {
     this.pollingSubscription = interval(60000)
       .pipe(
@@ -147,6 +153,9 @@ export class PHomeComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+
+  
 
   checkForUnratedAppointments(): void {
     const unratedProcessed = this.appointments
@@ -251,40 +260,7 @@ export class PHomeComponent implements OnInit, OnDestroy {
     this.rating = rating;
   }
 
-  submitFeedback(): void {
-    if (this.rating === 0) {
-      this.toastr.warning('Please select a rating');
-      return;
-    }
 
-    const feedbackData = {
-      rating: this.rating,
-      comment: this.comment,
-      appointmentId: this.currentFeedbackAppointment.id,
-      doctorId: this.currentFeedbackAppointment.doctorId,
-      patientId: this.patient.data.id
-    };
-
-    this.feedbackService.createFeedback(feedbackData).subscribe({
-      next: () => {
-        this.toastr.success('Thank you for your feedback!');
-        this.hasRated = true;
-        
-        const ratedAppointment = this.appointments.find(
-          a => a.id === this.currentFeedbackAppointment.id
-        );
-        if (ratedAppointment) {
-          ratedAppointment.hasRated = true;
-        }
-
-        this.closeFeedbackModal();
-        this.filterAndSortAppointments();
-      },
-      error: (err) => {
-        this.toastr.error('Failed to submit feedback. Please try again.');
-      }
-    });
-  }
 
   getSpecializationName(id: number): void {
     this.specializationService.getSpecializationById(id).subscribe(name => {
@@ -344,22 +320,7 @@ export class PHomeComponent implements OnInit, OnDestroy {
     this.selectedAppointmentId = null;
   }
 
-  confirmCancel(): void {
-    if (this.selectedAppointmentId) {
-      this.appointmentService.cancelAppointment(this.selectedAppointmentId).subscribe({
-        next: () => {
-          this.toastr.success('Appointment cancelled successfully!');
-          this.appointments = this.appointments.filter((appt) => appt.id !== this.selectedAppointmentId);
-          this.filteredAppointments = this.filteredAppointments.filter((appt) => appt.id !== this.selectedAppointmentId);
-          this.closeCancelModal();
-        },
-        error: (err) => {
-          this.toastr.error('Failed to cancel appointment. Please try again.');
-          this.closeCancelModal();
-        }
-      });
-    }
-  }
+
 
   reschedule(appointmentId: number, doctorId: number): void {
     this.router.navigate([`/doctor-appointments-reschedual/${doctorId}/-1/-1`], {
@@ -378,4 +339,60 @@ export class PHomeComponent implements OnInit, OnDestroy {
       this.currentIndex--;
     }
   }
+
+  submitFeedback(): void {
+    if (this.rating === 0) {
+      this.toastr.warning(this.translocoService.translate('pHome.feedback.ratingRequired'));
+      return;
+    }
+
+    const feedbackData = {
+      rating: this.rating,
+      comment: this.comment,
+      appointmentId: this.currentFeedbackAppointment.id,
+      doctorId: this.currentFeedbackAppointment.doctorId,
+      patientId: this.patient.data.id
+    };
+
+    this.feedbackService.createFeedback(feedbackData).subscribe({
+      next: () => {
+        this.toastr.success(this.translocoService.translate('pHome.feedback.success'));
+        this.hasRated = true;
+        
+        const ratedAppointment = this.appointments.find(
+          a => a.id === this.currentFeedbackAppointment.id
+        );
+        if (ratedAppointment) {
+          ratedAppointment.hasRated = true;
+        }
+
+        this.closeFeedbackModal();
+        this.filterAndSortAppointments();
+      },
+      error: (err) => {
+        this.toastr.error(this.translocoService.translate('pHome.feedback.error'));
+      }
+    });
+  }
+
+  confirmCancel(): void {
+    if (this.selectedAppointmentId) {
+      this.appointmentService.cancelAppointment(this.selectedAppointmentId).subscribe({
+        next: () => {
+          this.toastr.success(this.translocoService.translate('pHome.appointments.cancelSuccess'));
+          this.appointments = this.appointments.filter((appt) => appt.id !== this.selectedAppointmentId);
+          this.filteredAppointments = this.filteredAppointments.filter((appt) => appt.id !== this.selectedAppointmentId);
+          this.closeCancelModal();
+        },
+        error: (err) => {
+          this.toastr.error(this.translocoService.translate('pHome.appointments.cancelError'));
+          this.closeCancelModal();
+        }
+      });
+    }
+  }
+
+
+
+
 }

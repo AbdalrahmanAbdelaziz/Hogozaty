@@ -12,7 +12,6 @@ import { APIResponse } from '../shared/models/api-response.dto';
 export class DoctorService {
     private apiUrl = BASE_URL + '/api/Doctor'; 
 
-
   constructor(private http: HttpClient) {}
 
   getTopDoctors(): Observable<Doctor[]> {
@@ -25,38 +24,30 @@ export class DoctorService {
       .pipe(map(response => response.data)); 
   }
 
-
   getDoctorsByOptionalParams(params: any): Observable<APIResponse<Doctor[]>> {
     return this.http.post<APIResponse<Doctor[]>>(`${this.apiUrl}/getDoctorsByOptionalParams`, params);
   }
 
-  
+  getAllDoctors(): Observable<APIResponse<Doctor[]>> {
+    return this.http.post<APIResponse<Doctor[]>>(`${this.apiUrl}/getAll`, {});
+  }
 
   getDoctorServices(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/getDoctorServices`);
   }
 
-  // Get all available services to add
   getAvailableServices(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/getAvailableServices`);
   }
 
-  // Add new services for the doctor
   addDoctorServices(services: any[]): Observable<any> {
     return this.http.post(`${this.apiUrl}/addDoctorServices`, services);
   }
 
-  // Add this method to your AppointmentService class
-getDoctorDayFinalRevenue(docId: number, date: string): Observable<any> {
-  return this.http.post(`${this.apiUrl}/getDoctorDayFinalRevenue`, {
-    docId,
-    date
-  });
-}
-
-
- 
-  
-  
-
+  getDoctorDayFinalRevenue(docId: number, date: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/getDoctorDayFinalRevenue`, {
+      docId,
+      date
+    });
+  }
 }

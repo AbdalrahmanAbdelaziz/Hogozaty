@@ -8,11 +8,20 @@ import { PatientService } from '../../../services/patient.service';
 import { PHeaderComponent } from '../p-header/p-header.component';
 import { SideNavbarComponent } from '../side-navbar/side-navbar.component';
 import { BASE_URL } from '../../../shared/constants/urls';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-complete-data',
   standalone: true,
-  imports: [CommonModule, RouterModule, PHeaderComponent, SideNavbarComponent, FormsModule, ReactiveFormsModule,],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    PHeaderComponent, 
+    SideNavbarComponent, 
+    FormsModule, 
+    ReactiveFormsModule,
+    TranslocoModule 
+  ],
   templateUrl: './complete-data.component.html',
   styleUrl: './complete-data.component.css',
 })
@@ -20,17 +29,33 @@ export class CompleteDataComponent implements OnInit {
   profileForm!: FormGroup;
   BASE_URL = BASE_URL;
   selectedPicture: File | null = null;
+  currentLang: string = 'en';
+  textDirection: 'ltr' | 'rtl' = 'ltr';
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private patientService: PatientService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    public translocoService: TranslocoService 
+    
   ) {}
 
   ngOnInit(): void {
     this.initForm();
     this.prefillForm();
+    this.setupLanguage();
+
+  }
+
+  private setupLanguage(): void {
+    this.currentLang = this.translocoService.getActiveLang();
+    this.textDirection = this.currentLang === 'ar' ? 'rtl' : 'ltr';
+    
+    this.translocoService.langChanges$.subscribe(lang => {
+      this.currentLang = lang;
+      this.textDirection = lang === 'ar' ? 'rtl' : 'ltr';
+    });
   }
 
   private initForm(): void {
@@ -79,7 +104,7 @@ export class CompleteDataComponent implements OnInit {
     if (this.profileForm.valid) {
       const user = this.userService.getUser();
       if (!user) {
-        this.toastrService.error('User not found. Please log in again.');
+        this.toastrService.error(this.translocoService.translate('errors.userNotFound'));
         return;
       }
   
@@ -99,7 +124,7 @@ export class CompleteDataComponent implements OnInit {
   
       this.patientService.updatePatientProfile(user.data.id, formData).subscribe({
         next: () => {
-          this.toastrService.success('Profile updated successfully');
+          this.toastrService.success(this.translocoService.translate('profile.updateSuccess'));
   
           // ✅ Refresh user data in local storage and UI
           this.userService.refreshUserData().subscribe({
@@ -109,12 +134,12 @@ export class CompleteDataComponent implements OnInit {
             },
             error: (err) => {
               console.error(err);
-              this.toastrService.error('Failed to refresh user data.');
+              this.toastrService.error(this.translocoService.translate('errors.updateFailed'));
             },
           });
         },
         error: (err) => {
-          this.toastrService.error('Failed to update profile');
+          this.toastrService.error(this.translocoService.translate('errors.updateFailed'));
           console.error(err);
         },
       });

@@ -1,0 +1,126 @@
+<app-admin-header></app-admin-header>
+
+<div class="admin-container" [dir]="currentLanguage === 'ar' ? 'rtl' : 'ltr'">
+  <div class="admin-card">
+    <!-- Card Header -->
+    <div class="card-header">
+      <div class="header-content">
+        <h1>{{ 'doctors.title' | transloco }}</h1>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+          <div class="search-input-group">
+            <i class="fas fa-search search-icon"></i>
+            <label for="doctor-search" class="visually-hidden">{{ 'doctors.search_placeholder' | transloco }}</label>
+            <input 
+              id="doctor-search"
+              type="text" 
+              class="search-input" 
+              [placeholder]="'doctors.search_placeholder' | transloco"
+              [attr.title]="'doctors.search_placeholder' | transloco"
+              (input)="filterDoctors($event)"
+            >
+            <button 
+              type="button"
+              class="btn-clear" 
+              *ngIf="searchQuery" 
+              (click)="clearSearch()"
+              [attr.aria-label]="'common.clear_search' | transloco"
+              title="Clear search"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body">
+      <!-- Loading State -->
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage && !isLoading" class="error-state">
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+        <button class="btn-retry" (click)="refreshDoctors()">
+          {{ 'common.retry' | transloco }}
+        </button>
+      </div>
+
+      <!-- Success State -->
+      <div *ngIf="!isLoading && !errorMessage">
+        <!-- No Results -->
+        <div *ngIf="filteredDoctors.length === 0" class="no-results">
+          <i class="fas fa-search"></i>
+          <h3>{{ 'doctors.no_results_title' | transloco }}</h3>
+          <p>{{ 'doctors.no_results_message' | transloco }}</p>
+          <button class="btn-clear-search" (click)="clearSearch()">
+            {{ 'common.clear_search' | transloco }}
+          </button>
+        </div>
+
+        <!-- Doctors Table -->
+        <div *ngIf="filteredDoctors.length > 0" class="table-responsive">
+          <table class="doctors-table">
+            <thead>
+              <tr>
+                <th>{{ 'doctors.name' | transloco }}</th>
+                <th>{{ 'doctors.phone' | transloco }}</th>
+                <th>{{ 'doctors.email' | transloco }}</th>
+                <th>{{ 'doctors.location' | transloco }}</th>
+                <th>{{ 'doctors.check_price' | transloco }}</th>
+                <th>{{ 'doctors.revenue' | transloco }}</th>
+                <th><!-- Arrow column header --></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doctor of filteredDoctors">
+                <td [attr.data-label]="'doctors.name' | transloco">
+                  {{ doctor.firstName }} {{ doctor.lastName }}
+                </td>
+                <td [attr.data-label]="'doctors.phone' | transloco">
+                  {{ doctor.phoneNumber }}
+                </td>
+                <td [attr.data-label]="'doctors.email' | transloco">
+                  {{ doctor.email }}
+                </td>
+                <td [attr.data-label]="'doctors.location' | transloco">
+                  {{ getTranslatedName(doctor, 'country') }}, 
+                  {{ getTranslatedName(doctor, 'governorate') }}, 
+                  {{ getTranslatedName(doctor, 'district') }}
+                </td>
+                <td [attr.data-label]="'doctors.check_price' | transloco">
+                  {{ doctor.checkPrice | currency }}
+                </td>
+                <td [attr.data-label]="'doctors.revenue' | transloco">
+                  {{ calculateRevenue(doctor.checkPrice) | currency }}
+                </td>
+                <td class="arrow-cell">
+                  <button 
+                  class="btn-arrow"
+                  (click)="navigateToDoctor(doctor.id.toString())"
+                  [attr.aria-label]="'doctors.view_details' | transloco"
+                  [title]="'doctors.view_details' | transloco"
+                >
+                  <span class="visually-hidden">{{ 'doctors.view_details' | transloco }}</span>
+                  <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="6" class="total-label">{{ 'doctors.total_revenue' | transloco }}</td>
+                <td class="total-value">{{ getTotalRevenue() | currency }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

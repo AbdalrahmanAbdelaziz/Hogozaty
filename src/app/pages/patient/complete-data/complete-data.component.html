@@ -1,77 +1,65 @@
-<div class="bg-img">
+<div class="bg-img" [dir]="textDirection">
   <app-p-header></app-p-header>
   <app-side-navbar></app-side-navbar>
   <div class="overlay"></div>
   <div class="profile-container">
-    <!-- <img src="vv_b.png" alt="Logo" class="logo" routerLink="/" /> -->
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit(); $event.preventDefault()">
       <!-- Profile Picture -->
       <div class="form-group">
-        <!-- <label for="profilePicture">Profile Picture</label> -->
         <div class="profile-picture-container">
           <img [src]="BASE_URL + '/' + profileForm.value.profilePicture || 'assets/default-profile.png'" alt="Profile Picture" class="profile-picture" />
           <input id="profilePicture" type="file" (change)="onFileChange($event)" #picSelector />
-          <label for="profilePicture" class="upload-label">Change Picture</label>
+          <label for="profilePicture" class="upload-label">{{ 'profile.changePicture' | transloco }}</label>
         </div>
       </div>
 
       <!-- First Name (Required) -->
       <div class="form-group">
-        <label for="firstName">First Name</label>
-        <input id="firstName" type="text" formControlName="firstName" placeholder="Enter your first name" />
+        <label for="firstName">{{ 'profile.firstName' | transloco }}</label>
+        <input id="firstName" type="text" formControlName="firstName" [placeholder]="'profile.enterFirstName' | transloco" />
         <div *ngIf="formControls['firstName'].touched && formControls['firstName'].invalid" class="error">
-          <div *ngIf="formControls['firstName'].errors?.['required']">First Name is required.</div>
+          <div *ngIf="formControls['firstName'].errors?.['required']">{{ 'validation.firstNameRequired' | transloco }}</div>
         </div>
       </div>
 
       <!-- Last Name (Required) -->
       <div class="form-group">
-        <label for="lastName">Last Name </label>
-        <input id="lastName" type="text" formControlName="lastName" placeholder="Enter your last name" />
+        <label for="lastName">{{ 'profile.lastName' | transloco }}</label>
+        <input id="lastName" type="text" formControlName="lastName" [placeholder]="'profile.enterLastName' | transloco" />
         <div *ngIf="formControls['lastName'].touched && formControls['lastName'].invalid" class="error">
-          <div *ngIf="formControls['lastName'].errors?.['required']">Last Name is required.</div>
+          <div *ngIf="formControls['lastName'].errors?.['required']">{{ 'validation.lastNameRequired' | transloco }}</div>
         </div>
       </div>
 
       <!-- Username (Required) -->
       <div class="form-group">
-        <label for="username">Username </label>
-        <input id="username" type="text" formControlName="username" placeholder="Enter your username" />
+        <label for="username">{{ 'profile.username' | transloco }}</label>
+        <input id="username" type="text" formControlName="username" [placeholder]="'profile.enterUsername' | transloco" />
         <div *ngIf="formControls['username'].touched && formControls['username'].invalid" class="error">
-          <div *ngIf="formControls['username'].errors?.['required']">Username is required.</div>
-          <div *ngIf="formControls['username'].errors?.['minlength']">Minimum length is {{ formControls['username'].errors?.['minlength'].requiredLength }}.</div>
+          <div *ngIf="formControls['username'].errors?.['required']">{{ 'validation.usernameRequired' | transloco }}</div>
+          <div *ngIf="formControls['username'].errors?.['minlength']">
+            {{ 'validation.minLength' | transloco: { value: formControls['username'].errors?.['minlength'].requiredLength } }}
+          </div>
         </div>
       </div>
 
-      <!-- Password (Optional) -->
-      <!-- <div class="form-group optional">
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" placeholder="Enter your password" />
-      </div> -->
-
       <!-- Phone Number (Required) -->
       <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input id="phoneNumber" type="text" formControlName="phoneNumber" placeholder="Enter your phone number" />
+        <label for="phoneNumber">{{ 'profile.phoneNumber' | transloco }}</label>
+        <input id="phoneNumber" type="text" formControlName="phoneNumber" [placeholder]="'profile.enterPhoneNumber' | transloco" />
         <div *ngIf="formControls['phoneNumber'].touched && formControls['phoneNumber'].invalid" class="error">
-          <div *ngIf="formControls['phoneNumber'].errors?.['required']">Phone Number is required.</div>
+          <div *ngIf="formControls['phoneNumber'].errors?.['required']">{{ 'validation.phoneRequired' | transloco }}</div>
         </div>
       </div>
 
       <!-- Email (Optional) -->
       <div class="form-group optional">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" placeholder="Enter your email" />
+        <label for="email">{{ 'profile.email' | transloco }}</label>
+        <input id="email" type="email" formControlName="email" [placeholder]="'profile.enterEmail' | transloco" />
       </div>
 
-      
-
-
-     
-  
-
       <!-- Submit Button -->
-      <button type="submit">Update Profile</button>
+      <button type="submit">{{ 'profile.updateButton' | transloco }}</button>
     </form>
   </div>
 </div>

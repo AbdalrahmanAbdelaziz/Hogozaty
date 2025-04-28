@@ -127,4 +127,27 @@
     overflow: hidden;
     background-color: transparent;
   }
+
+[dir="rtl"] {
+  .modal-header {
+    text-align: right;
+  }
+
+  .option-content {
+    text-align: right;
+    margin-right: 16px;
+    margin-left: 0;
+  }
+
+  .arrow-icon {
+    transform: rotate(180deg);
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .option-icon {
+    margin-left: 16px;
+    margin-right: 0;
+  }
+}
   

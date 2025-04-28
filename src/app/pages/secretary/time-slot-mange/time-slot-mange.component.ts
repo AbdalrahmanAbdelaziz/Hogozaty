@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginResponse } from '../../../shared/models/login-response';
 import { UserService } from '../../../services/user.service';
 import { MangeTimeslotService } from '../../../services/mange-timeslot.service';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-time-slot-mange',
@@ -20,7 +21,8 @@ import { MangeTimeslotService } from '../../../services/mange-timeslot.service';
     FormsModule,
     SHeaderComponent,
     SSidenavbarComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslocoModule
   ],
   templateUrl: './time-slot-mange.component.html',
   styleUrl: './time-slot-mange.component.css'
@@ -35,7 +37,8 @@ export class TimeSlotMangeComponent implements OnInit {
     private doctorService: DoctorService,
     private toastr: ToastrService,
     private userService: UserService,
-    private mangeTimeslotService: MangeTimeslotService
+    private mangeTimeslotService: MangeTimeslotService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +88,7 @@ export class TimeSlotMangeComponent implements OnInit {
   onSubmit() {
     if (this.timeSlotForm.valid && this.doctorId) {
       const formData = this.timeSlotForm.value;
-
+  
       // Add seconds to the time values
       const timeSlotData = {
         intervalDate: formData.selectedDay,
@@ -95,20 +98,20 @@ export class TimeSlotMangeComponent implements OnInit {
         doctorId: this.doctorId,
         numberOfWeeksToRepeat: formData.repeatWeeks
       };
-
-
+  
       this.mangeTimeslotService.createTimeSlot(timeSlotData).subscribe({
         next: (response) => {
-          this.toastr.success('Time slots created successfully!');
+          this.toastr.success(this.translocoService.translate('toast.timeSlotsCreated'));
           this.timeSlotForm.reset();
         },
         error: (error) => {
           console.error('Failed to create time slots:', error);
-          this.toastr.error('Failed to create time slots. Please try again.');
+          this.toastr.error(this.translocoService.translate('toast.timeSlotsError'));
         }
       });
     } else {
-      this.toastr.warning('Please fill all fields and ensure a valid doctor ID is available.');
+      this.toastr.warning(this.translocoService.translate('toast.timeSlotsWarning'));
     }
   }
+  
 }

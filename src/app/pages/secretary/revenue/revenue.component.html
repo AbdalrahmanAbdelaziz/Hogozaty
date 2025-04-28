@@ -4,11 +4,11 @@
 
 <div class="main-content">
   <div class="container">
-    <h2>Revenue</h2>
+    <h2>{{ 'daily_report.title' | transloco }}</h2>
 
     <!-- Dropdown for date selection -->
     <div class="dropdown-container">
-      <label for="dateDropdown">Select Date:</label>
+      <label for="dateDropdown">{{ 'revenue.select_date' | transloco }}:</label>
       <select
         id="dateDropdown"
         [(ngModel)]="selectedDate"
@@ -25,17 +25,17 @@
         <thead>
           <tr>
             <th rowspan="2">#</th>
-            <th rowspan="2">Patient Name</th>
-            <th rowspan="2">Total</th>
-            <th colspan="4">Paid</th>
-            <th rowspan="2">Remaining</th>
-            <th rowspan="2">Actions</th>
+            <th rowspan="2">{{ 'revenue.patient_name' | transloco }}</th>
+            <th rowspan="2">{{ 'revenue.total' | transloco }}</th>
+            <th colspan="4">{{ 'revenue.paid' | transloco }}</th>
+            <th rowspan="2">{{ 'revenue.remaining' | transloco }}</th>
+            <th rowspan="2">{{ 'revenue.actions' | transloco }}</th>
           </tr>
           <tr>
-            <th>Cash</th>
-            <th>Wallet</th>
-            <th>Insta</th>
-            <th>Visa</th>
+            <th>{{ 'revenue.cash' | transloco }}</th>
+            <th>{{ 'revenue.wallet' | transloco }}</th>
+            <th>{{ 'revenue.insta' | transloco }}</th>
+            <th>{{ 'revenue.visa' | transloco }}</th>
           </tr>
         </thead>
         <tbody>
@@ -44,7 +44,7 @@
             <td colspan="10" class="no-data">
               <div class="no-data-message">
                 <i class="fas fa-calendar-times"></i>
-                <p>No revenue data found for the selected date.</p>
+                <p>{{ 'revenue.no_data' | transloco }}</p>
               </div>
             </td>
           </tr>
@@ -65,7 +65,7 @@
                 class="btn-pay-remaining"
                 (click)="openCheckoutModal(appointment)"
               >
-                Pay Remaining
+                {{ 'revenue.pay_remaining' | transloco }}
               </button>
             </td>
           </tr>

@@ -14,11 +14,12 @@ import { FeedbackService } from '../../../services/feedback.service';
 import { PatientService } from '../../../services/patient.service';
 import { ClinicService } from '../../../services/clinic.service';
 import { Clinic } from '../../../shared/models/clinic.model';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-view-doctor-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule, PHeaderComponent, FormsModule, SideNavbarComponent],
+  imports: [CommonModule, RouterModule, PHeaderComponent, FormsModule, SideNavbarComponent, TranslocoModule],
   templateUrl: './view-doctor-profile.component.html',
   styleUrl: './view-doctor-profile.component.css',
   providers: [DatePipe]
@@ -46,7 +47,8 @@ export class ViewDoctorProfileComponent implements OnInit {
     private feedbackService: FeedbackService,
     private patientService: PatientService,
     private clinicService: ClinicService,
-    private router: Router
+    private router: Router,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

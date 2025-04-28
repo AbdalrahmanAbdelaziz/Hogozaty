@@ -8,11 +8,19 @@ import { Lookup } from '../../../shared/models/lookup.model';
 import { LookupsService } from '../../../services/lookups.service';
 import { ToastrService } from 'ngx-toastr';
 import { AdminHeaderComponent } from "../admin-header/admin-header.component";
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
+import { DoctorService } from '../../../services/doctor.service';
 
 @Component({
   selector: 'app-new-secretary',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, AdminHeaderComponent],
+  imports: [
+    RouterModule, 
+    CommonModule, 
+    ReactiveFormsModule, 
+    AdminHeaderComponent,
+    TranslocoModule
+  ],
   templateUrl: './new-secretary.component.html',
   styleUrls: ['./new-secretary.component.css']
 })
@@ -20,15 +28,19 @@ export class NewSecretaryComponent implements OnInit {
   secretaryForm!: FormGroup;
   private fb = inject(FormBuilder);
   private adminService = inject(AdminService);
+  private doctorService = inject(DoctorService);
   private lookupService = inject(LookupsService);
   private _router = inject(Router);
   private toastr = inject(ToastrService);
+  private translocoService = inject(TranslocoService);
 
   selectedPicture: File | null = null;
   genders: Lookup[] = [];
   doctors: any[] = [];
+  currentLanguage: string = 'en';
 
   ngOnInit(): void {
+    this.currentLanguage = this.translocoService.getActiveLang();
     this.initForm();
     this.loadLookups();
   }
@@ -52,13 +64,17 @@ export class NewSecretaryComponent implements OnInit {
   private loadLookups(): void {
     this.lookupService.loadGenders().subscribe(
       (res: APIResponse<Lookup[]>) => this.genders = res.data,
-      () => this.toastr.error("Failed to load genders")
+      () => this.toastr.error(this.translocoService.translate('errors.failed_load_genders'))
     );
 
-    this.adminService.getAllDoctors().subscribe(
-      (res: APIResponse<any[]>) => this.doctors = res.data,
-      () => this.toastr.error("Failed to load doctors")
-    );
+    this.doctorService.getAllDoctors().subscribe({
+      next: (res: APIResponse<any[]>) => {
+        this.doctors = res.data;
+      },
+      error: () => {
+        this.toastr.error(this.translocoService.translate('errors.failed_load_doctors'));
+      }
+    });
   }
 
   onFileChange(event: Event): void {
@@ -74,7 +90,10 @@ export class NewSecretaryComponent implements OnInit {
 
   onSubmit(): void {
     if (this.secretaryForm.invalid) {
-      this.toastr.warning("Please complete all required fields.", "Incomplete Data");
+      this.toastr.warning(
+        this.translocoService.translate('secretary_form.incomplete_fields_message'),
+        this.translocoService.translate('secretary_form.incomplete_fields_title')
+      );
       this.secretaryForm.markAllAsTouched();
       return;
     }
@@ -94,11 +113,11 @@ export class NewSecretaryComponent implements OnInit {
 
     this.adminService.createSecretary(formData).subscribe({
       next: () => {
-        this.toastr.success("Secretary created successfully!");
+        this.toastr.success(this.translocoService.translate('secretary_form.create_success'));
         this._router.navigate(['/admin/users']);
       },
       error: (err) => {
-        this.toastr.error("Failed to create secretary. Please try again.");
+        this.toastr.error(this.translocoService.translate('secretary_form.create_error'));
         console.error(err);
       }
     });
@@ -107,4 +126,17 @@ export class NewSecretaryComponent implements OnInit {
   get formControls() {
     return this.secretaryForm.controls;
   }
+
+  getTranslatedName(item: any): string {
+    return this.currentLanguage === 'ar' ? item.name_Ar : item.name_En;
+  }
+
+  getDoctorDisplayName(doctor: any): string {
+    const firstName = doctor.firstName || '';
+    const lastName = doctor.lastName || '';
+    
+    
+    // Return directly formatted string without translation
+    return `Dr. ${firstName} ${lastName}`;
+}
 }

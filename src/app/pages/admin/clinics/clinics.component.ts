@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { environment } from '../../../environment/environment.prod';
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
+import { LocalizedFieldPipe } from '../../../services/localized-field.pipe';
 
 @Component({
   selector: 'app-clinics',
@@ -28,7 +30,9 @@ import { environment } from '../../../environment/environment.prod';
     MatFormFieldModule,
     FormsModule,
     RouterModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TranslocoModule,
+    LocalizedFieldPipe
   ],
   templateUrl: './clinics.component.html',
   styleUrls: ['./clinics.component.css']
@@ -43,7 +47,10 @@ export class ClinicsComponent implements OnInit {
   countries: string[] = [];
   governorates: string[] = [];
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    public translocoService: TranslocoService
+  ) {}
 
   ngOnInit(): void {
     this.loadClinics();
@@ -66,19 +73,26 @@ export class ClinicsComponent implements OnInit {
   }
 
   extractFilters(): void {
-    // Extract unique countries and governorates for filters
-    this.countries = [...new Set(this.clinics.map(c => c.country_En))];
-    this.governorates = [...new Set(this.clinics.map(c => c.governorate_En))];
+    const lang = this.translocoService.getActiveLang();
+    const countryField = lang === 'ar' ? 'country_Ar' : 'country_En';
+    const governorateField = lang === 'ar' ? 'governorate_Ar' : 'governorate_En';
+    
+    this.countries = [...new Set(this.clinics.map(c => c[countryField]))];
+    this.governorates = [...new Set(this.clinics.map(c => c[governorateField]))];
   }
 
   filterClinics(): void {
+    const lang = this.translocoService.getActiveLang();
+    const countryField = lang === 'ar' ? 'country_Ar' : 'country_En';
+    const governorateField = lang === 'ar' ? 'governorate_Ar' : 'governorate_En';
+
     this.filteredClinics = this.clinics.filter(clinic => {
       const matchesSearch = clinic.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           clinic.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                           clinic.phone.toLowerCase().includes(this.searchTerm.toLowerCase());
+                         clinic.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                         clinic.phone.toLowerCase().includes(this.searchTerm.toLowerCase());
       
-      const matchesCountry = this.selectedCountry ? clinic.country_En === this.selectedCountry : true;
-      const matchesGovernorate = this.selectedGovernorate ? clinic.governorate_En === this.selectedGovernorate : true;
+      const matchesCountry = this.selectedCountry ? clinic[countryField] === this.selectedCountry : true;
+      const matchesGovernorate = this.selectedGovernorate ? clinic[governorateField] === this.selectedGovernorate : true;
       
       return matchesSearch && matchesCountry && matchesGovernorate;
     });
@@ -95,5 +109,11 @@ export class ClinicsComponent implements OnInit {
     this.selectedCountry = '';
     this.selectedGovernorate = '';
     this.filteredClinics = [...this.clinics];
+  }
+
+  switchLanguage(lang: string): void {
+    this.translocoService.setActiveLang(lang);
+    this.extractFilters(); // Refresh filters when language changes
+    this.filterClinics(); // Reapply filters with new language
   }
 }

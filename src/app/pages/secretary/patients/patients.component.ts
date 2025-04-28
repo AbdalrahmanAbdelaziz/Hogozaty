@@ -7,11 +7,12 @@ import { PatientService } from '../../../services/patient.service'; // Import Pa
 import { UserService } from '../../../services/user.service'; // Import UserService
 import { FormsModule } from '@angular/forms'; // Import FormsModule for search bar
 import { ToastrService } from 'ngx-toastr'; // Import ToastrService for notifications
+import { TranslocoModule, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-patients',
   standalone: true,
-  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, FormsModule],
+  imports: [CommonModule, RouterModule, SHeaderComponent, SSidenavbarComponent, FormsModule, TranslocoModule],
   templateUrl: './patients.component.html',
   styleUrls: ['./patients.component.css'],
 })
@@ -24,7 +25,8 @@ export class PatientsComponent implements OnInit {
   constructor(
     private patientService: PatientService, // Inject PatientService
     private userService: UserService, // Inject UserService
-    private toastr: ToastrService // Inject ToastrService
+    private toastr: ToastrService,
+    public translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

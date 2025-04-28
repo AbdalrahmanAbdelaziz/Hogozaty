@@ -245,3 +245,57 @@ body {
     font-size: 0.9rem;
   }
 }
+
+/* RTL specific styles */
+[dir="rtl"] .dashboard-card {
+  text-align: right;
+}
+
+[dir="rtl"] .quick-actions {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .action-button {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+[dir="rtl"] .no-data-state {
+  text-align: center;
+}
+
+[dir="rtl"] .card-header {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  [dir="rtl"] .quick-actions {
+    justify-content: center;
+  }
+  
+  [dir="rtl"] .action-button {
+    margin: 5px;
+  }
+}
+
+/* For pie chart legend in RTL */
+[dir="rtl"] .pie-chart .legend-labels {
+  text-align: right;
+  direction: rtl;
+}
+
+/* For chart labels */
+[dir="rtl"] .pie-label {
+  text-anchor: end;
+}
+
+/* Add this to your CSS to fix the line overlapping the label */
+::ng-deep .pie-chart .pie-label {
+  dominant-baseline: middle !important;
+  text-anchor: middle !important;
+  transform: translateY(5px) !important;
+}
+
+[dir="rtl"] .pie-chart .pie-label {
+  text-anchor: middle !important;
+}
